@@ -4,16 +4,6 @@ As you can see ;D
 
 Build it yourself:
 
-1. Install dependencies:
-    * Arch Linux:
-       ```shell
-       sudo pacman -S cmake sfml nlohmann-json
-       ``` 
-    * Debian / Ubuntu:
-      ```shell
-      sudo apt-get install cmake libsfml-dev nlohmann-json3-dev
-      ```
-
 List of attributions:
 
 * [SFML](https://github.com/SFML/SFML)
