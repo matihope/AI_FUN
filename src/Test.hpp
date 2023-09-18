@@ -5,8 +5,6 @@
 #ifndef AI_FUN_SRC_TEST_HPP_
 #define AI_FUN_SRC_TEST_HPP_
 
-class Test {
-
-};
+void run();
 
 #endif //AI_FUN_SRC_TEST_HPP_
