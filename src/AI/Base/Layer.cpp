@@ -14,7 +14,7 @@ std::vector<double> Layer::calculate(const std::vector<double> &inputs) const {
   return output;
 }
 
-Layer::Layer(uint input, uint nodes) : input(input), nodes(nodes) {
+Layer::Layer(uint nodes, uint input) : nodes(nodes), input(input) {
   weights.resize(nodes, std::vector<double>(input, 0));
   biases.resize(nodes, std::vector<double>(input, 0));
 }
@@ -33,4 +33,10 @@ void Layer::setWeight(uint node, uint inputNode, double newValue) {
 
 void Layer::setBias(uint node, uint inputNode, double newValue) {
   biases[node][inputNode] = newValue;
+}
+uint Layer::getInputNodesCount() const {
+  return input;
+}
+uint Layer::getNodesCount() const {
+  return nodes;
 }

@@ -21,13 +21,17 @@ class NeuralNetworkCoach {
   static void applyGradients(std::vector<LayerGradient> &gradients, double trainingFactor);
 
   void updateGradients(const TrainingItem &item, std::vector<LayerGradient> &gradients);
-  void updateGradient(const std::vector<double> &nodeValues, LayerGradient &gradient);
+  static void updateGradient(const std::vector<double> &nodeValues, LayerGradient &gradient);
 
   [[nodiscard]] double cost(const AI::TrainingItem &item) const;
   [[nodiscard]] double cost(const AI::TrainingSet &set) const;
 
   NeuralNetwork& neuralNetwork;
   std::unique_ptr<CostFunction> costFunction;
+  std::vector<double> calculateNodeValues(NeuralNetworkCalculationState &outputs, const TrainingItem &item);
+  std::vector<double> calculateHiddenLayerNodeValues(uint layerIndex,
+                                                     AI::NeuralNetworkCalculationState &outputs,
+                                                     std::vector<double> &nodeValues) const;
 };
 }
 
