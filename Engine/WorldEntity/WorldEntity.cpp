@@ -5,9 +5,9 @@
 
 EntityID WorldEntity::id_counter = 0;
 
-WorldEntity::WorldEntity() : m_entityId(id_counter++) {
+WorldEntity::WorldEntity(): m_entityId(id_counter++) {
 	m_parent = nullptr;
-	m_show = true;
+	m_show   = true;
 }
 
 EntityID WorldEntity::getId() const { return m_entityId; }
@@ -20,36 +20,35 @@ void WorldEntity::cleanEntities() {
 	for (auto &layer : m_entity_pool) {
 		for (auto it = layer.second.begin(); it != layer.second.end(); it++) {
 			WorldEntity *entity = it->get();
-			if (entity->isDying()) {
-				it = layer.second.erase(it);
-			}
+			if (entity->isDying()) it = layer.second.erase(it);
 		}
 	}
 }
 
 void WorldEntity::physicsUpdate(const float dt) {
 	onPhysicsUpdate(dt);
-	for (const auto &layer : m_entity_pool) {
+	for (const auto &layer : m_entity_pool)
 		for (auto &entity : layer.second) entity->physicsUpdate(dt);
-	}
 }
 
-void WorldEntity::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void WorldEntity::draw(sf::RenderTarget &target,
+                       sf::RenderStates  states) const {
 	if (not m_show) return;
 	renderOnto(target, states);
 }
 
-void WorldEntity::renderOnto(sf::RenderTarget &target, sf::RenderStates states) const {
+void WorldEntity::renderOnto(sf::RenderTarget &target,
+                             sf::RenderStates  states) const {
 	sf::RenderStates copied_states(states);
 	copied_states.transform *= getTransform();
 	onDraw(target, states);
 
 	for (const auto &layer : m_entity_pool)
-		for (auto &entity : layer.second)
-			target.draw(*entity, copied_states);
+		for (auto &entity : layer.second) target.draw(*entity, copied_states);
 }
 
-void WorldEntity::addChild(std::unique_ptr<WorldEntity> child, unsigned int drawOrder) {
+void WorldEntity::addChild(std::unique_ptr<WorldEntity> child,
+                           unsigned int                 drawOrder) {
 	child->addParent(this);
 	child->ready();
 	m_entity_pool[drawOrder].push_back(std::move(child));
@@ -62,20 +61,15 @@ WorldEntity *WorldEntity::getParent() { return m_parent; }
 void WorldEntity::update(float dt) {
 	cleanEntities();
 	onUpdate(dt);
-	for (const auto &layer : m_entity_pool) {
+	for (const auto &layer : m_entity_pool)
 		for (auto &entity : layer.second) entity->update(dt);
-	}
 }
 
-void WorldEntity::show() {
-	m_show = true;
-}
+void WorldEntity::show() { m_show = true; }
 
-void WorldEntity::hide() {
-	m_show = false;
-}
+void WorldEntity::hide() { m_show = false; }
+
 sf::Vector2f WorldEntity::getGlobalPosition() const {
-	if (m_parent == nullptr)
-		return getPosition();
+	if (m_parent == nullptr) return getPosition();
 	return getPosition() + m_parent->getGlobalPosition();
 }

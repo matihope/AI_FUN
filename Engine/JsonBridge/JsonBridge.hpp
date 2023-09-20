@@ -1,13 +1,14 @@
 #pragma once
-#include <string>
 #include <nlohmann/json.hpp>
+#include <string>
 
 class JsonBridge {
 	std::string m_file_path;
- public:
+
+public:
 	nlohmann::json data;
 
-	bool load(const std::string &filePath);
-	bool saveCurrentState();
+	bool        load(const std::string &filePath);
+	bool        saveCurrentState();
 	std::string getFilePath() const;
 };

@@ -6,15 +6,18 @@
 #define RAYCASTER_ENGINE_NODES_CIRCLESHAPE_HPP_
 
 #include "WorldEntity/WorldEntity.hpp"
-class CircleShape : public WorldEntity {
- public:
+
+class CircleShape: public WorldEntity {
+public:
 	CircleShape() = default;
 	CircleShape(sf::Color myColor, float radius);
-	void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
-	void setRadius(float radius);
+	void                onDraw(sf::RenderTarget &target,
+	                           sf::RenderStates  states) const override;
+	void                setRadius(float radius);
 	[[nodiscard]] float getRadius() const;
- private:
+
+private:
 	sf::CircleShape circle;
 };
 
-#endif //RAYCASTER_ENGINE_NODES_CIRCLESHAPE_HPP_
+#endif  // RAYCASTER_ENGINE_NODES_CIRCLESHAPE_HPP_

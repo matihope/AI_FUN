@@ -3,11 +3,11 @@
 #include <WorldEntity/WorldEntity.hpp>
 #include <map>
 
-class TileMapLayer : public WorldEntity {
+class TileMapLayer: public WorldEntity {
 	const sf::Texture *m_texture;
-	sf::VertexArray m_vertex_array;
+	sf::VertexArray    m_vertex_array;
 
- public:
+public:
 	TileMapLayer(const std::string &texturePath);
 	bool createLayer(const std::vector<int> &ids, const unsigned int tileSize,
 	                 const unsigned int gridWidth);

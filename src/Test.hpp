@@ -7,4 +7,4 @@
 
 void run();
 
-#endif //AI_FUN_SRC_TEST_HPP_
+#endif  // AI_FUN_SRC_TEST_HPP_

@@ -1,23 +1,23 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <JsonBridge/JsonBridge.hpp>
-#include <Updatable/Updatable.hpp>
 #include <AnimatedSprite/AnimatedSprite.hpp>
 #include <CollisionComponent/CollisionComponent.hpp>
+#include <JsonBridge/JsonBridge.hpp>
+#include <SFML/Graphics.hpp>
 #include <Tile/Tile.hpp>
+#include <Updatable/Updatable.hpp>
 #include <WorldEntity/WorldEntity.hpp>
 #include <map>
 
-class TileMap : public WorldEntity {
+class TileMap: public WorldEntity {
 	std::string m_tilemap_path;
-	JsonBridge m_map_data;
+	JsonBridge  m_map_data;
 	// DrawLayers m_layers;
-	std::map<unsigned int, Tile> m_tile_templates;
+	std::map<unsigned int, Tile>            m_tile_templates;
 	std::vector<std::shared_ptr<Updatable>> m_updatables;
-	std::vector<std::shared_ptr<Tile>> m_collidable_tiles;
-	std::vector<std::shared_ptr<Tile>> m_ysort_layer;
+	std::vector<std::shared_ptr<Tile>>      m_collidable_tiles;
+	std::vector<std::shared_ptr<Tile>>      m_ysort_layer;
 
- public:
+public:
 	bool load(const std::string &mapFile);
 	bool loadTiled(const std::string &mapFile);
 	bool reload();
