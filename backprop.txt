@@ -1,0 +1,21 @@
+* - * - *
+
+    a1;
+
+s1(x) = x * w1 + b1
+d s1 /
+
+s1 = a1 * w1 + b1
+z1 = ReLU(s1)
+c1 = C(z1, y)
+
+d C/ d w1 = ( d C / d z1 ) * ( d z1 / d s1 ) * ( d s1 / d w1 )
+( d C / d w1 ) = costFunc.derivative(activatingValue) * activatingFunc.derivative(weightedInput) * a1
+( d C / d b1 ) = costFunc.derivative(activatingValue) * activatingFunc.derivative(weightedInput)
+
+
+        *
+      /
+* - * - *
+      \
+        *

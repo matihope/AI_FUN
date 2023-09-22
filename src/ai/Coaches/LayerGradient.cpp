@@ -13,7 +13,7 @@ namespace ai {
 		                    std::vector<double>(layer.getInputNodesCount(), 0));
 	}
 
-	void LayerGradient::apply(double trainingFactor) {
+	void LayerGradient::apply(double learningRate) {
 		for (uint node = 0; node < layer.getNodesCount(); node++) {
 			for (uint inputNode = 0; inputNode < layer.getInputNodesCount();
 			     inputNode++) {
@@ -21,10 +21,10 @@ namespace ai {
 				auto bias   = layer.getBias(node, inputNode);
 				layer.setWeight(
 					node, inputNode,
-					weight - weightGradient[node][inputNode] * trainingFactor);
+					weight - weightGradient[node][inputNode] * learningRate);
 				layer.setBias(
 					node, inputNode,
-					bias - biasGradient[node][inputNode] * trainingFactor);
+					bias - biasGradient[node][inputNode] * learningRate);
 			}
 		}
 	}

@@ -28,6 +28,6 @@ namespace ai {
 
 	double DifferenceSquaredCostFunction::derivative(double input,
 	                                                 double correct) const {
-		return 2 * (correct - input);
+		return input - correct;
 	}
 }  // namespace ai

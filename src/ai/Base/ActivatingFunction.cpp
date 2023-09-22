@@ -27,3 +27,10 @@ double ai::Sigmoid::calculate(double input) const {
 double ai::Sigmoid::derivative(double input) const {
 	return calculate(input) * calculate(1 - input);
 }
+
+double ai::ReLU::calculate(double input) const { return std::max(0.0, input); }
+
+double ai::ReLU::derivative(double input) const {
+	if (input < 0) return 0;
+	return 1;
+}

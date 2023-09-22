@@ -93,6 +93,15 @@ namespace idx {
 
 		file.close();
 
+		// open file
+		//		std::ifstream infile(filePath);
+		//
+		//		// get length of file
+		//		infile.seekg(0, std::ios::end);
+		//		std::size_t length = infile.tellg();
+		//		infile.seekg(0, std::ios::beg);
+		//		infile.read((char *) &bytes, length);
+
 		return bytes;
 	}
 

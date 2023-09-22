@@ -31,7 +31,8 @@ namespace ai {
 		void        updateGradients(const TrainingItem         &item,
 		                            std::vector<LayerGradient> &gradients);
 		static void updateGradient(const std::vector<double> &nodeValues,
-		                           LayerGradient             &gradient);
+		                           LayerGradient             &gradient,
+		                           std::vector<double>       &activations);
 
 
 		NeuralNetwork                &neuralNetwork;

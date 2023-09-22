@@ -17,7 +17,7 @@ namespace ai {
 	public:
 		explicit LayerGradient(Layer &layer);
 		std::vector<std::vector<double>> weightGradient, biasGradient;
-		void                             apply(double trainingFactor);
+		void                             apply(double learningRate);
 		Layer                           &getLayer();
 
 	private:

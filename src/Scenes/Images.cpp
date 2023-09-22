@@ -22,6 +22,7 @@ Images::Images():
 
 	ai::NeuralNetwork network({ 784, 800, 10 },
 	                          std::make_unique<ai::Sigmoid>());
+	network.randomizeWeightsAndBiases(0);
 
 	ai::NeuralNetworkCoach coach(
 		network, std::make_unique<ai::DifferenceSquaredCostFunction>());

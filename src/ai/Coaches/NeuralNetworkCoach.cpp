@@ -52,32 +52,34 @@ namespace ai {
 
 	void ai::NeuralNetworkCoach::updateGradients(
 		const TrainingItem &item, std::vector<LayerGradient> &gradients) {
-		auto outputs = neuralNetwork.calculateOutputs(item.input);
+		auto outputs    = neuralNetwork.calculateOutputs(item.input);
+		auto layerCount = neuralNetwork.getLayerSizes().size();
 
 		// Last layer node values
 		std::vector<double> nodeValues
 			= calculateOutputLayerNodeValues(outputs, item);
-		updateGradient(nodeValues, gradients.back());
+		updateGradient(nodeValues, gradients.back(),
+		               outputs.activations[layerCount - 2]);
 
 		// Hidden layers node values
-		for (int layerIndex = (int) neuralNetwork.getLayerSizes().size() - 2;
-		     layerIndex > 0; layerIndex--) {
+		for (int layerIndex = layerCount - 2; layerIndex > 0; layerIndex--) {
 			nodeValues = std::move(calculateHiddenLayerNodeValues(
 				layerIndex, outputs, nodeValues));
-			updateGradient(nodeValues, gradients[layerIndex]);
+			updateGradient(nodeValues, gradients[layerIndex],
+			               outputs.activations[layerIndex - 1]);
 		}
 	}
 
 	void ai::NeuralNetworkCoach::updateGradient(
-		const std::vector<double> &nodeValues, LayerGradient &gradient) {
+		const std::vector<double> &nodeValues, LayerGradient &gradient,
+		std::vector<double> &activations) {
 		for (uint node = 0; node < gradient.getLayer().getNodesCount();
 		     node++) {
 			for (uint inputNode = 0;
 			     inputNode < gradient.getLayer().getInputNodesCount();
 			     inputNode++) {
 				gradient.weightGradient[node][inputNode]
-					+= nodeValues[node]
-				     * gradient.getLayer().getWeight(node, inputNode);
+					+= nodeValues[node] * activations[inputNode];
 				gradient.biasGradient[node][inputNode] += nodeValues[node];
 			}
 		}

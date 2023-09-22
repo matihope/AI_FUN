@@ -24,6 +24,12 @@ namespace ai {
 		[[nodiscard]] double calculate(double input) const override;
 		[[nodiscard]] double derivative(double input) const override;
 	};
+
+	class ReLU: public ActivatingFunction {
+	public:
+		[[nodiscard]] double calculate(double input) const override;
+		[[nodiscard]] double derivative(double input) const override;
+	};
 }  // namespace ai
 
 #endif  // AI_FUN_SRC_AI_BASE_ACTIVATINGFUNCTION_HPP_
