@@ -18,7 +18,7 @@ namespace ai {
 		neuralNetwork(neuralNetwork),
 		costFunction(std::move(costFunction)) {}
 
-	void ai::NeuralNetworkCoach::trainSingle(const TrainingSet &trainingSet, double trainingFactor) {
+	void ai::NeuralNetworkCoach::trainSingle(const TrainingSet &trainingSet, double learnRate) {
 		// Create gradients
 		std::vector<LayerGradient> gradients;
 		for (uint i = 0; i < neuralNetwork.getLayerSizes().size(); i++)
@@ -29,7 +29,7 @@ namespace ai {
 
 
 		// Apply them on the neural network
-		applyGradients(gradients, trainingFactor / (double) trainingSet.size());
+		applyGradients(gradients, learnRate / (double) trainingSet.size());
 	}
 
 	double ai::NeuralNetworkCoach::cost(const ai::TrainingItem &item) const {
@@ -84,9 +84,10 @@ namespace ai {
 	                                                           const ai::TrainingItem            &item) {
 		std::vector<double> nodeValues;
 		for (int i = 0; i < neuralNetwork.getLayerSizes().back(); i++) {
-			auto a = costFunction->derivative(outputs.activations.back()[i], item.correctOutput[i]);
-			auto b = neuralNetwork.getActivatingFunction()->derivative(outputs.weightedInputs.back()[i]);
-			nodeValues.push_back(a * b);
+			auto costDerivative = costFunction->derivative(outputs.activations.back()[i], item.correctOutput[i]);
+			auto activationDerivative
+				= neuralNetwork.getActivatingFunction()->derivative(outputs.weightedInputs.back()[i]);
+			nodeValues.push_back(costDerivative * activationDerivative);
 		}
 		return nodeValues;
 	}

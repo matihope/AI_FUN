@@ -19,7 +19,7 @@ namespace ai {
 	class NeuralNetworkCoach {
 	public:
 		NeuralNetworkCoach(NeuralNetwork &neuralNetwork, std::unique_ptr<CostFunction> costFunction);
-		void   trainSingle(const TrainingSet &trainingSet, double trainingFactor);
+		void   trainSingle(const TrainingSet &trainingSet, double learnRate);
 		double train(TrainingSet trainingSet, double trainingFactor, uint batchSize, uint epochs, uint seed = 0);
 		[[nodiscard]] double cost(const ai::TrainingItem &item) const;
 		[[nodiscard]] double cost(const ai::TrainingSet &set) const;

@@ -20,7 +20,7 @@ std::vector<double> ai::ActivatingFunction::derivative(const std::vector<double>
 
 double ai::Sigmoid::calculate(double input) const { return 1.0 / (1.0 + std::pow(M_E, -input)); }
 
-double ai::Sigmoid::derivative(double input) const { return calculate(input) * calculate(1 - input); }
+double ai::Sigmoid::derivative(double input) const { return calculate(input) * (1 - calculate(input)); }
 
 double ai::ReLU::calculate(double input) const { return std::max(0.0, input); }
 

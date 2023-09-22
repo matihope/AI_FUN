@@ -4,6 +4,7 @@
 
 #include "Layer.hpp"
 
+#include <cmath>
 #include <cstdlib>
 
 std::vector<double> Layer::calculate(const std::vector<double> &activations) const {
@@ -15,8 +16,8 @@ std::vector<double> Layer::calculate(const std::vector<double> &activations) con
 }
 
 Layer::Layer(uint nodes, uint inputs): nodes(nodes), inputs(inputs) {
-	weights.resize(nodes, std::vector<double>(inputs, 1));
-	biases.resize(nodes, std::vector<double>(inputs, 1));
+	weights.resize(nodes, std::vector<double>(inputs, 0));
+	biases.resize(nodes, std::vector<double>(inputs, 0));
 }
 
 double Layer::getWeight(uint node, uint inputNode) const { return weights[node][inputNode]; }
@@ -33,8 +34,6 @@ uint Layer::getNodesCount() const { return nodes; }
 
 void Layer::randomizeWeightsAndBiases() {
 	for (int node = 0; node < nodes; node++)
-		for (int input = 0; input < inputs; input++) {
-			biases[node][input]  = (double) std::rand() / RAND_MAX;
-			weights[node][input] = (double) std::rand() / RAND_MAX;
-		}
+		for (int input = 0; input < inputs; input++)
+			weights[node][input] = (double) std::rand() / RAND_MAX / std::sqrt(inputs);
 }

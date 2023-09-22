@@ -32,13 +32,16 @@ Images::Images(): reader("resources/train-images.idx3-ubyte", "resources/train-l
 		}
 	}
 
-	ai::NeuralNetwork network({ 784, 800, 10 }, std::make_unique<ai::ReLU>());
+	ai::NeuralNetwork network({ 784, 100, 10 }, std::make_unique<ai::ReLU>());
 	network.randomizeWeightsAndBiases(0);
 
 	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::DifferenceSquaredCostFunction>());
 
-	auto set = createSetFromReader(reader, 5'000);
-	coach.train(set, 0.01, 128, 2);
+	auto set = createSetFromReader(reader, 15'000);
+	std::cerr << "Begin training: \n";
+	coach.train(set, 0.0025, 128, 10);
+
+	std::cerr << "Begin testing: \n";
 
 	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
 	uint        good    = 0;
