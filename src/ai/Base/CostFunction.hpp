@@ -10,25 +10,17 @@
 namespace ai {
 	class CostFunction {
 	public:
-		virtual ~CostFunction() = default;
-		[[nodiscard]] virtual double calculate(double input,
-		                                       double correct) const
-			= 0;
-		[[nodiscard]] std::vector<double>
-			calculate(const std::vector<double> &inputs, double correct) const;
-		[[nodiscard]] virtual double derivative(double input,
-		                                        double correct) const
-			= 0;
-		[[nodiscard]] std::vector<double>
-			derivative(const std::vector<double> &inputs, double correct) const;
+		virtual ~CostFunction()                                                         = default;
+		[[nodiscard]] virtual double      calculate(double input, double correct) const = 0;
+		[[nodiscard]] std::vector<double> calculate(const std::vector<double> &inputs, double correct) const;
+		[[nodiscard]] virtual double      derivative(double input, double correct) const = 0;
+		[[nodiscard]] std::vector<double> derivative(const std::vector<double> &inputs, double correct) const;
 	};
 
 	class DifferenceSquaredCostFunction: public CostFunction {
 	public:
-		[[nodiscard]] double calculate(double input,
-		                               double correct) const override;
-		[[nodiscard]] double derivative(double input,
-		                                double correct) const override;
+		[[nodiscard]] double calculate(double input, double correct) const override;
+		[[nodiscard]] double derivative(double input, double correct) const override;
 	};
 
 }  // namespace ai

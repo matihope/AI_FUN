@@ -142,7 +142,7 @@ SpacesInSquareBrackets: false
 
 
 # Characters
-ColumnLimit: 80
+ColumnLimit: 120
 FixNamespaceComments: true
 InsertNewlineAtEOF: true
 IntegerLiteralSeparator:

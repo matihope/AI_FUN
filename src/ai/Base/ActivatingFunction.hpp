@@ -10,13 +10,11 @@
 namespace ai {
 	class ActivatingFunction {
 	public:
-		virtual ~ActivatingFunction()                              = default;
-		[[nodiscard]] virtual double calculate(double input) const = 0;
-		[[nodiscard]] std::vector<double>
-			calculate(const std::vector<double> &inputs) const;
-		[[nodiscard]] virtual double derivative(double input) const = 0;
-		[[nodiscard]] std::vector<double>
-			derivative(const std::vector<double> &inputs) const;
+		virtual ~ActivatingFunction()                                   = default;
+		[[nodiscard]] virtual double      calculate(double input) const = 0;
+		[[nodiscard]] std::vector<double> calculate(const std::vector<double> &inputs) const;
+		[[nodiscard]] virtual double      derivative(double input) const = 0;
+		[[nodiscard]] std::vector<double> derivative(const std::vector<double> &inputs) const;
 	};
 
 	class Sigmoid: public ActivatingFunction {

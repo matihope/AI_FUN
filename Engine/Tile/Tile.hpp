@@ -12,9 +12,9 @@ class Tile: public WorldEntity {
 	// CollisionComponent m_collision_shape;
 
 public:
-	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
-	void update(const float dt);
-	void setTexture(const std::string &texture);
+	void               draw(sf::RenderTarget &target, sf::RenderStates states) const;
+	void               update(const float dt);
+	void               setTexture(const std::string &texture);
 	const sf::Texture *getTexture() const;
 	void               setTextureRect(const sf::IntRect &rectangle);
 	const sf::IntRect &getTextureRect() const;

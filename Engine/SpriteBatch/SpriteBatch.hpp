@@ -16,8 +16,7 @@ public:
 	void                      setTexture(const sf::Texture *newTexture);
 	const sf::Texture        *getTexture();
 	QuickSprite               getSprite(unsigned int id);
-	void                      onDraw(sf::RenderTarget &target,
-	                                 sf::RenderStates  states) const override;
+	void                      onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 	// sets all vertices in grid
 	// top left's id is 0 and increments horizontally first

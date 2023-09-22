@@ -8,8 +8,7 @@
 
 #include <iostream>
 
-RayShape::RayShape(sf::Color color, float width, float length,
-                   float wingLength) {
+RayShape::RayShape(sf::Color color, float width, float length, float wingLength) {
 	setColor(color);
 	setSize(width, length, wingLength);
 }

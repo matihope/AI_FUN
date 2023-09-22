@@ -17,13 +17,12 @@ namespace GUI {
 	public:
 		Label();
 		explicit Label(sf::Font *font);
-		void setFont(sf::Font *font);
-		void setText(const std::string &text);
-		void setAlignment(HAlignment newHAlignment, VAlignment newVAlignment);
-		void setTextSize(unsigned int newSize);
-		void setColor(sf::Color newColor);
-		void onDraw(sf::RenderTarget &target,
-		            sf::RenderStates  states) const override;
+		void          setFont(sf::Font *font);
+		void          setText(const std::string &text);
+		void          setAlignment(HAlignment newHAlignment, VAlignment newVAlignment);
+		void          setTextSize(unsigned int newSize);
+		void          setColor(sf::Color newColor);
+		void          onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
 		sf::FloatRect getBounds() const;
 	};
 }  // namespace GUI

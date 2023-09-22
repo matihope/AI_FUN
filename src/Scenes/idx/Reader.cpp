@@ -8,6 +8,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <utility>
 
 namespace idx {
@@ -24,8 +25,7 @@ namespace idx {
 		auto labels     = readLabelsData();
 
 		images.clear();
-		for (int i = 0; i < imagesData.size(); i++)
-			images.emplace_back(labels[i], imagesData[i]);
+		for (int i = 0; i < imagesData.size(); i++) images.emplace_back(labels[i], imagesData[i]);
 	}
 
 	std::vector<std::vector<std::vector<byte>>> Reader::readImageData() {
@@ -43,8 +43,7 @@ namespace idx {
 			std::vector<std::vector<byte>> image;
 			for (uint rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
 				std::vector<byte> row;
-				for (uint colIndex = 0; colIndex < numberOfCols; colIndex++)
-					row.push_back(bytes[dataIndex++]);
+				for (uint colIndex = 0; colIndex < numberOfCols; colIndex++) row.push_back(bytes[dataIndex++]);
 				image.push_back(std::move(row));
 			}
 			newImages.push_back(std::move(image));
@@ -68,8 +67,8 @@ namespace idx {
 
 		uint index = 4 * 2;
 		for (uint labelIndex = 0; labelIndex < numberOfLabels; ++labelIndex) {
-			char label = (char) bytes[index++];
-			labels.emplace_back(std::string() + label);
+			byte label = bytes[index++];
+			labels.emplace_back(std::to_string(label));
 		}
 
 		return labels;
@@ -78,29 +77,35 @@ namespace idx {
 	std::vector<byte> Reader::readBytes(const std::string &filePath) {
 		std::vector<byte> bytes;
 
-		std::ifstream file(filePath);
-
-		if (!file.is_open()) {
-			std::cerr << "File does not exist! : " << filePath << "\n";
-			return {};
-		}
-
-		while (!file.eof()) {
-			char b;
-			file.get(b);
-			bytes.push_back((byte) b);
-		}
-
-		file.close();
+		//		std::ifstream file(filePath);
+		//
+		//		if (!file.is_open()) {
+		//			std::cerr << "File does not exist! : " << filePath << "\n";
+		//			return {};
+		//		}
+		//
+		//		while (!file.eof()) {
+		//			char b;
+		//			file.get(b);
+		//			bytes.push_back((byte) b);
+		//		}
+		//
+		//		file.close();
 
 		// open file
-		//		std::ifstream infile(filePath);
-		//
-		//		// get length of file
-		//		infile.seekg(0, std::ios::end);
-		//		std::size_t length = infile.tellg();
-		//		infile.seekg(0, std::ios::beg);
-		//		infile.read((char *) &bytes, length);
+		std::ifstream file(filePath, std::ios::binary);
+
+		// stop eating newlines in binary mode
+		file.unsetf(std::ios::skipws);
+
+		// get file length
+		file.seekg(0, std::ios::end);
+		auto length = file.tellg();
+		file.seekg(0, std::ios::beg);
+
+		bytes.insert(bytes.begin(), std::istream_iterator<byte>(file), std::istream_iterator<byte>());
+
+		file.close();
 
 		return bytes;
 	}

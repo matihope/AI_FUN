@@ -6,13 +6,11 @@
 
 #include <cstdlib>
 
-std::vector<double>
-	Layer::calculate(const std::vector<double> &activations) const {
+std::vector<double> Layer::calculate(const std::vector<double> &activations) const {
 	assert(activations.size() == inputs);
 	std::vector<double> output(nodes, 0);
 	for (int i = 0; i < nodes; i++)
-		for (int j = 0; j < inputs; j++)
-			output[i] += weights[i][j] * activations[j] + biases[i][j];
+		for (int j = 0; j < inputs; j++) output[i] += weights[i][j] * activations[j] + biases[i][j];
 	return output;
 }
 
@@ -21,21 +19,13 @@ Layer::Layer(uint nodes, uint inputs): nodes(nodes), inputs(inputs) {
 	biases.resize(nodes, std::vector<double>(inputs, 1));
 }
 
-double Layer::getWeight(uint node, uint inputNode) const {
-	return weights[node][inputNode];
-}
+double Layer::getWeight(uint node, uint inputNode) const { return weights[node][inputNode]; }
 
-double Layer::getBias(uint node, uint inputNode) const {
-	return biases[node][inputNode];
-}
+double Layer::getBias(uint node, uint inputNode) const { return biases[node][inputNode]; }
 
-void Layer::setWeight(uint node, uint inputNode, double newValue) {
-	weights[node][inputNode] = newValue;
-}
+void Layer::setWeight(uint node, uint inputNode, double newValue) { weights[node][inputNode] = newValue; }
 
-void Layer::setBias(uint node, uint inputNode, double newValue) {
-	biases[node][inputNode] = newValue;
-}
+void Layer::setBias(uint node, uint inputNode, double newValue) { biases[node][inputNode] = newValue; }
 
 uint Layer::getInputNodesCount() const { return inputs; }
 

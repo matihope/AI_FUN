@@ -26,14 +26,12 @@ bool TileMap::loadTiled(const std::string &mapFile) {
 		// create presets
 		unsigned int firstTileId = m_map_data.data["tilesets"][i]["firstgid"];
 		unsigned int tilesX      = m_map_data.data["tilesets"][i]["columns"];
-		unsigned int tilesY
-			= int(m_map_data.data["tilesets"][i]["tilecount"]) / tilesX;
+		unsigned int tilesY      = int(m_map_data.data["tilesets"][i]["tilecount"]) / tilesX;
 		for (size_t y = 0; y < tilesY; ++y) {
 			for (size_t x = 0; x < tilesX; ++x) {
 				Tile tile_template;
 				tile_template.setTexture(texture);
-				tile_template.setTextureRect(
-					sf::IntRect(x * tileW, y * tileH, tileW, tileH));
+				tile_template.setTextureRect(sf::IntRect(x * tileW, y * tileH, tileW, tileH));
 				m_tile_templates[firstTileId + x + y * tilesX] = tile_template;
 			}
 		}
@@ -49,11 +47,9 @@ bool TileMap::loadTiled(const std::string &mapFile) {
 				for (auto &frame : tile["animation"]) {
 					animation.frames.push_back(
 						{ (unsigned int) frame["duration"],
-					      m_tile_templates[int(frame["tileid"]) + firstTileId]
-					          .getTextureRect() });
+					      m_tile_templates[int(frame["tileid"]) + firstTileId].getTextureRect() });
 				}
-				m_tile_templates[int(tile["id"]) + firstTileId].addAnimation(
-					animation);
+				m_tile_templates[int(tile["id"]) + firstTileId].addAnimation(animation);
 			}
 			// add collisions to tiles
 			for (auto tile : m_map_data.data["tilesets"][i]["tiles"]) {
@@ -61,21 +57,18 @@ bool TileMap::loadTiled(const std::string &mapFile) {
 
 				// iterate through all collision shapes
 				if (tile["objectgroup"]["objects"].size() != 1) {
-					std::cout << "ERROR: Tile has many collision shapes..."
-							  << std::endl;
+					std::cout << "ERROR: Tile has many collision shapes..." << std::endl;
 					continue;
 				}
 
-				auto &cs_data = tile["objectgroup"]["objects"]
-									[0];  // collision_shape_data
+				auto                     &cs_data = tile["objectgroup"]["objects"][0];  // collision_shape_data
 				CollisionComponent        shape;
 				std::vector<sf::Vector2f> points;
 				float                     x = roundf(cs_data["x"]);
 				float                     y = roundf(cs_data["y"]);
 				if (cs_data.contains("polygon")) {
 					for (auto &point : cs_data["polygon"])
-						points.push_back(
-							{ roundf(point["x"]) + x, roundf(point["y"]) + y });
+						points.push_back({ roundf(point["x"]) + x, roundf(point["y"]) + y });
 				} else {
 					// rectangle
 					float width  = roundf(cs_data["width"]);
@@ -86,21 +79,18 @@ bool TileMap::loadTiled(const std::string &mapFile) {
 					points.push_back({ x, y + height });
 				}
 				shape.setShape(points);
-				m_tile_templates[int(tile["id"]) + firstTileId]
-					.setCollisionShape(shape);
+				m_tile_templates[int(tile["id"]) + firstTileId].setCollisionShape(shape);
 			}
 		}
 	}
 	// layers
 	for (size_t i = 0; i < m_map_data.data["layers"].size(); ++i) {
-		if (m_map_data.data["layers"][i]["type"] != "tilelayer"
-		    || m_map_data.data["layers"][i]["visible"] == false)
+		if (m_map_data.data["layers"][i]["type"] != "tilelayer" || m_map_data.data["layers"][i]["visible"] == false)
 			continue;
 		int layerWidth = m_map_data.data["layers"][i]["width"];
 
 		// individual tiles
-		for (size_t j = 0; j < m_map_data.data["layers"][i]["data"].size();
-		     ++j) {
+		for (size_t j = 0; j < m_map_data.data["layers"][i]["data"].size(); ++j) {
 			int tileId = m_map_data.data["layers"][i]["data"][j];
 
 			// skip if empty
@@ -108,8 +98,7 @@ bool TileMap::loadTiled(const std::string &mapFile) {
 
 			// copy tile from template and locate it correctly
 			auto tile = std::make_shared<Tile>(getTileTemplate(tileId));
-			tile->setPosition((j % layerWidth) * tileW,
-			                  (j / layerWidth) * tileH);
+			tile->setPosition((j % layerWidth) * tileW, (j / layerWidth) * tileH);
 			if (tile->isAnimated()) m_updatables.push_back(tile);
 			if (tile->hasCollision()) m_collidable_tiles.push_back(tile);
 
@@ -122,9 +111,7 @@ bool TileMap::loadTiled(const std::string &mapFile) {
 	return true;
 }
 
-Tile TileMap::getTileTemplate(unsigned int id) const {
-	return m_tile_templates.at(id);
-}
+Tile TileMap::getTileTemplate(unsigned int id) const { return m_tile_templates.at(id); }
 
 void TileMap::update(const float dt) {
 	for (auto &updatable : m_updatables) updatable->update(dt);
@@ -139,10 +126,6 @@ bool TileMap::reload() {
 	return load(m_tilemap_path);
 }
 
-std::vector<std::shared_ptr<Tile>> &TileMap::getCollidableTiles() {
-	return m_collidable_tiles;
-}
+std::vector<std::shared_ptr<Tile>> &TileMap::getCollidableTiles() { return m_collidable_tiles; }
 
-std::vector<std::shared_ptr<Tile>> &TileMap::getYSortLayerTiles() {
-	return m_ysort_layer;
-}
+std::vector<std::shared_ptr<Tile>> &TileMap::getYSortLayerTiles() { return m_ysort_layer; }

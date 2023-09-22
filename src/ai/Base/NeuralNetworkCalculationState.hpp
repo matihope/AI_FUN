@@ -12,8 +12,7 @@ namespace ai {
 
 	struct NeuralNetworkCalculationState {
 		NeuralNetworkCalculationState() = default;
-		explicit NeuralNetworkCalculationState(
-			const std::vector<uint> &layerSizes);
+		explicit NeuralNetworkCalculationState(const std::vector<uint> &layerSizes);
 		std::vector<std::vector<double>> activations;
 		std::vector<std::vector<double>> weightedInputs;
 	};

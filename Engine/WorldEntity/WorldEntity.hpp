@@ -9,10 +9,7 @@
 
 typedef unsigned long long EntityID;
 
-class WorldEntity:
-	public sf::Drawable,
-	public sf::Transformable,
-	public Updatable {
+class WorldEntity: public sf::Drawable, public sf::Transformable, public Updatable {
 private:
 	static EntityID id_counter;
 	EntityID        m_entityId;
@@ -40,8 +37,7 @@ public:
 	void         addParent(WorldEntity *parent);
 	WorldEntity *getParent();
 
-	void addChild(std::unique_ptr<WorldEntity> entity,
-	              unsigned int                 drawOrder = 0);
+	void addChild(std::unique_ptr<WorldEntity> entity, unsigned int drawOrder = 0);
 
 	// ugly, but this function has to be in .hpp file, otherwise it's unusable
 	template<class T, unsigned int drawOrder = 0, class... Args>
@@ -61,8 +57,7 @@ public:
 
 	virtual void onPhysicsUpdate(float dt){};
 
-	virtual void onDraw(sf::RenderTarget &target,
-	                    sf::RenderStates  states) const {};
+	virtual void onDraw(sf::RenderTarget &target, sf::RenderStates states) const {};
 
 	virtual void handleEvent(const sf::Event &event){};
 

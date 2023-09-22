@@ -52,21 +52,13 @@ namespace Math {
 			return *this;
 		}
 
-		Vector2<T> operator+(const Vector2<T> &rhs) const {
-			return { x + rhs.x, y + rhs.y };
-		}
+		Vector2<T> operator+(const Vector2<T> &rhs) const { return { x + rhs.x, y + rhs.y }; }
 
-		Vector2<T> operator-(const Vector2<T> &rhs) const {
-			return { x - rhs.x, y - rhs.y };
-		}
+		Vector2<T> operator-(const Vector2<T> &rhs) const { return { x - rhs.x, y - rhs.y }; }
 
-		Vector2<T> operator*(const Vector2<T> &rhs) const {
-			return { x * rhs.x, y * rhs.y };
-		}
+		Vector2<T> operator*(const Vector2<T> &rhs) const { return { x * rhs.x, y * rhs.y }; }
 
-		Vector2<T> operator/(const Vector2<T> &rhs) const {
-			return { x / rhs.x, y / rhs.y };
-		}
+		Vector2<T> operator/(const Vector2<T> &rhs) const { return { x / rhs.x, y / rhs.y }; }
 
 		template<class X>
 		Vector2<T> operator*(const X &rhs) const {

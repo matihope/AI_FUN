@@ -6,43 +6,28 @@ void AnimatedSprite::setTexture(const std::string &texture) {
 	m_sprite.setTexture(ResourceManager::get().getTexture(texture));
 }
 
-void AnimatedSprite::setTextureRect(const sf::IntRect &rect) {
-	m_sprite.setTextureRect(rect);
-}
+void AnimatedSprite::setTextureRect(const sf::IntRect &rect) { m_sprite.setTextureRect(rect); }
 
-const sf::Texture *AnimatedSprite::getTexture() const {
-	return m_sprite.getTexture();
-}
+const sf::Texture *AnimatedSprite::getTexture() const { return m_sprite.getTexture(); }
 
-const sf::IntRect &AnimatedSprite::getTextureRect() const {
-	return m_sprite.getTextureRect();
-}
+const sf::IntRect &AnimatedSprite::getTextureRect() const { return m_sprite.getTextureRect(); }
 
-void AnimatedSprite::addAnimation(const Animation   &newAnimation,
-                                  const std::string &name) {
+void AnimatedSprite::addAnimation(const Animation &newAnimation, const std::string &name) {
 	m_animation_names.push_back(name);
 	m_animations[name] = newAnimation;
 }
 
-std::vector<std::string> AnimatedSprite::getAnimationNames() const {
-	return m_animation_names;
-}
+std::vector<std::string> AnimatedSprite::getAnimationNames() const { return m_animation_names; }
 
 void AnimatedSprite::onUpdate(const float dt) {
-	if (m_is_paused || m_animation_names.empty()
-	    || (*m_current_animation_ptr).frames.size() == 1)
-		return;
+	if (m_is_paused || m_animation_names.empty() || (*m_current_animation_ptr).frames.size() == 1) return;
 
 	if (!m_is_paused) m_frame_time += dt * 1'000;
 
-	if (m_frame_time
-	    >= (*m_current_animation_ptr).frames[m_current_frame].frameTime) {
-		m_frame_time
-			-= (*m_current_animation_ptr).frames[m_current_frame].frameTime;
-		m_current_frame
-			= (m_current_frame + 1) % (*m_current_animation_ptr).frames.size();
-		setTextureRect(
-			(*m_current_animation_ptr).frames[m_current_frame].frameRect);
+	if (m_frame_time >= (*m_current_animation_ptr).frames[m_current_frame].frameTime) {
+		m_frame_time -= (*m_current_animation_ptr).frames[m_current_frame].frameTime;
+		m_current_frame = (m_current_frame + 1) % (*m_current_animation_ptr).frames.size();
+		setTextureRect((*m_current_animation_ptr).frames[m_current_frame].frameRect);
 	}
 }
 
@@ -55,20 +40,16 @@ void AnimatedSprite::play(const std::string &animationName) {
 	m_current_animation_name = animationName;
 	m_current_animation_ptr  = &m_animations[animationName];
 	setTexture(m_current_animation_ptr->texture);
-	setTextureRect(
-		(*m_current_animation_ptr).frames[m_current_frame].frameRect);
+	setTextureRect((*m_current_animation_ptr).frames[m_current_frame].frameRect);
 }
 
 void AnimatedSprite::pause() { m_is_paused = true; }
 
 void AnimatedSprite::resume() { m_is_paused = false; }
 
-std::string AnimatedSprite::getCurrentAnimationName() const {
-	return m_current_animation_name;
-}
+std::string AnimatedSprite::getCurrentAnimationName() const { return m_current_animation_name; }
 
-void AnimatedSprite::onDraw(sf::RenderTarget &target,
-                            sf::RenderStates  states) const {
+void AnimatedSprite::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 	target.draw(m_sprite, states);
 }

@@ -23,12 +23,11 @@ typedef unsigned int uint;
 class Layer {
 public:
 	Layer(uint nodes, uint inputs);
-	[[nodiscard]] std::vector<double>
-						 calculate(const std::vector<double> &inputs) const;
-	[[nodiscard]] double getWeight(uint node, uint inputNode) const;
-	void                 setWeight(uint node, uint inputNode, double newValue);
-	[[nodiscard]] double getBias(uint node, uint inputNode) const;
-	void                 setBias(uint node, uint inputNode, double newValue);
+	[[nodiscard]] std::vector<double> calculate(const std::vector<double> &inputs) const;
+	[[nodiscard]] double              getWeight(uint node, uint inputNode) const;
+	void                              setWeight(uint node, uint inputNode, double newValue);
+	[[nodiscard]] double              getBias(uint node, uint inputNode) const;
+	void                              setBias(uint node, uint inputNode, double newValue);
 
 	void randomizeWeightsAndBiases();
 

@@ -20,14 +20,12 @@ namespace GUI {
 		setAlignment(m_halignment, m_valignment);
 	}
 
-	void Label::setAlignment(HAlignment newHAlignment,
-	                         VAlignment newVAlignment) {
+	void Label::setAlignment(HAlignment newHAlignment, VAlignment newVAlignment) {
 		m_halignment            = newHAlignment;
 		m_valignment            = newVAlignment;
 		int          textWidth  = (int) m_text.getGlobalBounds().width;
 		int          textHeight = (int) m_text.getGlobalBounds().height;
-		sf::Vector2f newPos(-m_text.getLocalBounds().left,
-		                    -m_text.getLocalBounds().top);
+		sf::Vector2f newPos(-m_text.getLocalBounds().left, -m_text.getLocalBounds().top);
 		switch (m_halignment) {
 		case HAlignment::LEFT:
 			// nothing to do
@@ -53,8 +51,7 @@ namespace GUI {
 		m_text.setPosition((int) newPos.x, (int) newPos.y);
 	}
 
-	void Label::onDraw(sf::RenderTarget &target,
-	                   sf::RenderStates  states) const {
+	void Label::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
 		if (m_text.getString() == "") return;
 		states.transform *= getTransform();
 		// debugs:
@@ -81,9 +78,7 @@ namespace GUI {
 		setAlignment(m_halignment, m_valignment);
 	}
 
-	void Label::setColor(const sf::Color newColor) {
-		m_text.setFillColor(newColor);
-	}
+	void Label::setColor(const sf::Color newColor) { m_text.setFillColor(newColor); }
 
 	sf::FloatRect Label::getBounds() const { return m_text.getGlobalBounds(); }
 

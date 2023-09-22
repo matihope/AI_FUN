@@ -18,12 +18,12 @@ class TileMap: public WorldEntity {
 	std::vector<std::shared_ptr<Tile>>      m_ysort_layer;
 
 public:
-	bool load(const std::string &mapFile);
-	bool loadTiled(const std::string &mapFile);
-	bool reload();
-	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
-	Tile getTileTemplate(unsigned int id) const;
-	void update(const float dt) override;
+	bool                                load(const std::string &mapFile);
+	bool                                loadTiled(const std::string &mapFile);
+	bool                                reload();
+	void                                draw(sf::RenderTarget &target, sf::RenderStates states) const;
+	Tile                                getTileTemplate(unsigned int id) const;
+	void                                update(const float dt) override;
 	std::vector<std::shared_ptr<Tile>> &getCollidableTiles();
 	std::vector<std::shared_ptr<Tile>> &getYSortLayerTiles();
 };

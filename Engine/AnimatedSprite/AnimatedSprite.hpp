@@ -35,13 +35,11 @@ public:
 	const sf::Texture       *getTexture() const;
 	const sf::IntRect       &getTextureRect() const;
 	void                     onUpdate(float dt) override;
-	void                     addAnimation(const Animation   &newAnimation,
-	                                      const std::string &animationName);
+	void                     addAnimation(const Animation &newAnimation, const std::string &animationName);
 	void                     play(const std::string &animationName);
 	void                     pause();
 	void                     resume();
 	std::vector<std::string> getAnimationNames() const;
 	std::string              getCurrentAnimationName() const;
-	void                     onDraw(sf::RenderTarget &target,
-	                                sf::RenderStates  states) const override;
+	void                     onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };

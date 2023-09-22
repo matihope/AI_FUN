@@ -19,19 +19,13 @@ void Tile::addAnimation(const Animation &animation) {
 	m_sprite.play("base");
 }
 
-void Tile::setTexture(const std::string &texture) {
-	m_sprite.setTexture(texture);
-}
+void Tile::setTexture(const std::string &texture) { m_sprite.setTexture(texture); }
 
 const sf::Texture *Tile::getTexture() const { return m_sprite.getTexture(); }
 
-void Tile::setTextureRect(const sf::IntRect &rect) {
-	m_sprite.setTextureRect(rect);
-}
+void Tile::setTextureRect(const sf::IntRect &rect) { m_sprite.setTextureRect(rect); }
 
-const sf::IntRect &Tile::getTextureRect() const {
-	return m_sprite.getTextureRect();
-}
+const sf::IntRect &Tile::getTextureRect() const { return m_sprite.getTextureRect(); }
 
 // void Tile::setCollisionShape(const CollisionComponent& shape) {
 //     m_has_collision = true;

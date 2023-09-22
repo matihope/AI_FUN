@@ -5,6 +5,7 @@
 #ifndef AI_FUN_SRC_SCENES_MNISTIMAGEVIEWER_HPP_
 #define AI_FUN_SRC_SCENES_MNISTIMAGEVIEWER_HPP_
 
+#include "Clickable/Clickable.hpp"
 #include "Scenes/idx/Reader.hpp"
 #include "WorldEntity/WorldEntity.hpp"
 
@@ -13,11 +14,10 @@
 class MNISTImageViewer: public WorldEntity {
 public:
 	explicit MNISTImageViewer(idx::Reader &data);
-	void onDraw(sf::RenderTarget &target,
-	            sf::RenderStates  states) const override;
+	void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	void onUpdate(float dt) override;
 	void setImageIndex(uint newImageId);
-
+	
 private:
 	idx::Reader          &data;
 	[[maybe_unused]] uint imageId{};

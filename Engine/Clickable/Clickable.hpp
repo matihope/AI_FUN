@@ -11,8 +11,8 @@ public:
 	virtual ~Clickable() = 0;
 	[[nodiscard]] bool isPressed() const;
 	void               update(float dt) override;
-	void setClickCollisionShape(CollisionComponent *collision_shape);
-	void setClickMode(ClickMode new_mode);
+	void               setClickCollisionShape(CollisionComponent *collision_shape);
+	void               setClickMode(ClickMode new_mode);
 
 protected:
 	virtual void onHover(){};  // hovering mouse over button

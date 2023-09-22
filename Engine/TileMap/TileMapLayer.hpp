@@ -9,7 +9,6 @@ class TileMapLayer: public WorldEntity {
 
 public:
 	TileMapLayer(const std::string &texturePath);
-	bool createLayer(const std::vector<int> &ids, const unsigned int tileSize,
-	                 const unsigned int gridWidth);
+	bool         createLayer(const std::vector<int> &ids, const unsigned int tileSize, const unsigned int gridWidth);
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };

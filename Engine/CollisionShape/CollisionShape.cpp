@@ -2,13 +2,9 @@
 #include <WorldEntity/WorldEntity.hpp>
 #include <iostream>
 
-CircleCollision::CircleCollision(WorldEntity *parent):
-	CollisionComponent(parent) {
-	setRadius(5.f);
-}
+CircleCollision::CircleCollision(WorldEntity *parent): CollisionComponent(parent) { setRadius(5.f); }
 
-CircleCollision::CircleCollision(WorldEntity *parent, const float radius):
-	CollisionComponent(parent) {
+CircleCollision::CircleCollision(WorldEntity *parent, const float radius): CollisionComponent(parent) {
 	setRadius(radius);
 }
 
@@ -16,8 +12,7 @@ void CircleCollision::setRadius(const float radius) { m_radius = radius; }
 
 float CircleCollision::getRadius() const { return m_radius; }
 
-void CircleCollision::draw(sf::RenderTarget &target,
-                           sf::RenderStates  states) const {
+void CircleCollision::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 	CollisionComponent::draw(target, states);
 
 	sf::CircleShape shape(m_radius);
@@ -39,9 +34,7 @@ RectCollision::RectCollision(WorldEntity *parent): CollisionComponent(parent) {
 	setSize(5.f, 5.f);
 }
 
-RectCollision::RectCollision(WorldEntity *parent, const float width,
-                             const float height):
-	CollisionComponent(parent) {
+RectCollision::RectCollision(WorldEntity *parent, const float width, const float height): CollisionComponent(parent) {
 	setSize(width, height);
 }
 
@@ -52,8 +45,7 @@ void RectCollision::setSize(const float width, const float height) {
 
 const sf::Vector2f &RectCollision::getSize() const { return m_size; }
 
-void RectCollision::draw(sf::RenderTarget &target,
-                         sf::RenderStates  states) const {
+void RectCollision::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 	if (!shouldDraw()) return;
 	states.transform *= getTransform();
 	sf::RectangleShape shape(m_size);

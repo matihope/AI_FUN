@@ -5,9 +5,7 @@ TileMapLayer::TileMapLayer(const std::string &texturePath) {
 	m_texture = &ResourceManager::get().getTexture(texturePath);
 }
 
-bool TileMapLayer::createLayer(const std::vector<int> &ids,
-                               const unsigned int      tileSize,
-                               const unsigned int      gridWidth) {
+bool TileMapLayer::createLayer(const std::vector<int> &ids, const unsigned int tileSize, const unsigned int gridWidth) {
 	m_vertex_array.setPrimitiveType(sf::Quads);
 	m_vertex_array.resize(ids.size() * 4);
 
@@ -29,8 +27,7 @@ bool TileMapLayer::createLayer(const std::vector<int> &ids,
 	return true;
 }
 
-void TileMapLayer::draw(sf::RenderTarget &target,
-                        sf::RenderStates  states) const {
+void TileMapLayer::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 	states.texture = m_texture;
 	target.draw(m_vertex_array, states);

@@ -8,8 +8,7 @@
 #include <iostream>
 #include <iterator>
 
-sf::Vector2f scaleToFit(const sf::Vector2f viewSize,
-                        const sf::Vector2u windowSize) {
+sf::Vector2f scaleToFit(const sf::Vector2f viewSize, const sf::Vector2u windowSize) {
 	sf::Vector2f scale;
 	scale.x = viewSize.x / (float) windowSize.x;
 	scale.y = viewSize.y / (float) windowSize.y;
@@ -37,21 +36,16 @@ bool Game::init(const std::string &settingsPath) {  // initialize variables
 		return false;
 	}
 
-	m_window.create(sf::VideoMode(m_game_settings.data["window"]["width"],
-	                              m_game_settings.data["window"]["height"]),
-	                std::string(m_game_settings.data["window"]["title"]),
-	                sf::Style::Default);
+	m_window.create(sf::VideoMode(m_game_settings.data["window"]["width"], m_game_settings.data["window"]["height"]),
+	                std::string(m_game_settings.data["window"]["title"]), sf::Style::Default);
 	m_window.setVerticalSyncEnabled(m_game_settings.data["window"]["vsync"]);
-	setViewportSize({ m_game_settings.data["viewport"]["width"],
-	                  m_game_settings.data["viewport"]["height"] });
+	setViewportSize({ m_game_settings.data["viewport"]["width"], m_game_settings.data["viewport"]["height"] });
 
 	setPrintFPS(m_game_settings.data["debug"]["printFPS"]);
-	m_physics_update_call_freq
-		= 1.f / int(m_game_settings.data["engine"]["physicsUpdateCallFreq"]);
+	m_physics_update_call_freq = 1.f / int(m_game_settings.data["engine"]["physicsUpdateCallFreq"]);
 	if (!m_font.loadFromFile(m_game_settings.data["engine"]["fontPath"]))
 		std::cout << "Failed to load font" << std::endl;
-	Debug::setDebugCollisionDraw(
-		m_game_settings.data["debug"]["drawCollisionShapes"]);
+	Debug::setDebugCollisionDraw(m_game_settings.data["debug"]["drawCollisionShapes"]);
 
 	m_fps_label.setFont(getFont());
 	m_fps_label.setText("0");
@@ -87,8 +81,7 @@ void Game::draw() {
 
 void Game::update() {
 	m_dt        = m_clock.restart().asSeconds();
-	m_mouse_pos = getRenderWindow().mapPixelToCoords(
-		sf::Mouse::getPosition(getRenderWindow()));
+	m_mouse_pos = getRenderWindow().mapPixelToCoords(sf::Mouse::getPosition(getRenderWindow()));
 
 	while (!m_safe_scene_delete_queue.empty()) m_safe_scene_delete_queue.pop();
 
@@ -176,9 +169,8 @@ sf::RenderWindow &Game::getRenderWindow() { return m_window; }
 
 void Game::updateViewportSize() {
 	sf::Vector2f viewportScale = scaleToFit(m_view.getSize(), getWindowSize());
-	m_view.setViewport(sf::FloatRect(
-		sf::Vector2f(0.5f - viewportScale.x / 2, 0.5f - viewportScale.y / 2),
-		viewportScale));
+	m_view.setViewport(
+		sf::FloatRect(sf::Vector2f(0.5f - viewportScale.x / 2, 0.5f - viewportScale.y / 2), viewportScale));
 	m_window.setView(m_view);
 }
 
@@ -192,18 +184,16 @@ void Game::setCameraCenterAt(const sf::Vector2f &pos) {
 	m_view.setCenter(pos);
 	m_window.setView(m_view);
 	// polsrodek
-	m_fps_label.setPosition(
-		pos - sf::Vector2f(384 / 2, 216 / 2)
-		+ sf::Vector2f(float(m_game_settings.data["viewport"]["width"]) - 1,
-	                   1));  // a
+	m_fps_label.setPosition(pos - sf::Vector2f(384 / 2, 216 / 2)
+	                        + sf::Vector2f(float(m_game_settings.data["viewport"]["width"]) - 1,
+	                                       1));  // a
 }
 
 void Game::setCursor(sf::Cursor::Type type) {
 	if (m_current_cursor_type == type) return;
 	m_current_cursor_type = type;
 
-	getRenderWindow().setMouseCursor(
-		ResourceManager::get().getSystemCursor(type));
+	getRenderWindow().setMouseCursor(ResourceManager::get().getSystemCursor(type));
 }
 
 bool Game::isWindowActive() const { return m_window.hasFocus(); }

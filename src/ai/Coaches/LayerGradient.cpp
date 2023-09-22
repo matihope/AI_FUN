@@ -6,25 +6,19 @@
 
 namespace ai {
 	LayerGradient::LayerGradient(Layer &layer): layer(layer) {
-		weightGradient.resize(
-			layer.getNodesCount(),
-			std::vector<double>(layer.getInputNodesCount(), 0));
-		biasGradient.resize(layer.getNodesCount(),
-		                    std::vector<double>(layer.getInputNodesCount(), 0));
+		weightGradient.resize(layer.getNodesCount(), std::vector<double>(layer.getInputNodesCount(), 0));
+		biasGradient.resize(layer.getNodesCount(), std::vector<double>(layer.getInputNodesCount(), 0));
 	}
 
-	void LayerGradient::apply(double learningRate) {
+	void LayerGradient::apply(double learnRate, double lambda) {
 		for (uint node = 0; node < layer.getNodesCount(); node++) {
-			for (uint inputNode = 0; inputNode < layer.getInputNodesCount();
-			     inputNode++) {
+			for (uint inputNode = 0; inputNode < layer.getInputNodesCount(); inputNode++) {
 				auto weight = layer.getWeight(node, inputNode);
 				auto bias   = layer.getBias(node, inputNode);
-				layer.setWeight(
-					node, inputNode,
-					weight - weightGradient[node][inputNode] * learningRate);
-				layer.setBias(
-					node, inputNode,
-					bias - biasGradient[node][inputNode] * learningRate);
+
+				layer.setWeight(node, inputNode,
+				                weight - (weightGradient[node][inputNode] + weight * lambda) * learnRate);
+				layer.setBias(node, inputNode, bias - biasGradient[node][inputNode] * learnRate);
 			}
 		}
 	}

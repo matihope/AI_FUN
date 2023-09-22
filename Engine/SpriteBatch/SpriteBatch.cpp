@@ -4,16 +4,11 @@
 
 #include "SpriteBatch.hpp"
 
-SpriteBatch::SpriteBatch(): WorldEntity() {
-	m_vertex_array.setPrimitiveType(sf::Quads);
-}
+SpriteBatch::SpriteBatch(): WorldEntity() { m_vertex_array.setPrimitiveType(sf::Quads); }
 
-SpriteBatch::SpriteBatch(const sf::Texture *texture): SpriteBatch() {
-	setTexture(texture);
-}
+SpriteBatch::SpriteBatch(const sf::Texture *texture): SpriteBatch() { setTexture(texture); }
 
-SpriteBatch::SpriteBatch(std::size_t size, const sf::Texture *texture):
-	SpriteBatch() {
+SpriteBatch::SpriteBatch(std::size_t size, const sf::Texture *texture): SpriteBatch() {
 	setTexture(texture);
 	setSize(size);
 }
@@ -24,12 +19,9 @@ void SpriteBatch::setSize(std::size_t size) {
 	for (size_t i = 0; i < size; i++) getSprite(i).clear();
 }
 
-QuickSprite SpriteBatch::getSprite(unsigned int id) {
-	return QuickSprite(&m_vertex_array[id * 4]);
-}
+QuickSprite SpriteBatch::getSprite(unsigned int id) { return QuickSprite(&m_vertex_array[id * 4]); }
 
-void SpriteBatch::onDraw(sf::RenderTarget &target,
-                         sf::RenderStates  states) const {
+void SpriteBatch::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
 	if (m_texture == nullptr) return;
 
 	states.transform *= getTransform();
@@ -37,9 +29,7 @@ void SpriteBatch::onDraw(sf::RenderTarget &target,
 	target.draw(m_vertex_array, states);
 }
 
-void SpriteBatch::setTexture(const sf::Texture *newTexture) {
-	m_texture = newTexture;
-}
+void SpriteBatch::setTexture(const sf::Texture *newTexture) { m_texture = newTexture; }
 
 const sf::Texture *SpriteBatch::getTexture() { return m_texture; }
 
