@@ -6,7 +6,7 @@ Build it yourself:
 
 ```shell
 bash -c "cmake -B build && \
-         cd build && \"
+         cd build && \
          make -j 3 && \
          ./../AI_FUN"
 ```
