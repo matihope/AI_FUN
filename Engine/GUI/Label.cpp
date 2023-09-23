@@ -1,3 +1,5 @@
+#include "Game/Game.hpp"
+
 #include <GUI/Label.hpp>
 #include <iostream>
 
@@ -17,6 +19,7 @@ namespace GUI {
 
 	void Label::setText(const std::string &newText) {
 		m_text.setString(newText);
+		m_string = newText;
 		setAlignment(m_halignment, m_valignment);
 	}
 
@@ -54,15 +57,6 @@ namespace GUI {
 	void Label::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
 		if (m_text.getString() == "") return;
 		states.transform *= getTransform();
-		// debugs:
-		// sf::RectangleShape test;
-		// test.setFillColor(sf::Color::Transparent);
-		// test.setOutlineThickness(1.f);
-		// test.setOutlineColor(sf::Color::Red);
-		// test.setSize(sf::Vector2f(m_text.getGlobalBounds().width,
-		// m_text.getGlobalBounds().height));
-		// test.setPosition(m_text.getGlobalBounds().left,
-		// m_text.getGlobalBounds().top); target.draw(test, states);
 		target.draw(m_text, states);
 	}
 
@@ -81,5 +75,7 @@ namespace GUI {
 	void Label::setColor(const sf::Color newColor) { m_text.setFillColor(newColor); }
 
 	sf::FloatRect Label::getBounds() const { return m_text.getGlobalBounds(); }
+
+	const std::string &Label::getText() const { return m_string; }
 
 }  // namespace GUI

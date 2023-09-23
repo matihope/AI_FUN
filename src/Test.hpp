@@ -11,9 +11,4 @@
 void run();
 void run2();
 
-ai::TrainingItem createItemFromIdxImage(const idx::Image &image);
-ai::TrainingSet  createSetFromReader(const idx::Reader &reader, uint maxSize = -1);
-void             teachImages();
-void             testImages();
-
 #endif  // AI_FUN_SRC_TEST_HPP_

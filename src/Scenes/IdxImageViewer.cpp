@@ -2,16 +2,16 @@
 // Created by mateusz on 9/19/23.
 //
 
-#include "idxImageViewer.hpp"
+#include "IdxImageViewer.hpp"
 
-idxImageViewer::idxImageViewer(idx::Reader &data): data(data) { setImageIndex(0); }
+IdxImageViewer::IdxImageViewer(idx::Reader &data): data(data) { setImageIndex(0); }
 
-void idxImageViewer::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
+void IdxImageViewer::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 	target.draw(digitImage, states);
 }
 
-void idxImageViewer::setImageIndex(uint newImageId) {
+void IdxImageViewer::setImageIndex(uint newImageId) {
 	imageId = newImageId;
 
 	sf::Image image;

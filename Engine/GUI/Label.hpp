@@ -9,10 +9,11 @@ namespace GUI {
 	enum class VAlignment { TOP, CENTER, BOTTOM };
 
 	class Label: public WorldEntity {
-		sf::Font  *m_font{};
-		HAlignment m_halignment = HAlignment::LEFT;
-		VAlignment m_valignment = VAlignment::TOP;
-		sf::Text   m_text;
+		sf::Font   *m_font{};
+		HAlignment  m_halignment = HAlignment::LEFT;
+		VAlignment  m_valignment = VAlignment::TOP;
+		sf::Text    m_text;
+		std::string m_string;
 
 	public:
 		Label();
@@ -24,5 +25,7 @@ namespace GUI {
 		void          setColor(sf::Color newColor);
 		void          onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
 		sf::FloatRect getBounds() const;
+
+		const std::string &getText() const;
 	};
 }  // namespace GUI

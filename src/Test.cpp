@@ -44,73 +44,10 @@ void run2() {
 		std::cout << "Give me a number: ";
 		std::cin >> a;
 		std::cout << '\n';
-		auto out = network.calculateOutputs({ (double) a / 100 }).activations.back();
+		auto out = network.getCalculations({ (double) a / 100 }).activations.back();
 		if (out[0] < out[1])
 			std::cout << "less than 50" << '\n';
 		else
 			std::cout << "more than 50" << '\n';
 	}
-}
-
-ai::TrainingItem createItemFromIdxImage(const idx::Image &image) {
-	std::vector<double> inputs;
-	std::vector<double> outputs(10, 0);
-	for (const auto &imgRow : image.pixels)
-		for (auto pixel : imgRow) inputs.push_back((double) pixel / 255.0);
-	outputs[image.label[0] - '0'] = 1.0;
-	return { inputs, outputs };
-}
-
-ai::TrainingSet createSetFromReader(const idx::Reader &reader, uint maxSize) {
-	ai::TrainingSet set;
-	for (const auto &img : reader.getImages()) {
-		set.push_back(createItemFromIdxImage(img));
-		if (maxSize != -1 && set.size() >= maxSize) break;
-	}
-	return set;
-}
-
-void teachImages() {
-	idx::Reader reader("resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte");
-
-	ai::NeuralNetwork network({ 784, 100, 10 }, std::make_unique<ai::ReLU>());
-	network.randomizeWeightsAndBiases(0);
-
-	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::DifferenceSquaredCostFunction>());
-
-	auto set = createSetFromReader(reader, 60'000);
-	std::cerr << "Begin training: \n";
-	coach.train(set, 0.1, 128, 20);
-
-	std::string modelPath = "digitRecognition.json";
-	ai::NeuralNetworkManager::saveNeuralNetwork(network, modelPath);
-	std::cout << "Saved at: " << modelPath << '\n';
-}
-
-void testImages() {
-	std::cerr << "Begin testing: \n";
-	auto network = ai::NeuralNetworkManager::loadNeuralNetwork("digitRecognition.json");
-
-	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
-	uint        good    = 0;
-	uint        bad     = 0;
-	auto        testSet = createSetFromReader(testReader);
-	for (const auto &item : testSet) {
-		auto output = network.calculateOutputs(item.input).activations.back();
-
-		double maxVal = 0.0;
-		uint   index  = 0.0;
-		for (uint i = 0; i < output.size(); i++) {
-			if (output[i] > maxVal) {
-				index  = i;
-				maxVal = output[i];
-			}
-		}
-
-		if (item.correctOutput[index] == 1.0)
-			good++;
-		else
-			bad++;
-	}
-	std::cout << "Good: " << good << ", bad: " << bad << ", correct: " << (double) good / testSet.size() * 100 << "%\n";
 }

@@ -15,11 +15,11 @@ public:
 	void               setClickMode(ClickMode new_mode);
 
 protected:
-	virtual void onHover(){};  // hovering mouse over button
-	virtual void onNotHover(){};
+	virtual void onHover(){};  // hovering mouse over m_collision_shape
+	virtual void onStopHover(){};
 
 	virtual void onHold(){};     // function called during holding
-	virtual void onRelease(){};  // mouse is released over the clickable
+	virtual void onRelease(){};  // mouse is released over the m_collision_shape
 	virtual void onPressed(){};  // callback
 
 private:

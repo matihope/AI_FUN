@@ -38,7 +38,7 @@ void Clickable::update(float dt) {
 		}
 	} else {
 		m_is_pressable = false;
-		onNotHover();
+		onStopHover();
 	}
 	m_was_held_prev = m_is_held;
 }

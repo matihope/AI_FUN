@@ -33,7 +33,7 @@ namespace ai {
 	}
 
 	double ai::NeuralNetworkCoach::cost(const ai::TrainingItem &item) const {
-		auto   calculationState = neuralNetwork.calculateOutputs(item.input);
+		auto   calculationState = neuralNetwork.getCalculations(item.input);
 		double sum              = 0;
 
 		for (uint i = 0; i < calculationState.activations.size(); i++)
@@ -51,7 +51,7 @@ namespace ai {
 	}
 
 	void ai::NeuralNetworkCoach::updateGradients(const TrainingItem &item, std::vector<LayerGradient> &gradients) {
-		auto outputs    = neuralNetwork.calculateOutputs(item.input);
+		auto outputs    = neuralNetwork.getCalculations(item.input);
 		auto layerCount = neuralNetwork.getLayerSizes().size();
 
 		// Last layer node values

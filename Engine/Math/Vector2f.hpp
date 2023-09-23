@@ -79,7 +79,7 @@ namespace Math {
 
 		template<class X>
 		X as() const {
-			return X(x, y);
+			return { x, y };
 		}
 	};
 

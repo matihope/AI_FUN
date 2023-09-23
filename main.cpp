@@ -1,13 +1,13 @@
 #include "Game/Game.hpp"
-#include "Scenes/ImageClassifier.hpp"
-#include "Scenes/idxImageViewer.hpp"
+#include "Scenes/IdxImageViewer.hpp"
+#include "Scenes/ImageClassifierScene.hpp"
 #include "Test.hpp"
 
 int main() {
 	Game &game = Game::get();
 	if (!game.init("settings.json")) return 1;
 
-	game.addScene(std::make_unique<ImageClassifier>());
+	game.addScene(std::make_unique<ImageClassifierScene>());
 
 	game.run();
 

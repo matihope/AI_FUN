@@ -1,4 +1,7 @@
 #pragma once
+#include "Math/Vector2f.hpp"
+#include "Nodes/RectShape.hpp"
+
 #include <Clickable/Clickable.hpp>
 #include <CollisionShape/CollisionShape.hpp>
 #include <GUI/Label.hpp>
@@ -8,27 +11,58 @@
 
 namespace GUI {
 	class Button: public WorldEntity, public Clickable {
-		Label     m_label;
-		sf::Color m_fill_color   = sf::Color::Transparent;
-		sf::Color m_color_normal = sf::Color(255, 255, 255), m_color_hover = sf::Color(200, 200, 200),
-				  m_color_highlight = sf::Color(125, 125, 125);
+		Button();
+
+		Label              m_label;
+		sf::RectangleShape m_background;
+
+		sf::Color m_background_color_normal    = sf::Color::Transparent;
+		sf::Color m_background_color_hover     = sf::Color::Transparent;
+		sf::Color m_background_color_highlight = sf::Color::Transparent;
+
+		sf::Color m_color_normal    = sf::Color(255, 255, 255);
+		sf::Color m_color_hover     = sf::Color(200, 200, 200);
+		sf::Color m_color_highlight = sf::Color(125, 125, 125);
+
 		std::unique_ptr<RectCollision> m_collision_shape;
 		bool                           m_has_custom_collision_shape = false;
-		void                           onNotHover() override;
-		void                           onHover() override;
-		void                           onHold() override;
+
+		HAlignment m_halignment = HAlignment::LEFT;
+		VAlignment m_valignment = VAlignment::TOP;
+
+		// minimal size of the button background
+		Math::Vector2f minSize = { -1, -1 };
+
+		// space between font border end and an edge
+		Math::Vector2f minSpaceBetween = { -1, -1 };
+
+		void fixLabelPosition();
+
+	protected:
+		virtual void onStopHover() override;
+		virtual void onHover() override;
+		virtual void onHold() override;
 
 	public:
-		Button();
 		Button(sf::Font *font, const std::string &text);
-		void          setFont(sf::Font *font);
-		void          setText(const std::string &newText);
-		void          setTextSize(unsigned int newSize);
-		void          update(float dt) override;
-		void          onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+		void setAlignment(HAlignment newHAlignment, VAlignment newVAlignment);
+
+		void setFont(sf::Font *font);
+		void setText(const std::string &newText);
+		void setTextSize(unsigned int newSize);
+
+		void update(float dt) override;
+		void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
 		void          updateDefaultCollisionShape();
 		void          setCollisionShape(std::unique_ptr<RectCollision> shape);
 		sf::FloatRect getBounds() const;
-		void          setAlignment(HAlignment newHAlignment, VAlignment newVAlignment);
+
+		void setBackgroundColors(sf::Color normal, sf::Color hover, sf::Color highlight);
+		void setBackgroundColors(sf::Color colors);
+
+		void setMinSpaceBetween(Math::Vector2f space);
+		void setMinSize(Math::Vector2f size);
 	};
 }  // namespace GUI

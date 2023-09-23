@@ -12,8 +12,8 @@ ai::NeuralNetwork::NeuralNetwork(std::vector<uint>                   newLayerSiz
 	for (uint i = 1; i < layerSizes.size(); i++) layers.emplace_back(layerSizes[i], layerSizes[i - 1]);
 }
 
-ai::NeuralNetworkCalculationState ai::NeuralNetwork::calculateOutputs(const std::vector<double> &inputs) const {
-	ai::NeuralNetworkCalculationState state(layerSizes);
+ai::NeuralNetworkCalculationState ai::NeuralNetwork::getCalculations(const std::vector<double> &inputs) const {
+	ai::NeuralNetworkCalculationState state;
 
 	state.activations.push_back(inputs);
 	state.weightedInputs.emplace_back();
@@ -61,3 +61,20 @@ void ai::NeuralNetwork::randomizeWeightsAndBiases(uint64_t seed) {
 std::vector<Layer> &ai::NeuralNetwork::getLayers() { return layers; }
 
 const std::vector<Layer> &ai::NeuralNetwork::getLayers() const { return layers; }
+
+std::vector<double> ai::NeuralNetwork::calculate(const std::vector<double> &inputs) const {
+	return getCalculations(inputs).activations.back();
+}
+
+uint ai::NeuralNetwork::calculateBestIndex(const std::vector<double> &inputs) const {
+	auto   outputs  = calculate(inputs);
+	double maxValue = 0.0;
+	uint   maxIndex = 0;
+	for (uint index = 0; index < outputs.size(); index++) {
+		if (outputs[index] > maxValue) {
+			maxValue = outputs[index];
+			maxIndex = index;
+		}
+	}
+	return maxIndex;
+}

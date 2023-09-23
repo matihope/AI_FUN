@@ -11,9 +11,9 @@
 
 #include <fstream>
 
-class idxImageViewer: public WorldEntity {
+class IdxImageViewer: public WorldEntity {
 public:
-	explicit idxImageViewer(idx::Reader &data);
+	explicit IdxImageViewer(idx::Reader &data);
 	void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	void setImageIndex(uint newImageId);
 
