@@ -4,6 +4,13 @@ As you can see ;D
 
 Build it yourself:
 
+```shell
+bash -c "cmake -B build && \
+         cd build && \"
+         make -j 3 && \
+         ./../AI_FUN"
+```
+
 List of attributions:
 
 * [SFML](https://github.com/SFML/SFML)
