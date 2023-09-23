@@ -11,7 +11,8 @@ int main() {
 
 	game.run();
 
-	//	run();
-	//	run2();
-	//	teachImages();
+	//		run();
+	//		run2();
+	//		teachImages();
+	//		trainImages();
 }

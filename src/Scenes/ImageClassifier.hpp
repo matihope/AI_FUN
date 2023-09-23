@@ -26,6 +26,7 @@ private:
 	GUI::Label                        *realLabel, *aiLabel;
 	std::unique_ptr<ai::NeuralNetwork> network;
 	uint                               currImg;
+	bool                               pressed{};
 };
 
 
