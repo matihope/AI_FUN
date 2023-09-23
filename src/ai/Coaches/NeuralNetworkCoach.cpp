@@ -68,10 +68,9 @@ namespace ai {
 	void ai::NeuralNetworkCoach::updateGradient(const std::vector<double> &nodeValues, LayerGradient &gradient,
 	                                            std::vector<double> &activations) {
 		for (uint node = 0; node < gradient.getLayer().getNodesCount(); node++) {
-			for (uint inputNode = 0; inputNode < gradient.getLayer().getInputNodesCount(); inputNode++) {
+			for (uint inputNode = 0; inputNode < gradient.getLayer().getInputNodesCount(); inputNode++)
 				gradient.weightGradient[node][inputNode] += nodeValues[node] * activations[inputNode];
-				gradient.biasGradient[node][inputNode] += nodeValues[node];
-			}
+			gradient.biasGradient[node] += nodeValues[node];
 		}
 	}
 

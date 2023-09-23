@@ -16,9 +16,12 @@ namespace ai {
 	class LayerGradient {
 	public:
 		explicit LayerGradient(Layer &layer);
-		std::vector<std::vector<double>> weightGradient, biasGradient;
-		void                             apply(double learnRate, double lambda = 0.0005);
-		Layer                           &getLayer();
+
+		std::vector<std::vector<double>> weightGradient;
+		std::vector<double>              biasGradient;
+
+		void   apply(double learnRate, double lambda = 0.0005);
+		Layer &getLayer();
 
 	private:
 		Layer &layer;

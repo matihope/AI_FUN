@@ -33,19 +33,18 @@ double ai::NeuralNetwork::getWeight(uint layerIndex, uint nodeIndex, uint inputN
 	return layers[layerIndex].getWeight(nodeIndex, inputNodeIndex);
 }
 
-double ai::NeuralNetwork::getBias(uint layerIndex, uint nodeIndex, uint inputNodeIndex) const {
+double ai::NeuralNetwork::getBias(uint layerIndex, uint nodeIndex) const {
 	assert(layerIndex > 0 && layerIndex < layerSizes.size());
 	assert(nodeIndex < layerSizes[layerIndex]);
-	assert(inputNodeIndex < layerSizes[layerIndex - 1]);
-	return layers[layerIndex].getBias(nodeIndex, inputNodeIndex);
+	return layers[layerIndex].getBias(nodeIndex);
 }
 
 void ai::NeuralNetwork::setWeight(uint layerIndex, uint nodeIndex, uint inputNodeIndex, double value) {
 	layers[layerIndex].setWeight(nodeIndex, inputNodeIndex, value);
 }
 
-void ai::NeuralNetwork::setBias(uint layerIndex, uint nodeIndex, uint inputNodeIndex, double value) {
-	layers[layerIndex].setWeight(nodeIndex, inputNodeIndex, value);
+void ai::NeuralNetwork::setBias(uint layerIndex, uint nodeIndex, double value) {
+	layers[layerIndex].setBias(nodeIndex, value);
 }
 
 ai::ActivatingFunction *ai::NeuralNetwork::getActivatingFunction() const { return activatingFunction.get(); }

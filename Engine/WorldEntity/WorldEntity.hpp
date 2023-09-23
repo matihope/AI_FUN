@@ -32,7 +32,7 @@ public:
 	void        queueFree();
 	const bool &isDying() const;
 
-	std::map<uint, std::list<std::unique_ptr<WorldEntity>>> m_entity_pool;
+	std::map<unsigned int, std::list<std::unique_ptr<WorldEntity>>> m_entity_pool;
 
 	void         addParent(WorldEntity *parent);
 	WorldEntity *getParent();

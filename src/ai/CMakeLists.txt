@@ -11,5 +11,7 @@ add_library(AI Base/NeuralNetwork.cpp Base/NeuralNetwork.hpp
         Base/NeuralNetworkCalculationState.hpp
         Coaches/LayerGradient.cpp
         Coaches/LayerGradient.hpp
+        ModelLoader/NeuralNetworkManager.cpp
+        ModelLoader/NeuralNetworkManager.hpp
 )
 target_include_directories(AI PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

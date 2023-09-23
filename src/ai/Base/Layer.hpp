@@ -26,8 +26,8 @@ public:
 	[[nodiscard]] std::vector<double> calculate(const std::vector<double> &inputs) const;
 	[[nodiscard]] double              getWeight(uint node, uint inputNode) const;
 	void                              setWeight(uint node, uint inputNode, double newValue);
-	[[nodiscard]] double              getBias(uint node, uint inputNode) const;
-	void                              setBias(uint node, uint inputNode, double newValue);
+	[[nodiscard]] double              getBias(uint node) const;
+	void                              setBias(uint node, double newValue);
 
 	void randomizeWeightsAndBiases();
 
@@ -37,7 +37,7 @@ public:
 private:
 	uint                             nodes, inputs;
 	std::vector<std::vector<double>> weights;
-	std::vector<std::vector<double>> biases;
+	std::vector<double>              biases;
 };
 
 #endif  // AI_FUN_SRC_AI_BASE_LAYER_HPP_

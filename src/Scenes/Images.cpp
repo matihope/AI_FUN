@@ -37,16 +37,16 @@ Images::Images(): reader("resources/train-images.idx3-ubyte", "resources/train-l
 
 	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::DifferenceSquaredCostFunction>());
 
-	auto set = createSetFromReader(reader, 15'000);
+	auto set = createSetFromReader(reader, 60'000);
 	std::cerr << "Begin training: \n";
-	coach.train(set, 0.0025, 128, 10);
+	coach.train(set, 0.1, 128, 20);
 
 	std::cerr << "Begin testing: \n";
 
 	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
 	uint        good    = 0;
 	uint        bad     = 0;
-	auto        testSet = createSetFromReader(testReader, 1'000);
+	auto        testSet = createSetFromReader(testReader);
 	for (const auto &item : testSet) {
 		auto output = network.calculateOutputs(item.input).activations.back();
 
@@ -64,5 +64,5 @@ Images::Images(): reader("resources/train-images.idx3-ubyte", "resources/train-l
 		else
 			bad++;
 	}
-	std::cout << "Good: " << good << ", bad: " << bad << ", correct: " << (double) good / testSet.size() << "\n";
+	std::cout << "Good: " << good << ", bad: " << bad << ", correct: " << (double) good / testSet.size() * 100 << "%\n";
 }
