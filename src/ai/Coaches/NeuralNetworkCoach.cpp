@@ -130,7 +130,7 @@ namespace ai {
 		for (uint epoch = 0; epoch < epochs; epoch++) {
 			for (const auto &batch : batches) trainSingle(batch, trainingFactor);
 			lastCost = cost(trainingSet);
-			std::cerr << lastCost << '\n';
+			std::cerr << "Epoch: " << epoch << ", avgCost: " << lastCost << '\n';
 		}
 
 		return lastCost;

@@ -57,3 +57,7 @@ void ai::NeuralNetwork::randomizeWeightsAndBiases(uint64_t seed) {
 	std::srand(seed);
 	for (auto &layer : layers) layer.randomizeWeightsAndBiases();
 }
+
+std::vector<Layer> &ai::NeuralNetwork::getLayers() { return layers; }
+
+const std::vector<Layer> &ai::NeuralNetwork::getLayers() const { return layers; }

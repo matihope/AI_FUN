@@ -38,3 +38,7 @@ void Layer::randomizeWeightsAndBiases() {
 	for (int node = 0; node < nodes; node++)
 		for (int input = 0; input < inputs; input++) weights[node][input] = (double) std::rand() / RAND_MAX / inputs;
 }
+
+const std::vector<std::vector<double>> &Layer::getWeights() const { return weights; }
+
+const std::vector<double> &Layer::getBiases() const { return biases; }

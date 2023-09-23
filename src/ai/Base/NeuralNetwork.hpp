@@ -20,9 +20,11 @@ namespace ai {
 		NeuralNetwork(std::vector<uint> layerSizes, std::unique_ptr<ActivatingFunction> activatingFunction);
 		[[nodiscard]] NeuralNetworkCalculationState calculateOutputs(const std::vector<double> &inputs) const;
 
-		[[nodiscard]] Layer              &getLayer(uint index);
-		[[nodiscard]] double              getWeight(uint layerIndex, uint nodeIndex, uint inputNodeIndex) const;
-		[[nodiscard]] double              getBias(uint layerIndex, uint nodeIndex) const;
+		[[nodiscard]] Layer                    &getLayer(uint index);
+		[[nodiscard]] const std::vector<Layer> &getLayers() const;
+		[[nodiscard]] std::vector<Layer>       &getLayers();
+		[[nodiscard]] double                    getWeight(uint layerIndex, uint nodeIndex, uint inputNodeIndex) const;
+		[[nodiscard]] double                    getBias(uint layerIndex, uint nodeIndex) const;
 		void                              setWeight(uint layerIndex, uint nodeIndex, uint inputNodeIndex, double value);
 		void                              setBias(uint layerIndex, uint nodeIndex, double value);
 		[[nodiscard]] ActivatingFunction *getActivatingFunction() const;

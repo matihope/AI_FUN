@@ -6,5 +6,8 @@
 #define AI_FUN_SRC_TEST_HPP_
 
 void run();
+void run2();
+
+void teachImages();
 
 #endif  // AI_FUN_SRC_TEST_HPP_

@@ -6,6 +6,7 @@
 
 #include "Base/NeuralNetwork.hpp"
 #include "Coaches/NeuralNetworkCoach.hpp"
+#include "ModelLoader/NeuralNetworkManager.hpp"
 
 #include <iostream>
 
@@ -32,16 +33,8 @@ Images::Images(): reader("resources/train-images.idx3-ubyte", "resources/train-l
 		}
 	}
 
-	ai::NeuralNetwork network({ 784, 100, 10 }, std::make_unique<ai::ReLU>());
-	network.randomizeWeightsAndBiases(0);
-
-	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::DifferenceSquaredCostFunction>());
-
-	auto set = createSetFromReader(reader, 60'000);
-	std::cerr << "Begin training: \n";
-	coach.train(set, 0.1, 128, 20);
-
 	std::cerr << "Begin testing: \n";
+	auto network = ai::NeuralNetworkManager::loadNeuralNetwork("digitRecognition.json");
 
 	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
 	uint        good    = 0;

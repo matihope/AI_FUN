@@ -4,11 +4,13 @@
 #include "Test.hpp"
 
 int main() {
-	Game &game = Game::get();
-	if (!game.init("settings.json")) return 1;
-
-	game.addScene(std::make_unique<Images>());
-
-	game.run();
-	run();
+	//	Game &game = Game::get();
+	//	if (!game.init("settings.json")) return 1;
+	//
+	//	game.addScene(std::make_unique<Images>());
+	//
+	//	game.run();
+	//	run();
+	//	run2();
+	teachImages();
 }
