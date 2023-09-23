@@ -5,7 +5,7 @@
 #include "Test.hpp"
 
 #include "ModelLoader/NeuralNetworkManager.hpp"
-#include "Scenes/idx/Reader.hpp"
+#include "idx/Reader.hpp"
 
 #include <ai/Base/NeuralNetwork.hpp>
 #include <ai/Coaches/NeuralNetworkCoach.hpp>
@@ -52,15 +52,19 @@ void run2() {
 	}
 }
 
-static ai::TrainingSet createSetFromReader(idx::Reader &reader, uint maxSize = -1) {
+ai::TrainingItem createItemFromIdxImage(const idx::Image &image) {
+	std::vector<double> inputs;
+	std::vector<double> outputs(10, 0);
+	for (const auto &imgRow : image.pixels)
+		for (auto pixel : imgRow) inputs.push_back((double) pixel / 255.0);
+	outputs[image.label[0] - '0'] = 1.0;
+	return { inputs, outputs };
+}
+
+ai::TrainingSet createSetFromReader(const idx::Reader &reader, uint maxSize) {
 	ai::TrainingSet set;
 	for (const auto &img : reader.getImages()) {
-		std::vector<double> inputs;
-		std::vector<double> outputs(10, 0);
-		for (const auto &imgRow : img.pixels)
-			for (auto pixel : imgRow) inputs.push_back((double) pixel / 255.0);
-		outputs[img.label[0] - '0'] = 1.0;
-		set.emplace_back(inputs, outputs);
+		set.push_back(createItemFromIdxImage(img));
 		if (maxSize != -1 && set.size() >= maxSize) break;
 	}
 	return set;
@@ -81,4 +85,32 @@ void teachImages() {
 	std::string modelPath = "digitRecognition.json";
 	ai::NeuralNetworkManager::saveNeuralNetwork(network, modelPath);
 	std::cout << "Saved at: " << modelPath << '\n';
+}
+
+void testImages() {
+	std::cerr << "Begin testing: \n";
+	auto network = ai::NeuralNetworkManager::loadNeuralNetwork("digitRecognition.json");
+
+	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
+	uint        good    = 0;
+	uint        bad     = 0;
+	auto        testSet = createSetFromReader(testReader);
+	for (const auto &item : testSet) {
+		auto output = network.calculateOutputs(item.input).activations.back();
+
+		double maxVal = 0.0;
+		uint   index  = 0.0;
+		for (uint i = 0; i < output.size(); i++) {
+			if (output[i] > maxVal) {
+				index  = i;
+				maxVal = output[i];
+			}
+		}
+
+		if (item.correctOutput[index] == 1.0)
+			good++;
+		else
+			bad++;
+	}
+	std::cout << "Good: " << good << ", bad: " << bad << ", correct: " << (double) good / testSet.size() * 100 << "%\n";
 }

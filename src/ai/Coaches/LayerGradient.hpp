@@ -5,7 +5,7 @@
 #ifndef AI_FUN_SRC_AI_COACHES_LAYERGRADIENT_HPP_
 #define AI_FUN_SRC_AI_COACHES_LAYERGRADIENT_HPP_
 
-#include "Base/Layer.hpp"
+#include "../Base/Layer.hpp"
 
 #include <vector>
 

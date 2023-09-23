@@ -5,9 +5,9 @@
 #ifndef AI_FUN_SRC_AI_NEURALNETWORK_HPP_
 #define AI_FUN_SRC_AI_NEURALNETWORK_HPP_
 
-#include "Base/ActivatingFunction.hpp"
-#include "Base/CostFunction.hpp"
-#include "Base/Layer.hpp"
+#include "ActivatingFunction.hpp"
+#include "CostFunction.hpp"
+#include "Layer.hpp"
 #include "NeuralNetworkCalculationState.hpp"
 
 #include <memory>

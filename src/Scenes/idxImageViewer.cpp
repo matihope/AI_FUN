@@ -2,18 +2,16 @@
 // Created by mateusz on 9/19/23.
 //
 
-#include "MNISTImageViewer.hpp"
+#include "idxImageViewer.hpp"
 
-MNISTImageViewer::MNISTImageViewer(idx::Reader &data): data(data) { setImageIndex(0); }
+idxImageViewer::idxImageViewer(idx::Reader &data): data(data) { setImageIndex(0); }
 
-void MNISTImageViewer::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
+void idxImageViewer::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
 	states.transform *= getTransform();
-	sf::Sprite sprite;
-	sprite.setTexture(texture);
-	target.draw(sprite, states);
+	target.draw(digitImage, states);
 }
 
-void MNISTImageViewer::setImageIndex(uint newImageId) {
+void idxImageViewer::setImageIndex(uint newImageId) {
 	imageId = newImageId;
 
 	sf::Image image;
@@ -28,8 +26,5 @@ void MNISTImageViewer::setImageIndex(uint newImageId) {
 	}
 
 	texture.loadFromImage(image);
-}
-
-void MNISTImageViewer::onUpdate(float dt) {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) setImageIndex(imageId + 1);
+	digitImage.setTexture(texture);
 }
