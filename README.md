@@ -5,9 +5,12 @@ As you can see ;D
 Build it yourself:
 
 ```shell
-bash -c "cmake -B build && \
-         cd build && \
-         make -j 3 && \
+bash -c "git clone https://github.com/matihope/AI_FUN.git && \
+         cd AI_FUN        && \
+         cmake -B build   && \
+         cd build         && \
+         make -j 3        && \
+         cd ..            && \
          ./../AI_FUN"
 ```
 
