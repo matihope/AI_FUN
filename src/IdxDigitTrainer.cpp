@@ -58,3 +58,27 @@ void IdxDigitTrainer::testImages() {
 	std::cout << "Good: " << good << ", bad: " << testSet.size() - good
 			  << ", correct: " << (double) good / testSet.size() * 100 << "%\n";
 }
+
+void IdxDigitTrainer::moreTrainer() {
+	std::cerr << "Begin teaching more!: \n";
+
+	auto        network = ai::NeuralNetworkManager::loadNeuralNetwork("digitRecognition.json");
+	idx::Reader reader("resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte");
+	auto        set = createSetFromReader(reader, 60'000);
+	std::cerr << "Begin training: \n";
+
+	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::DifferenceSquaredCostFunction>());
+	coach.train(set, 0.025, 128, 20);
+
+	ai::NeuralNetworkManager::saveNeuralNetwork(network, "digitRecognitionMore.json");
+
+	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
+	auto        testSet = createSetFromReader(testReader);
+	uint        good    = 0;
+	for (const auto &item : testSet) {
+		uint index = network.calculateBestIndex(item.input);
+		if (item.correctOutput[index] == 1.0) good++;
+	}
+	std::cout << "Good: " << good << ", bad: " << testSet.size() - good
+			  << ", correct: " << (double) good / testSet.size() * 100 << "%\n";
+}

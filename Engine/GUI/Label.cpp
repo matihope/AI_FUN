@@ -3,7 +3,7 @@
 #include <GUI/Label.hpp>
 #include <iostream>
 
-namespace GUI {
+namespace mk::GUI {
 	Label::Label() {
 		// default mapSize
 		m_text.setCharacterSize(32);
@@ -78,4 +78,4 @@ namespace GUI {
 
 	const std::string &Label::getText() const { return m_string; }
 
-}  // namespace GUI
+}  // namespace mk::GUI

@@ -7,6 +7,7 @@
 #include "ModelLoader/NeuralNetworkManager.hpp"
 #include "idx/Reader.hpp"
 
+#include <Random/Random.hpp>
 #include <ai/Base/NeuralNetwork.hpp>
 #include <ai/Coaches/NeuralNetworkCoach.hpp>
 #include <iostream>
@@ -20,7 +21,7 @@ void run() {
 	ai::TrainingSet set;
 
 	for (int i = 0; i < 100; i++) {
-		double           a = std::rand() % 100;
+		double           a = mk::Random::getInt(0, 99);
 		ai::TrainingItem item;
 		item.input = { a / 100.0 };
 		if (a >= 50)

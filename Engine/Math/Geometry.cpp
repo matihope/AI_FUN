@@ -9,7 +9,7 @@
 
 #include <vector>
 
-namespace Math {
+namespace mk::Math {
 
 	float _dotProduct(const Vector2f &vec1, const Vector2f &vec2) { return vec1.x * vec2.x + vec1.y * vec2.y; }
 
@@ -74,4 +74,4 @@ namespace Math {
 
 		return { px, py };
 	}
-}  // namespace Math
+}  // namespace mk::Math

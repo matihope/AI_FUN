@@ -4,12 +4,14 @@
 
 #include "RectShape.hpp"
 
-RectShape::RectShape(sf::Color myColor, sf::Vector2f size) {
-	rect.setFillColor(myColor);
-	rect.setSize(size);
-}
+namespace mk {
+	RectShape::RectShape(sf::Color myColor, sf::Vector2f size) {
+		rect.setFillColor(myColor);
+		rect.setSize(size);
+	}
 
-void RectShape::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
-	states.transform *= getTransform();
-	target.draw(rect, states);
-}
+	void RectShape::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
+		states.transform *= getTransform();
+		target.draw(rect, states);
+	}
+}  // namespace mk

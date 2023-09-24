@@ -1,18 +1,15 @@
 #include "Game/Game.hpp"
-#include "Scenes/IdxImageViewer.hpp"
+#include "IdxDigitTrainer.hpp"
+#include "Random/Random.hpp"
 #include "Scenes/ImageClassifierScene.hpp"
-#include "Test.hpp"
+
+#include <random>
 
 int main() {
-	Game &game = Game::get();
+	mk::Game &game = mk::Game::get();
 	if (!game.init("settings.json")) return 1;
 
 	game.addScene(std::make_unique<ImageClassifierScene>());
 
 	game.run();
-
-	//		run();
-	//		run2();
-	//		teachImages();
-	//		trainImages();
 }

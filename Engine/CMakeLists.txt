@@ -27,6 +27,8 @@ set(ENGINE_SOURCES
         Math/Base.hpp
         Math/Matrix.cpp
         Math/Matrix.hpp
+        Random/Random.cpp
+        Random/Random.hpp
 )
 
 add_library(Engine ${ENGINE_SOURCES})

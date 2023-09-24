@@ -4,7 +4,7 @@
 
 #include "Base.hpp"
 
-namespace Math {
+namespace mk::Math {
 	float radiansToDegrees(float radians) { return makeInRange(radians, 2 * M_PIf) / M_PIf * 180.f; }
 
 	float makeInRange(float value, float range) {
@@ -14,4 +14,4 @@ namespace Math {
 	}
 
 	float degreesToRadians(float degrees) { return makeInRange(degrees, 360.f) / 180.f * M_PIf; }
-}  // namespace Math
+}  // namespace mk::Math

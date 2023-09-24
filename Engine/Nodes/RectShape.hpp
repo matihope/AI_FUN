@@ -2,19 +2,20 @@
 // Created by mateusz on 8/30/23.
 //
 
-#ifndef RAYCASTER_ENGINE_NODES_RECTSHAPE_HPP_
-#define RAYCASTER_ENGINE_NODES_RECTSHAPE_HPP_
+#pragma once
 
 #include "WorldEntity/WorldEntity.hpp"
 
-class RectShape: public WorldEntity {
-public:
-	RectShape() = default;
-	RectShape(sf::Color myColor, sf::Vector2f size);
-	void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
+namespace mk {
 
-private:
-	sf::RectangleShape rect;
-};
+	class RectShape: public WorldEntity {
+	public:
+		RectShape() = default;
+		RectShape(sf::Color myColor, sf::Vector2f size);
+		void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-#endif  // RAYCASTER_ENGINE_NODES_RECTSHAPE_HPP_
+	private:
+		sf::RectangleShape rect;
+	};
+
+}  // namespace mk

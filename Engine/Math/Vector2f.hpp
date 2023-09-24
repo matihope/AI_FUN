@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-namespace Math {
+namespace mk::Math {
 
 	template<typename T>
 	class Vector2 {
@@ -89,5 +89,5 @@ namespace Math {
 
 	Vector2f normalizeVector(Vector2f vector);
 	Vector2f rotateVector(Vector2f vector, float angleRads);
-}  // namespace Math
+}  // namespace mk::Math
 #endif  // AI_FUN_ENGINE_MATH_VECTOR2F_HPP_

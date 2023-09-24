@@ -12,7 +12,7 @@
 
 #include <GUI/GUI.hpp>
 
-class ImageClassifierScene: public WorldEntity {
+class ImageClassifierScene: public mk::WorldEntity {
 public:
 	ImageClassifierScene();
 
@@ -23,12 +23,12 @@ public:
 private:
 	std::unique_ptr<ai::NeuralNetwork> network;
 
-	idx::Reader     reader;
-	IdxImageViewer *viewer;
-	GUI::Label     *realLabel, *aiLabel, *idLabel;
-	int             currImg;
-	bool            pressed{};
-	GUI::Button    *prevImageBtn, *nextImageBtn, *randomImageBtn, *wrongImageBtn;
+	idx::Reader      reader;
+	IdxImageViewer  *viewer;
+	mk::GUI::Label  *realLabel, *aiLabel, *idLabel;
+	int              currImg;
+	bool             pressed{};
+	mk::GUI::Button *prevImageBtn, *nextImageBtn, *randomImageBtn, *wrongImageBtn;
 
 	void nextImage();
 	void prevImage();

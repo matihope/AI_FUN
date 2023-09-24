@@ -7,6 +7,7 @@
 #include "Base/NeuralNetwork.hpp"
 #include "IdxDigitTrainer.hpp"
 #include "ModelLoader/NeuralNetworkManager.hpp"
+#include "Random/Random.hpp"
 #include "idx/Reader.hpp"
 
 #include <GUI/GUI.hpp>
@@ -15,7 +16,7 @@
 
 ImageClassifierScene::ImageClassifierScene():
 	reader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte") {
-	std::srand(time(NULL));
+	mk::Random::initRandom();
 
 	viewer = addChild<IdxImageViewer>(reader);
 
@@ -26,20 +27,22 @@ ImageClassifierScene::ImageClassifierScene():
 	viewer->setScale(viewSize / 28.f, viewSize / 28.f);
 	viewer->setPosition(viewPosX, viewPosY);
 
-	auto font = Game::get().getFont();
+	auto font = mk::Game::get().getFont();
 
-	realLabel = addChild<GUI::Label>(font);
-	realLabel->setAlignment(GUI::HAlignment::LEFT, GUI::VAlignment::TOP);
+	using namespace mk::GUI;
+
+	realLabel = addChild<Label>(font);
+	realLabel->setAlignment(HAlignment::LEFT, VAlignment::TOP);
 	realLabel->setPosition(viewPosX + buffer, viewPosY + viewSize + buffer);
 	realLabel->setTextSize(48);
 
-	aiLabel = addChild<GUI::Label>(font);
-	aiLabel->setAlignment(GUI::HAlignment::RIGHT, GUI::VAlignment::TOP);
+	aiLabel = addChild<Label>(font);
+	aiLabel->setAlignment(HAlignment::RIGHT, VAlignment::TOP);
 	aiLabel->setPosition(viewPosX + viewSize - buffer, viewPosY + viewSize + buffer);
 	aiLabel->setTextSize(48);
 
-	idLabel = addChild<GUI::Label>(font);
-	idLabel->setAlignment(GUI::HAlignment::MIDDLE, GUI::VAlignment::TOP);
+	idLabel = addChild<Label>(font);
+	idLabel->setAlignment(HAlignment::MIDDLE, VAlignment::TOP);
 	idLabel->setPosition(400.0, viewPosY + viewSize + buffer);
 	idLabel->setTextSize(32);
 
@@ -49,33 +52,33 @@ ImageClassifierScene::ImageClassifierScene():
 	sf::Color bgColor(60, 60, 60);
 	sf::Color bgColorHover(50, 50, 50);
 	sf::Color bgColorHighlight(40, 40, 40);
-	prevImageBtn = addChild<GUI::Button>(font, "Previous image");
+	prevImageBtn = addChild<Button>(font, "Previous image");
 	prevImageBtn->setMinSize({ 400 - buffer * 2, -1 });
 	prevImageBtn->setMinSpaceBetween({ buffer, buffer });
 	prevImageBtn->setBackgroundColors(bgColor, bgColorHover, bgColorHighlight);
 	prevImageBtn->setPosition(buffer, 800 - buffer);
-	prevImageBtn->setAlignment(GUI::HAlignment::LEFT, GUI::VAlignment::BOTTOM);
+	prevImageBtn->setAlignment(HAlignment::LEFT, VAlignment::BOTTOM);
 
-	nextImageBtn = addChild<GUI::Button>(font, "Next image");
+	nextImageBtn = addChild<Button>(font, "Next image");
 	nextImageBtn->setMinSize({ 400 - 2 * buffer, -1 });
 	nextImageBtn->setMinSpaceBetween({ buffer, buffer });
 	nextImageBtn->setBackgroundColors(bgColor, bgColorHover, bgColorHighlight);
 	nextImageBtn->setPosition(800 - buffer, 800 - buffer);
-	nextImageBtn->setAlignment(GUI::HAlignment::RIGHT, GUI::VAlignment::BOTTOM);
+	nextImageBtn->setAlignment(HAlignment::RIGHT, VAlignment::BOTTOM);
 
-	randomImageBtn = addChild<GUI::Button>(font, "Random image");
+	randomImageBtn = addChild<Button>(font, "Random image");
 	randomImageBtn->setMinSize({ 400 - 2 * buffer, -1 });
 	randomImageBtn->setMinSpaceBetween({ buffer, buffer });
 	randomImageBtn->setBackgroundColors(bgColor, bgColorHover, bgColorHighlight);
 	randomImageBtn->setPosition(800 - buffer, 800 - nextImageBtn->getBounds().height - 3 * buffer);
-	randomImageBtn->setAlignment(GUI::HAlignment::RIGHT, GUI::VAlignment::BOTTOM);
+	randomImageBtn->setAlignment(HAlignment::RIGHT, VAlignment::BOTTOM);
 
-	wrongImageBtn = addChild<GUI::Button>(font, "Next wrong image");
+	wrongImageBtn = addChild<Button>(font, "Next wrong image");
 	wrongImageBtn->setMinSize({ 400 - 2 * buffer, -1 });
 	wrongImageBtn->setMinSpaceBetween({ buffer, buffer });
 	wrongImageBtn->setBackgroundColors(bgColor, bgColorHover, bgColorHighlight);
 	wrongImageBtn->setPosition(buffer, 800 - prevImageBtn->getBounds().height - 3 * buffer);
-	wrongImageBtn->setAlignment(GUI::HAlignment::LEFT, GUI::VAlignment::BOTTOM);
+	wrongImageBtn->setAlignment(HAlignment::LEFT, VAlignment::BOTTOM);
 }
 
 void ImageClassifierScene::testImage(uint imageId) {

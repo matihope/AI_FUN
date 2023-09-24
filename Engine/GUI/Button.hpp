@@ -9,7 +9,7 @@
 #include <Updatable/Updatable.hpp>
 #include <memory>
 
-namespace GUI {
+namespace mk::GUI {
 	class Button: public WorldEntity, public Clickable {
 		Button();
 
@@ -65,4 +65,4 @@ namespace GUI {
 		void setMinSpaceBetween(Math::Vector2f space);
 		void setMinSize(Math::Vector2f size);
 	};
-}  // namespace GUI
+}  // namespace mk::GUI

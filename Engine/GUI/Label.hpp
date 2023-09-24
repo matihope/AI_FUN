@@ -3,7 +3,7 @@
 #include <WorldEntity/WorldEntity.hpp>
 #include <memory>
 
-namespace GUI {
+namespace mk::GUI {
 	enum class HAlignment { LEFT, MIDDLE, RIGHT };
 
 	enum class VAlignment { TOP, CENTER, BOTTOM };
@@ -28,4 +28,4 @@ namespace GUI {
 
 		const std::string &getText() const;
 	};
-}  // namespace GUI
+}  // namespace mk::GUI

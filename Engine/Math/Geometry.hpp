@@ -7,7 +7,7 @@
 
 #include "Vector2f.hpp"
 
-namespace Math {
+namespace mk::Math {
 	bool     doLinesIntersect(Vector2f lineAStart, Vector2f lineAEnd, Vector2f LineBStart, Vector2f LineBEnd);
 	Vector2f findLineIntersection(Vector2f lineAStart, Vector2f lineAEnd, Vector2f LineBStart, Vector2f LineBEnd);
 }

@@ -2,22 +2,23 @@
 // Created by mateusz on 9/6/23.
 //
 
-#ifndef RAYCASTER_ENGINE_WORLDENTITY_BOXYWORLDENTITY_HPP_
-#define RAYCASTER_ENGINE_WORLDENTITY_BOXYWORLDENTITY_HPP_
+#pragma once
 
 #include "Math/Math.hpp"
 #include "WorldEntity.hpp"
 
-class BoxyWorldEntity: public WorldEntity {
-public:
-	void                         setMaxRenderSize(Math::Vector2u newSize);
-	void                         setMaxRenderSize(unsigned int width, unsigned int height);
-	[[nodiscard]] Math::Vector2u getMaxSize() const;
+namespace mk {
 
-	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+	class BoxyWorldEntity: public WorldEntity {
+	public:
+		void                         setMaxRenderSize(Math::Vector2u newSize);
+		void                         setMaxRenderSize(unsigned int width, unsigned int height);
+		[[nodiscard]] Math::Vector2u getMaxSize() const;
 
-private:
-	Math::Vector2u maxSize = { 0, 0 };
-};
+		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-#endif  // RAYCASTER_ENGINE_WORLDENTITY_BOXYWORLDENTITY_HPP_
+	private:
+		Math::Vector2u maxSize = { 0, 0 };
+	};
+
+}  // namespace mk

@@ -4,7 +4,7 @@
 #include <Updatable/Updatable.hpp>
 #include <iostream>
 
-namespace GUI {
+namespace mk::GUI {
 	Button::Button() { m_label.setAlignment(HAlignment::MIDDLE, VAlignment::CENTER); }
 
 	Button::Button(sf::Font *font, const std::string &text): Button() {
@@ -190,4 +190,4 @@ namespace GUI {
 		m_label.setPosition(offset);
 	}
 
-}  // namespace GUI
+}  // namespace mk::GUI

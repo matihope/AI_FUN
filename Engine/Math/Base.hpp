@@ -2,8 +2,7 @@
 // Created by mateusz on 9/16/23.
 //
 
-#ifndef AI_FUN_ENGINE_MATH_BASE_HPP_
-#define AI_FUN_ENGINE_MATH_BASE_HPP_
+#pragma once
 
 #include <cmath>
 
@@ -14,7 +13,7 @@
 #define M_PIf          3.14159265358979323846f /* pi */
 typedef unsigned int uint;
 
-namespace Math {
+namespace mk::Math {
 	template<typename T>
 	int sign(T val) {
 		return (0 < val) - (val < 0);
@@ -30,6 +29,4 @@ namespace Math {
 	float makeInRange(float value, float range);
 	float radiansToDegrees(float radians);
 	float degreesToRadians(float degrees);
-}  // namespace Math
-
-#endif  // AI_FUN_ENGINE_MATH_BASE_HPP_
+}  // namespace mk::Math

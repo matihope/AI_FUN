@@ -5,7 +5,7 @@
 #include "NeuralNetworkManager.hpp"
 
 bool ai::NeuralNetworkManager::saveNeuralNetwork(const ai::NeuralNetwork &network, const std::string &filePath) {
-	JsonBridge bridge;
+	mk::JsonBridge bridge;
 	bridge.load(filePath);
 
 	bridge.data["layerSizes"] = network.getLayerSizes();
@@ -23,7 +23,7 @@ bool ai::NeuralNetworkManager::saveNeuralNetwork(const ai::NeuralNetwork &networ
 }
 
 ai::NeuralNetwork ai::NeuralNetworkManager::loadNeuralNetwork(const std::string &filePath) {
-	JsonBridge bridge;
+	mk::JsonBridge bridge;
 	bridge.load(filePath);
 
 	std::unique_ptr<ai::ActivatingFunction> activationFunction = std::make_unique<ai::ReLU>();
