@@ -26,9 +26,7 @@ ai::TrainingSet IdxDigitTrainer::createSetFromReader(const idx::Reader &reader, 
 	return set;
 }
 
-void IdxDigitTrainer::teachImages() {
-	std::cerr << "Begin teaching: \n";
-
+void IdxDigitTrainer::teachImages(const std::string &modelPath) {
 	ai::NeuralNetwork network({ 784, 100, 10 }, std::make_unique<ai::ReLU>());
 	network.randomizeWeightsAndBiases(0);
 
@@ -37,16 +35,15 @@ void IdxDigitTrainer::teachImages() {
 	idx::Reader reader("resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte");
 	auto        set = createSetFromReader(reader, 60'000);
 	std::cerr << "Begin training: \n";
-	coach.train(set, 0.1, 128, 20);
+	coach.train(set, 0.09, 128, 25);
 
-	std::string modelPath = "digitRecognition.json";
 	ai::NeuralNetworkManager::saveNeuralNetwork(network, modelPath);
 	std::cout << "Saved at: " << modelPath << '\n';
 }
 
-void IdxDigitTrainer::testImages() {
+void IdxDigitTrainer::testImages(const std::string &modelPath) {
 	std::cerr << "Begin testing: \n";
-	auto network = ai::NeuralNetworkManager::loadNeuralNetwork("digitRecognition.json");
+	auto network = ai::NeuralNetworkManager::loadNeuralNetwork(modelPath);
 
 	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
 	auto        testSet = createSetFromReader(testReader);
