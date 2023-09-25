@@ -140,7 +140,7 @@ namespace mk {
 				break;
 			case sf::Event::KeyPressed:
 				switch (event.key.code) {
-				case sf::Keyboard::Escape:
+				case sf::Keyboard::Tilde:
 					stop();
 					break;
 				default:

@@ -18,6 +18,7 @@ namespace mk {
 		void                      setTexture(const sf::Texture *newTexture);
 		const sf::Texture        *getTexture();
 		QuickSprite               getSprite(unsigned int id);
+		std::vector<QuickSprite> &getSprites();
 		void                      onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 		// sets all vertices in grid
@@ -25,8 +26,12 @@ namespace mk {
 		void makeGrid(sf::Vector2u grid_size, sf::Vector2f tile_size);
 
 	private:
-		sf::VertexArray    m_vertex_array;
-		std::size_t        spriteCount{};
-		const sf::Texture *m_texture;
+		sf::VertexArray m_vertex_array;
+		std::size_t     spriteCount{};
+
+		std::vector<QuickSprite> m_sprites;
+		void                     generateQuickSprites();
+
+		const sf::Texture *m_texture = nullptr;
 	};
 }  // namespace mk

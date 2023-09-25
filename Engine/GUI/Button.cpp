@@ -5,7 +5,10 @@
 #include <iostream>
 
 namespace mk::GUI {
-	Button::Button() { m_label.setAlignment(HAlignment::MIDDLE, VAlignment::CENTER); }
+	Button::Button() {
+		m_label.setAlignment(HAlignment::MIDDLE, VAlignment::CENTER);
+		m_background.setFillColor(m_background_color_normal);
+	}
 
 	Button::Button(sf::Font *font, const std::string &text): Button() {
 		setFont(font);
@@ -154,11 +157,13 @@ namespace mk::GUI {
 
 	void Button::setMinSpaceBetween(Math::Vector2f space) {
 		minSpaceBetween = space;
+		updateDefaultCollisionShape();
 		fixLabelPosition();
 	}
 
 	void Button::setMinSize(Math::Vector2f size) {
 		minSize = size;
+		updateDefaultCollisionShape();
 		fixLabelPosition();
 	}
 

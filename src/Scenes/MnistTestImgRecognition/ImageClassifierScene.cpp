@@ -5,13 +5,13 @@
 #include "ImageClassifierScene.hpp"
 
 #include "Base/NeuralNetwork.hpp"
+#include "GUI/GUI.hpp"
+#include "Game/Game.hpp"
 #include "IdxDigitTrainer.hpp"
 #include "ModelLoader/NeuralNetworkManager.hpp"
 #include "Random/Random.hpp"
 #include "idx/Reader.hpp"
 
-#include <GUI/GUI.hpp>
-#include <Game/Game.hpp>
 #include <cstdlib>
 
 ImageClassifierScene::ImageClassifierScene():
@@ -49,34 +49,27 @@ ImageClassifierScene::ImageClassifierScene():
 	network = std::make_unique<ai::NeuralNetwork>(ai::NeuralNetworkManager::loadNeuralNetwork("digitRecognition.json"));
 	testImage(0);
 
-	sf::Color bgColor(60, 60, 60);
-	sf::Color bgColorHover(50, 50, 50);
-	sf::Color bgColorHighlight(40, 40, 40);
 	prevImageBtn = addChild<Button>(font, "Previous image");
 	prevImageBtn->setMinSize({ 400 - buffer * 2, -1 });
 	prevImageBtn->setMinSpaceBetween({ buffer, buffer });
-	prevImageBtn->setBackgroundColors(bgColor, bgColorHover, bgColorHighlight);
 	prevImageBtn->setPosition(buffer, 800 - buffer);
 	prevImageBtn->setAlignment(HAlignment::LEFT, VAlignment::BOTTOM);
 
 	nextImageBtn = addChild<Button>(font, "Next image");
 	nextImageBtn->setMinSize({ 400 - 2 * buffer, -1 });
 	nextImageBtn->setMinSpaceBetween({ buffer, buffer });
-	nextImageBtn->setBackgroundColors(bgColor, bgColorHover, bgColorHighlight);
 	nextImageBtn->setPosition(800 - buffer, 800 - buffer);
 	nextImageBtn->setAlignment(HAlignment::RIGHT, VAlignment::BOTTOM);
 
 	randomImageBtn = addChild<Button>(font, "Random image");
 	randomImageBtn->setMinSize({ 400 - 2 * buffer, -1 });
 	randomImageBtn->setMinSpaceBetween({ buffer, buffer });
-	randomImageBtn->setBackgroundColors(bgColor, bgColorHover, bgColorHighlight);
 	randomImageBtn->setPosition(800 - buffer, 800 - nextImageBtn->getBounds().height - 3 * buffer);
 	randomImageBtn->setAlignment(HAlignment::RIGHT, VAlignment::BOTTOM);
 
 	wrongImageBtn = addChild<Button>(font, "Next wrong image");
 	wrongImageBtn->setMinSize({ 400 - 2 * buffer, -1 });
 	wrongImageBtn->setMinSpaceBetween({ buffer, buffer });
-	wrongImageBtn->setBackgroundColors(bgColor, bgColorHover, bgColorHighlight);
 	wrongImageBtn->setPosition(buffer, 800 - prevImageBtn->getBounds().height - 3 * buffer);
 	wrongImageBtn->setAlignment(HAlignment::LEFT, VAlignment::BOTTOM);
 }
@@ -100,7 +93,7 @@ void ImageClassifierScene::onPhysicsUpdate(float dt) {
 	if (prevImageBtn->isPressed()) prevImage();
 	if (nextImageBtn->isPressed()) nextImage();
 	if (randomImageBtn->isPressed()) {
-		uint newIndex = std::rand() % reader.getImages().size();
+		uint newIndex = mk::Random::getInt<uint>(0, reader.getImages().size() - 1);
 		testImage(newIndex);
 	}
 	if (wrongImageBtn->isPressed()) {
@@ -112,3 +105,7 @@ void ImageClassifierScene::onPhysicsUpdate(float dt) {
 void ImageClassifierScene::nextImage() { testImage(++currImg); }
 
 void ImageClassifierScene::prevImage() { testImage(--currImg); }
+
+void ImageClassifierScene::handleEvent(const sf::Event &event) {
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) mk::Game::get().popScene();
+}

@@ -16,9 +16,9 @@ namespace mk::GUI {
 		Label              m_label;
 		sf::RectangleShape m_background;
 
-		sf::Color m_background_color_normal    = sf::Color::Transparent;
-		sf::Color m_background_color_hover     = sf::Color::Transparent;
-		sf::Color m_background_color_highlight = sf::Color::Transparent;
+		sf::Color m_background_color_normal    = sf::Color(60, 60, 60);
+		sf::Color m_background_color_hover     = sf::Color(50, 50, 50);
+		sf::Color m_background_color_highlight = sf::Color(40, 40, 40);
 
 		sf::Color m_color_normal    = sf::Color(255, 255, 255);
 		sf::Color m_color_hover     = sf::Color(200, 200, 200);
@@ -39,9 +39,9 @@ namespace mk::GUI {
 		void fixLabelPosition();
 
 	protected:
-		virtual void onStopHover() override;
-		virtual void onHover() override;
-		virtual void onHold() override;
+		void onStopHover() override;
+		void onHover() override;
+		void onHold() override;
 
 	public:
 		Button(sf::Font *font, const std::string &text);

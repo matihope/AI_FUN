@@ -19,15 +19,15 @@ namespace mk {
 		m_vertex_array.resize(size * 4);
 		spriteCount = size;
 		for (size_t i = 0; i < size; i++) getSprite(i).clear();
+
+		generateQuickSprites();
 	}
 
 	QuickSprite SpriteBatch::getSprite(unsigned int id) { return QuickSprite(&m_vertex_array[id * 4]); }
 
 	void SpriteBatch::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
-		if (m_texture == nullptr) return;
-
 		states.transform *= getTransform();
-		states.texture = m_texture;
+		if (m_texture != nullptr) states.texture = m_texture;
 		target.draw(m_vertex_array, states);
 	}
 
@@ -47,4 +47,11 @@ namespace mk {
 	}
 
 	std::size_t SpriteBatch::getSize() const { return spriteCount; }
+
+	void SpriteBatch::generateQuickSprites() {
+		m_sprites.clear();
+		for (int spriteId = 0; spriteId < getSize(); spriteId++) m_sprites.push_back(getSprite(spriteId));
+	}
+
+	std::vector<QuickSprite> &SpriteBatch::getSprites() { return m_sprites; }
 }  // namespace mk

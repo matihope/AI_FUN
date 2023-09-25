@@ -6,6 +6,7 @@
 #define AI_FUN_ENGINE_MATH_VECTOR2F_HPP_
 
 #include <cmath>
+#include <ostream>
 
 namespace mk::Math {
 
@@ -80,6 +81,11 @@ namespace mk::Math {
 		template<class X>
 		X as() const {
 			return { x, y };
+		}
+
+		friend std::ostream &operator<<(std::ostream &stream, const Vector2<T> &vector) {
+			stream << vector.x << ", " << vector.y;
+			return stream;
 		}
 	};
 

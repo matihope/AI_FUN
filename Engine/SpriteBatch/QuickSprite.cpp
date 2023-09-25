@@ -55,4 +55,15 @@ namespace mk {
 		setTexSize(sf::Vector2f(0, 0));
 		setTexPosition({ -1, -1 });
 	}
+
+	void QuickSprite::setColor(sf::Color vert0, sf::Color vert1, sf::Color vert2, sf::Color vert3) {
+		m_quad[0].color = vert0;
+		m_quad[1].color = vert1;
+		m_quad[2].color = vert2;
+		m_quad[3].color = vert3;
+	}
+
+	void QuickSprite::setColor(sf::Color color) { setColor(color, color, color, color); }
+
+	sf::Color QuickSprite::getColor(unsigned int vertexId) { return m_quad[vertexId].color; }
 }  // namespace mk

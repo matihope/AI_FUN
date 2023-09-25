@@ -5,12 +5,11 @@
 #ifndef AI_FUN_SRC_SCENES_IMAGECLASSIFIERSCENE_HPP_
 #define AI_FUN_SRC_SCENES_IMAGECLASSIFIERSCENE_HPP_
 
+#include "GUI/GUI.hpp"
 #include "IdxImageViewer.hpp"
 #include "WorldEntity/WorldEntity.hpp"
 #include "ai/Base/NeuralNetwork.hpp"
 #include "idx/Reader.hpp"
-
-#include <GUI/GUI.hpp>
 
 class ImageClassifierScene: public mk::WorldEntity {
 public:
@@ -18,9 +17,11 @@ public:
 
 	void testImage(uint imageId);
 
-	void onPhysicsUpdate(float dt) override;
 
 private:
+	void onPhysicsUpdate(float dt) override;
+	void handleEvent(const sf::Event &event) override;
+
 	std::unique_ptr<ai::NeuralNetwork> network;
 
 	idx::Reader      reader;

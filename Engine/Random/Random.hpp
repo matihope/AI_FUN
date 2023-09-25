@@ -37,6 +37,12 @@ namespace mk {
 			auto &me = Random::get();
 			return std::uniform_real_distribution<T>(start, end)(me.generator);
 		}
+
+		template<class T>
+		static T getRandomNormalDist(T mean, T stddev) {
+			auto &me = Random::get();
+			return std::normal_distribution<T>(mean, stddev)(me.generator);
+		}
 	};
 
 }  // namespace mk
