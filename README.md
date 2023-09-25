@@ -11,7 +11,7 @@ bash -c "git clone https://github.com/matihope/AI_FUN.git && \
          cd build         && \
          make -j 3        && \
          cd ..            && \
-         ./../AI_FUN"
+         ./AI_FUN"
 ```
 
 List of attributions:
