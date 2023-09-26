@@ -24,6 +24,8 @@ namespace idx {
 		Reader(std::string imagesPath, std::string labelsPath);
 		[[nodiscard]] const std::vector<Image> &getImages() const;
 
+		void setImage(uint index, const Image &image);
+
 	private:
 		std::string        imagesPath, labelsPath;
 		std::vector<Image> images{};

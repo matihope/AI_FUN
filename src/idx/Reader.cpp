@@ -126,4 +126,6 @@ namespace idx {
 			result += pow(256, 3 - byteOffset) * bytes[start + byteOffset];
 		return result;
 	}
+
+	void Reader::setImage(uint index, const Image &image) { images[index] = image; }
 }  // namespace idx

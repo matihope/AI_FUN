@@ -115,6 +115,8 @@ namespace mk::GUI {
 		// override this when inheriting from Button
 
 		auto bounds = m_label.getBounds();
+		bounds.top  = getPosition().y;
+		bounds.left = getPosition().x;
 
 		if (minSpaceBetween.x != -1) bounds.width += minSpaceBetween.x * 2;
 		if (minSpaceBetween.y != -1) bounds.height += minSpaceBetween.y * 2;
@@ -126,10 +128,10 @@ namespace mk::GUI {
 		case VAlignment::TOP:
 			break;
 		case VAlignment::CENTER:
-			bounds.top = getPosition().y - bounds.height / 2;
+			bounds.top -= bounds.height / 2;
 			break;
 		case VAlignment::BOTTOM:
-			bounds.top = getPosition().y - bounds.height;
+			bounds.top -= bounds.height;
 			break;
 		}
 
@@ -137,10 +139,10 @@ namespace mk::GUI {
 		case HAlignment::LEFT:
 			break;
 		case HAlignment::MIDDLE:
-			bounds.left = getPosition().x - bounds.width / 2;
+			bounds.left -= bounds.width / 2;
 			break;
 		case HAlignment::RIGHT:
-			bounds.left = getPosition().x - bounds.width;
+			bounds.left -= bounds.width;
 			break;
 		}
 

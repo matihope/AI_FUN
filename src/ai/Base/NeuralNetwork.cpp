@@ -4,6 +4,8 @@
 
 #include "NeuralNetwork.hpp"
 
+#include <Random/Random.hpp>
+
 ai::NeuralNetwork::NeuralNetwork(std::vector<uint>                   newLayerSizes,
                                  std::unique_ptr<ActivatingFunction> activatingFunction):
 	layerSizes(std::move(newLayerSizes)),
@@ -54,7 +56,7 @@ const std::vector<uint> &ai::NeuralNetwork::getLayerSizes() const { return layer
 Layer &ai::NeuralNetwork::getLayer(uint index) { return layers[index]; }
 
 void ai::NeuralNetwork::randomizeWeightsAndBiases(uint64_t seed) {
-	std::srand(seed);
+	mk::Random::initSeed(seed);
 	for (auto &layer : layers) layer.randomizeWeightsAndBiases();
 }
 

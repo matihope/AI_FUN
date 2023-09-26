@@ -15,6 +15,8 @@ namespace mk::Math {
 	public:
 		T x = 0, y = 0;
 
+		bool operator==(const Vector2<T> &rhs) const { return x == rhs.x && y == rhs.y; }
+
 		Vector2<T> &operator+=(const Vector2<T> &rhs) {
 			x += rhs.x;
 			y += rhs.y;

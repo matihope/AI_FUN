@@ -7,7 +7,7 @@
 #include <cmath>
 
 #define FLOAT_INFINITY 1000000000.f
-#define INT_INFINITY   10'000'000'00I
+#define INT_INFINITY   1'000'000'000
 #define LL_INFINITY    1'000'000'000'000'000'000LL
 #define EPS_ZERO       1e-12
 #define M_PIf          3.14159265358979323846f /* pi */

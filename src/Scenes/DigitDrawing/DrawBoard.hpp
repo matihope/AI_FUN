@@ -11,14 +11,19 @@
 #include "SpriteBatch/SpriteBatch.hpp"
 #include "WorldEntity/WorldEntity.hpp"
 
+#include <Math/Math.hpp>
+
 class DrawBoard: public mk::WorldEntity {
 public:
 	explicit DrawBoard(uint boardSizePixels = 28);
 	const std::vector<double> &getBoardAsData() const;
 
 private:
-	void onPhysicsUpdate(float dt) override;
+	void onUpdate(float dt) override;
 	void handleEvent(const sf::Event &event) override;
+
+	mk::Math::Vector2i lastMousePos{ -1, -1 };
+	bool               hasDrawnLastUpdate{};
 
 	mk::SpriteBatch *batch;
 	uint             boardSize;

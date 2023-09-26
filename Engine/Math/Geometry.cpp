@@ -74,4 +74,35 @@ namespace mk::Math {
 
 		return { px, py };
 	}
+
+	std::vector<Vector2i> drawLine(Vector2i start, Vector2i end) {
+		if (start == end) return { start };
+
+		Math::Vector2i currentPosition = start;
+		Math::Vector2f dirVec          = normalizeVector((end - start).type<float>());
+		Math::Vector2f step            = { dirVec.y / dirVec.x, dirVec.x / dirVec.y };
+		Math::Vector2f stepLength      = { std::sqrt(step.x * step.x + 1), std::sqrt(step.y * step.y + 1) };
+		Math::Vector2f rayProgress     = { 0, 0 };
+
+		float distance    = 0;
+		float maxDistance = (end - start).length();
+
+		std::vector<Math::Vector2i> points;
+
+		while (distance < maxDistance) {
+			points.push_back(currentPosition);
+			if (rayProgress.x < rayProgress.y) {
+				currentPosition.x += Math::sign(dirVec.x);
+				distance = rayProgress.x;
+				rayProgress.x += stepLength.x;
+			} else {
+				currentPosition.y += Math::sign(dirVec.y);
+				distance = rayProgress.y;
+				rayProgress.y += stepLength.y;
+			}
+		}
+
+		return points;
+	}
+
 }  // namespace mk::Math

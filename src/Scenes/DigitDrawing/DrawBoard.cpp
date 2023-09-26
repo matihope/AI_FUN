@@ -5,7 +5,7 @@
 #include "DrawBoard.hpp"
 
 #include "GUI/Button.hpp"
-#include "Math/Vector2f.hpp"
+#include "Math/Math.hpp"
 #include "ModelLoader/NeuralNetworkManager.hpp"
 
 #include <Game/Game.hpp>
@@ -28,31 +28,52 @@ DrawBoard::DrawBoard(uint boardSizePixels): boardSize(boardSizePixels) {
 	resetBoard->setPosition(212.5, 425.f + 5);
 	resetBoard->setAlignment(mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::TOP);
 
-	network = std::make_unique<ai::NeuralNetwork>(ai::NeuralNetworkManager::loadNeuralNetwork("newDigits2.json"));
+	network = std::make_unique<ai::NeuralNetwork>(ai::NeuralNetworkManager::loadNeuralNetwork("digitsAugmented.json"));
 }
 
-void DrawBoard::onPhysicsUpdate(float dt) {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+void DrawBoard::onUpdate(float dt) {
+	if (mk::Game::get().isWindowActive() && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		auto [mX, mY] = mk::Game::get().getMousePos();
 		mk::Math::Vector2f mousePos(mX, mY);
 
 		mousePos.x -= batch->getPosition().x;
 		mousePos.y -= batch->getPosition().y;
 
-		if (mousePos.x < 400.f && mousePos.y < 400.f) {
-			auto intPos = (mousePos / batch->getScale().x).type<uint>();
-			uint index  = intPos.y * boardSize + intPos.x;
+		if (0 <= mousePos.x && mousePos.x < 400.f && 0 <= mousePos.y && mousePos.y < 400.f) {
+			auto intPos = (mousePos / batch->getScale().x).type<int>();
 
-			batch->getSprite(index).setColor(sf::Color::Black);
-			boardData[index] = 1.0;
+			if (!hasDrawnLastUpdate) lastMousePos = intPos;
+
+			for (auto pos : mk::Math::drawLine(lastMousePos, intPos)) {
+				int index = pos.y * (int) boardSize + pos.x;
+
+				std::vector indices = { index, index - (int) boardSize, index + (int) boardSize };
+				if (index / boardSize == (index + 1) / boardSize) indices.push_back(index + 1);
+				if (index / boardSize == (index - 1) / boardSize) indices.push_back(index - 1);
+
+				for (auto i : indices) {
+					if (0 <= i && i < batch->getSize()) {
+						batch->getSprite(i).setColor(sf::Color::Black);
+						boardData[i] = 1.0;
+					}
+				}
+			}
+
+			lastMousePos       = intPos;
+			hasDrawnLastUpdate = true;
 
 			aiAnswer->setText("AI guess: " + std::to_string(network->calculateBestIndex(boardData)));
+		} else {
+			hasDrawnLastUpdate = false;
 		}
+	} else {
+		hasDrawnLastUpdate = false;
 	}
 
 	if (resetBoard->isPressed()) {
 		for (auto &sprite : batch->getSprites()) sprite.setColor(sf::Color::White);
 		boardData.resize(boardSize * boardSize, 0.0);
+		aiAnswer->setText("Empty board");
 	}
 }
 

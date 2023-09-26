@@ -16,6 +16,7 @@ public:
 	static ai::TrainingSet  createSetFromReader(const idx::Reader &reader, uint maxSize = -1);
 
 	static void teachImages(const std::string &modelPath);
+	static void teachImagesAugmented(const std::string &modelPath);
 	static void testImages(const std::string &modelPath);
 	static void moreTrainer();
 };
