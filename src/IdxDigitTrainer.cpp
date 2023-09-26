@@ -82,18 +82,24 @@ void IdxDigitTrainer::moreTrainer() {
 }
 
 void IdxDigitTrainer::teachImagesAugmented(const std::string &modelPath) {
-	ai::NeuralNetwork network({ 784, 800, 10 }, std::make_unique<ai::ReLU>());
+	ai::NeuralNetwork network({ 784, 100, 10 }, std::make_unique<ai::ReLU>());
 	network.randomizeWeightsAndBiases(0);
 
 	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::DifferenceSquaredCostFunction>());
 
 	idx::Reader reader("resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte");
 	std::cerr << "Begin training: \n";
-	for (int i = 0; i < 20; i++) {
+
+	auto start = std::chrono::high_resolution_clock::now();
+	for (int i = 0; i < 3; i++) {
 		for (uint imageIndex = 0; imageIndex < reader.getImages().size(); imageIndex++)
 			reader.setImage(imageIndex, TestImageTransitions::randomShift(reader.getImages()[imageIndex], 0.0));
 		coach.train(createSetFromReader(reader, 60'000), 0.1, 128, 3);
 	}
+	auto stop = std::chrono::high_resolution_clock::now();
+
+	std::cout << "Time: " << std::chrono::duration_cast<std::chrono::seconds>(stop - start).count() << '\n';
+
 
 	ai::NeuralNetworkManager::saveNeuralNetwork(network, modelPath);
 	std::cout << "Saved at: " << modelPath << '\n';

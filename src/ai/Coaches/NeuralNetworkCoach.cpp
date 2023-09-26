@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iostream>
 #include <random>
+#include <thread>
 #include <utility>
 
 namespace ai {
@@ -16,16 +17,24 @@ namespace ai {
 	ai::NeuralNetworkCoach::NeuralNetworkCoach(ai::NeuralNetwork            &neuralNetwork,
 	                                           std::unique_ptr<CostFunction> costFunction):
 		neuralNetwork(neuralNetwork),
-		costFunction(std::move(costFunction)) {}
+		costFunction(std::move(costFunction)) {
+		mut.push_back({});
+		for (uint layerId = 1; layerId < neuralNetwork.getLayerSizes().size(); layerId++)
+			mut.push_back(std::vector<std::mutex>(neuralNetwork.getLayerSizes()[layerId]));
+	}
 
 	void ai::NeuralNetworkCoach::trainSingle(const TrainingSet &trainingSet, double learnRate) {
 		// Create gradients
-		std::vector<LayerGradient> gradients;
+		gradients.clear();
 		for (uint i = 0; i < neuralNetwork.getLayerSizes().size(); i++)
 			gradients.emplace_back(neuralNetwork.getLayer(i));
 
+		std::vector<std::thread> threads;
+
 		// Make gradients sensible
-		for (const auto &item : trainingSet) updateGradients(item, gradients);
+		for (const auto &item : trainingSet) threads.emplace_back(&ai::NeuralNetworkCoach::updateGradients, this, item);
+
+		for (auto &thr : threads) thr.join();
 
 
 		// Apply them on the neural network
@@ -50,7 +59,7 @@ namespace ai {
 		return totalCost / (double) set.size();
 	}
 
-	void ai::NeuralNetworkCoach::updateGradients(const TrainingItem &item, std::vector<LayerGradient> &gradients) {
+	void ai::NeuralNetworkCoach::updateGradients(const TrainingItem &item) {
 		auto outputs    = neuralNetwork.getCalculations(item.input);
 		auto layerCount = neuralNetwork.getLayerSizes().size();
 
@@ -68,9 +77,11 @@ namespace ai {
 	void ai::NeuralNetworkCoach::updateGradient(const std::vector<double> &nodeValues, LayerGradient &gradient,
 	                                            std::vector<double> &activations) {
 		for (uint node = 0; node < gradient.getLayer().getNodesCount(); node++) {
+			mut[gradient.getLayer().getId()][node].lock();
 			for (uint inputNode = 0; inputNode < gradient.getLayer().getInputNodesCount(); inputNode++)
 				gradient.weightGradient[node][inputNode] += nodeValues[node] * activations[inputNode];
 			gradient.biasGradient[node] += nodeValues[node];
+			mut[gradient.getLayer().getId()][node].unlock();
 		}
 	}
 

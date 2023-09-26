@@ -19,7 +19,7 @@ std::vector<double> Layer::calculate(const std::vector<double> &activations) con
 	return output;
 }
 
-Layer::Layer(uint nodes, uint inputs): nodes(nodes), inputs(inputs) {
+Layer::Layer(uint nodes, uint inputs, uint id): nodes(nodes), inputs(inputs), id(id) {
 	weights.resize(nodes, std::vector<double>(inputs, 0));
 	biases.resize(nodes, 0);
 }
@@ -46,3 +46,5 @@ void Layer::randomizeWeightsAndBiases() {
 const std::vector<std::vector<double>> &Layer::getWeights() const { return weights; }
 
 const std::vector<double> &Layer::getBiases() const { return biases; }
+
+uint Layer::getId() const { return id; }

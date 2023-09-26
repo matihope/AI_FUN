@@ -8,6 +8,8 @@
 #include "../Base/NeuralNetwork.hpp"
 #include "LayerGradient.hpp"
 
+#include <thread>
+
 namespace ai {
 
 	struct TrainingItem {
@@ -25,11 +27,14 @@ namespace ai {
 		[[nodiscard]] double cost(const ai::TrainingSet &set) const;
 
 	private:
-		static void applyGradients(std::vector<LayerGradient> &gradients, double learnRate);
+		std::vector<std::vector<std::mutex>> mut;
+		std::vector<LayerGradient>           gradients;
+		static void                          applyGradients(std::vector<LayerGradient> &gradients, double learnRate);
 
-		void        updateGradients(const TrainingItem &item, std::vector<LayerGradient> &gradients);
-		static void updateGradient(const std::vector<double> &nodeValues, LayerGradient &gradient,
-		                           std::vector<double> &activations);
+		friend class std::thread;
+		void updateGradients(const TrainingItem &item);
+		void updateGradient(const std::vector<double> &nodeValues, LayerGradient &gradient,
+		                    std::vector<double> &activations);
 
 
 		NeuralNetwork                &neuralNetwork;

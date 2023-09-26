@@ -10,8 +10,8 @@ ai::NeuralNetwork::NeuralNetwork(std::vector<uint>                   newLayerSiz
                                  std::unique_ptr<ActivatingFunction> activatingFunction):
 	layerSizes(std::move(newLayerSizes)),
 	activatingFunction(std::move(activatingFunction)) {
-	layers.emplace_back(layerSizes[0], 0);
-	for (uint i = 1; i < layerSizes.size(); i++) layers.emplace_back(layerSizes[i], layerSizes[i - 1]);
+	layers.emplace_back(layerSizes[0], 0, 0);
+	for (uint i = 1; i < layerSizes.size(); i++) layers.emplace_back(layerSizes[i], layerSizes[i - 1], i);
 }
 
 ai::NeuralNetworkCalculationState ai::NeuralNetwork::getCalculations(const std::vector<double> &inputs) const {

@@ -22,7 +22,7 @@ typedef unsigned int uint;
 
 class Layer {
 public:
-	Layer(uint nodes, uint inputs);
+	Layer(uint nodes, uint inputs, uint id);
 	[[nodiscard]] std::vector<double>                     calculate(const std::vector<double> &inputs) const;
 	[[nodiscard]] double                                  getWeight(uint node, uint inputNode) const;
 	void                                                  setWeight(uint node, uint inputNode, double newValue);
@@ -36,7 +36,11 @@ public:
 	[[nodiscard]] uint getInputNodesCount() const;
 	[[nodiscard]] uint getNodesCount() const;
 
+	[[nodiscard]] uint getId() const;
+
 private:
+	uint id;
+
 	uint                             nodes, inputs;
 	std::vector<std::vector<double>> weights;
 	std::vector<double>              biases;
