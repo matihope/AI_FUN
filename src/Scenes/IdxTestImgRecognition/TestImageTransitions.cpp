@@ -10,50 +10,23 @@
 #include <Math/Math.hpp>
 
 TestImageTransitions::TestImageTransitions():
-	reader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte") {
+	readerOriginal("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte"),
+	reader2(readerOriginal) {
 	setScale(mk::Game::get().getViewportSize().x / 28.0, mk::Game::get().getViewportSize().y / 28.0);
 
-	viewer = addChild<IdxImageViewer>(reader);
+	viewer = addChild<IdxImageViewer>(reader2);
 	viewer->setImageIndex(0);
 }
 
 void TestImageTransitions::handleEvent(const sf::Event &event) {
-	if (event.type == sf::Event::KeyPressed) {
-		double backgroundColor = 0.0;
-		auto   img             = reader.getImages()[0];
-		int    timesH          = 0;
-		int    timesV          = 0;
-
-		switch (event.key.code) {
-		case sf::Keyboard::Right:
-			timesH++;
-			break;
-		case sf::Keyboard::Left:
-			timesH--;
-			break;
-		case sf::Keyboard::Up:
-			timesV--;
-			break;
-		case sf::Keyboard::Down:
-			timesV++;
-			break;
-		}
-		auto bounds = getBounds(img, backgroundColor);
-
-		if (bounds.left + timesH < 0) timesH = 0;
-		if (bounds.left + bounds.width + timesH >= img.pixels.size()) timesH = 0;
-
-		if (bounds.top + timesV < 0) timesV = 0;
-		if (bounds.top + bounds.height + timesV >= img.pixels[0].size()) timesV = 0;
-
-		;
-
-		reader.setImage(0, shiftHorizontal(shiftVertical(img, backgroundColor, timesV), backgroundColor, timesH));
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
+		auto img = readerOriginal.getImages()[0];
+		reader2.setImage(0, randomShift(img, 0, 255));
 		viewer->setImageIndex(0);
 	}
 }
 
-sf::IntRect TestImageTransitions::getBounds(const idx::Image &image, double backgroundColor) {
+sf::IntRect TestImageTransitions::getBounds(const idx::Image &image, int backgroundColor) {
 	sf::IntRect rect(INT_INFINITY, INT_INFINITY, 0, 0);
 	for (int y = 0; y < image.pixels.size(); y++) {
 		for (int x = 0; x < image.pixels[y].size(); x++) {
@@ -68,7 +41,7 @@ sf::IntRect TestImageTransitions::getBounds(const idx::Image &image, double back
 	return rect;
 }
 
-idx::Image TestImageTransitions::shiftLeft(idx::Image image, double backgroundColor) {
+idx::Image TestImageTransitions::shiftLeft(idx::Image image, int backgroundColor) {
 	int width  = image.pixels[0].size();
 	int height = image.pixels.size();
 
@@ -79,17 +52,17 @@ idx::Image TestImageTransitions::shiftLeft(idx::Image image, double backgroundCo
 	return image;
 }
 
-idx::Image TestImageTransitions::shiftLeft(idx::Image image, double backgroundColor, int times) {
+idx::Image TestImageTransitions::shiftLeft(idx::Image image, int backgroundColor, int times) {
 	while (times--) image = shiftLeft(image, backgroundColor);
 	return image;
 }
 
-idx::Image TestImageTransitions::shiftRight(idx::Image image, double backgroundColor, int times) {
+idx::Image TestImageTransitions::shiftRight(idx::Image image, int backgroundColor, int times) {
 	while (times--) image = shiftRight(image, backgroundColor);
 	return image;
 }
 
-idx::Image TestImageTransitions::shiftRight(idx::Image image, double backgroundColor) {
+idx::Image TestImageTransitions::shiftRight(idx::Image image, int backgroundColor) {
 	int width  = image.pixels[0].size();
 	int height = image.pixels.size();
 
@@ -99,17 +72,17 @@ idx::Image TestImageTransitions::shiftRight(idx::Image image, double backgroundC
 	return image;
 }
 
-idx::Image TestImageTransitions::shiftHorizontal(idx::Image image, double backgroundColor, int times) {
+idx::Image TestImageTransitions::shiftHorizontal(idx::Image image, int backgroundColor, int times) {
 	if (times > 0) return shiftRight(image, backgroundColor, times);
 	return shiftLeft(image, backgroundColor, -times);
 }
 
-idx::Image TestImageTransitions::shiftVertical(idx::Image image, double backgroundColor, int times) {
+idx::Image TestImageTransitions::shiftVertical(idx::Image image, int backgroundColor, int times) {
 	if (times > 0) return shiftDown(image, backgroundColor, times);
 	return shiftUp(image, backgroundColor, -times);
 }
 
-idx::Image TestImageTransitions::shiftDown(idx::Image image, double backgroundColor) {
+idx::Image TestImageTransitions::shiftDown(idx::Image image, int backgroundColor) {
 	int width  = image.pixels[0].size();
 	int height = image.pixels.size();
 
@@ -119,17 +92,17 @@ idx::Image TestImageTransitions::shiftDown(idx::Image image, double backgroundCo
 	return image;
 }
 
-idx::Image TestImageTransitions::shiftUp(idx::Image image, double backgroundColor, int times) {
+idx::Image TestImageTransitions::shiftUp(idx::Image image, int backgroundColor, int times) {
 	while (times--) image = shiftUp(image, backgroundColor);
 	return image;
 }
 
-idx::Image TestImageTransitions::shiftDown(idx::Image image, double backgroundColor, int times) {
+idx::Image TestImageTransitions::shiftDown(idx::Image image, int backgroundColor, int times) {
 	while (times--) image = shiftDown(image, backgroundColor);
 	return image;
 }
 
-idx::Image TestImageTransitions::shiftUp(idx::Image image, double backgroundColor) {
+idx::Image TestImageTransitions::shiftUp(idx::Image image, int backgroundColor) {
 	int width  = image.pixels[0].size();
 	int height = image.pixels.size();
 
@@ -140,9 +113,24 @@ idx::Image TestImageTransitions::shiftUp(idx::Image image, double backgroundColo
 	return image;
 }
 
-idx::Image TestImageTransitions::randomShift(idx::Image image, double backgroundColor) {
+idx::Image TestImageTransitions::randomShift(idx::Image image, int backgroundColor, int drawColor) {
 	auto bounds = getBounds(image, backgroundColor);
-	int  timesH = mk::Random::getInt(-bounds.left, (int) image.pixels.size() - 1 - bounds.left - bounds.width);
-	int  timesV = mk::Random::getInt(-bounds.top, (int) image.pixels[0].size() - 1 - bounds.top - bounds.height);
+
+
+	int timesH = mk::Random::getInt(-bounds.left, (int) image.pixels.size() - 1 - bounds.left - bounds.width);
+	int timesV = mk::Random::getInt(-bounds.top, (int) image.pixels[0].size() - 1 - bounds.top - bounds.height);
+	image      = addNoise(image, backgroundColor, drawColor, 5);
+
 	return shiftHorizontal(shiftVertical(image, backgroundColor, timesV), backgroundColor, timesH);
+}
+
+idx::Image TestImageTransitions::addNoise(idx::Image image, int backgroundColor, int drawColor, int percentChance) {
+	for (auto &pixel : image.pixels) {
+		for (byte &b : pixel) {
+			double value = std::exp(128 / mk::Random::getInt(backgroundColor, drawColor));
+			value        = value * value;
+			if (mk::Random::getInt(1, 100) <= percentChance) b = 255 * (byte) value;
+		}
+	}
+	return image;
 }

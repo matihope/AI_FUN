@@ -1,6 +1,7 @@
 #include "Game/Game.hpp"
 #include "IdxDigitTrainer.hpp"
 #include "Scenes/MainMenu.hpp"
+#include "Test.hpp"
 
 int main() {
 	//	IdxDigitTrainer::teachImagesAugmented("digitsAugmented.json");

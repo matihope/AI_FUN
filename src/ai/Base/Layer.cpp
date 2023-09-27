@@ -40,7 +40,7 @@ void Layer::randomizeWeightsAndBiases() {
 	int A = 6;  // 2 if sigmoid, 6 otherwise
 	for (int node = 0; node < nodes; node++)
 		for (int input = 0; input < inputs; input++)
-			weights[node][input] = mk::Random::getRandomNormalDist(0.0, 1.0) / inputs;
+			weights[node][input] = mk::Random::getNormalDist(0.0, 1.0) / inputs;
 }
 
 const std::vector<std::vector<double>> &Layer::getWeights() const { return weights; }

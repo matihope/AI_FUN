@@ -39,7 +39,7 @@ namespace mk {
 		}
 
 		template<class T>
-		static T getRandomNormalDist(T mean, T stddev) {
+		static T getNormalDist(T mean, T stddev) {
 			auto &me = Random::get();
 			return std::normal_distribution<T>(mean, stddev)(me.generator);
 		}

@@ -87,14 +87,16 @@ void IdxDigitTrainer::teachImagesAugmented(const std::string &modelPath) {
 
 	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::DifferenceSquaredCostFunction>());
 
-	idx::Reader reader("resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte");
+	idx::Reader originalReader("resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte");
+	idx::Reader reader2 = originalReader;
 	std::cerr << "Begin training: \n";
 
 	auto start = std::chrono::high_resolution_clock::now();
 	for (int i = 0; i < 20; i++) {
-		for (uint imageIndex = 0; imageIndex < reader.getImages().size(); imageIndex++)
-			reader.setImage(imageIndex, TestImageTransitions::randomShift(reader.getImages()[imageIndex], 0.0));
-		coach.train(createSetFromReader(reader, 60'000), 0.09, 128, 3);
+		for (uint imageIndex = 0; imageIndex < reader2.getImages().size(); imageIndex++)
+			reader2.setImage(imageIndex,
+			                 TestImageTransitions::randomShift(originalReader.getImages()[imageIndex], 0, 255));
+		coach.train(createSetFromReader(reader2, 60'000), 0.09, 128, 3);
 	}
 	auto stop = std::chrono::high_resolution_clock::now();
 
