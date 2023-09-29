@@ -46,7 +46,8 @@ ImageClassifierScene::ImageClassifierScene():
 	idLabel->setPosition(400.0, viewPosY + viewSize + buffer);
 	idLabel->setTextSize(32);
 
-	network = std::make_unique<ai::NeuralNetwork>(ai::NeuralNetworkManager::loadNeuralNetwork("digitsAugmented.json"));
+	network = std::make_unique<ai::NeuralNetwork>(
+		ai::NeuralNetworkManager::loadNeuralNetwork("models/digits/digitsUltimate.json"));
 	testImage(0);
 
 	prevImageBtn = addChild<Button>(font, "Previous image");
