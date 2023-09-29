@@ -55,6 +55,20 @@ namespace mk::Math {
 			return *this;
 		}
 
+		template<class X>
+		Vector2<T> &operator+=(const X &rhs) {
+			x += rhs;
+			y += rhs;
+			return *this;
+		}
+
+		template<class X>
+		Vector2<T> &operator-=(const X &rhs) {
+			x -= rhs;
+			y -= rhs;
+			return *this;
+		}
+
 		Vector2<T> operator+(const Vector2<T> &rhs) const { return { x + rhs.x, y + rhs.y }; }
 
 		Vector2<T> operator-(const Vector2<T> &rhs) const { return { x - rhs.x, y - rhs.y }; }

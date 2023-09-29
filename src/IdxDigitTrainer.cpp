@@ -43,66 +43,52 @@ void IdxDigitTrainer::teachImages(const std::string &modelPath) {
 }
 
 void IdxDigitTrainer::testImages(const std::string &modelPath) {
-	std::cerr << "Begin testing: \n";
 	auto network = ai::NeuralNetworkManager::loadNeuralNetwork(modelPath);
-
-	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
-	auto        testSet = createSetFromReader(testReader);
-	uint        good    = 0;
-	for (const auto &item : testSet) {
-		uint index = network.calculateBestIndex(item.input);
-		if (item.correctOutput[index] == 1.0) good++;
-	}
-	std::cout << "Good: " << good << ", bad: " << testSet.size() - good
-			  << ", correct: " << (double) good / testSet.size() * 100 << "%\n";
-}
-
-void IdxDigitTrainer::moreTrainer() {
-	std::cerr << "Begin teaching more!: \n";
-
-	auto        network = ai::NeuralNetworkManager::loadNeuralNetwork("digitRecognition.json");
-	idx::Reader reader("resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte");
-	auto        set = createSetFromReader(reader, 60'000);
-	std::cerr << "Begin training: \n";
-
-	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::DifferenceSquaredCostFunction>());
-	coach.train(set, 0.025, 128, 20);
-
-	ai::NeuralNetworkManager::saveNeuralNetwork(network, "digitRecognitionMore.json");
-
-	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
-	auto        testSet = createSetFromReader(testReader);
-	uint        good    = 0;
-	for (const auto &item : testSet) {
-		uint index = network.calculateBestIndex(item.input);
-		if (item.correctOutput[index] == 1.0) good++;
-	}
-	std::cout << "Good: " << good << ", bad: " << testSet.size() - good
-			  << ", correct: " << (double) good / testSet.size() * 100 << "%\n";
+	testImages(network);
 }
 
 void IdxDigitTrainer::teachImagesAugmented(const std::string &modelPath) {
-	ai::NeuralNetwork network({ 784, 800, 10 }, std::make_unique<ai::ReLU>());
+	ai::NeuralNetwork network({ 784, 200, 10 }, std::make_unique<ai::ReLU>());
+	teachImagesAugmented(network, modelPath);
+}
+
+void IdxDigitTrainer::teachImagesAugmented(ai::NeuralNetwork &network, const std::string &modelPath) {
 	network.randomizeWeightsAndBiases(0);
 
 	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::DifferenceSquaredCostFunction>());
 
 	idx::Reader originalReader("resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte");
 	idx::Reader reader2 = originalReader;
-	std::cerr << "Begin training: \n";
 
+	std::cerr << "Begin training: \n";
 	auto start = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < 20; i++) {
-		for (uint imageIndex = 0; imageIndex < reader2.getImages().size(); imageIndex++)
+
+	uint images = reader2.getImages().size();
+	for (int i = 0; i < 30; i++) {
+		for (uint imageIndex = 0; imageIndex < images; imageIndex++)
 			reader2.setImage(imageIndex,
 			                 TestImageTransitions::randomShift(originalReader.getImages()[imageIndex], 0, 255));
-		coach.train(createSetFromReader(reader2, 60'000), 0.09, 128, 3);
+		std::cerr << "Round: " << i << ":\n";
+		coach.train(createSetFromReader(reader2, images), 0.09, 128, 3);
 	}
-	auto stop = std::chrono::high_resolution_clock::now();
 
+	auto stop = std::chrono::high_resolution_clock::now();
 	std::cout << "Training time: " << std::chrono::duration_cast<std::chrono::seconds>(stop - start).count() << "s\n";
 
 
 	ai::NeuralNetworkManager::saveNeuralNetwork(network, modelPath);
 	std::cout << "Saved at: " << modelPath << '\n';
+}
+
+void IdxDigitTrainer::testImages(const ai::NeuralNetwork &network) {
+	std::cerr << "Begin testing: \n";
+	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
+	auto        testSet = createSetFromReader(testReader);
+	uint        good    = 0;
+	for (const auto &item : testSet) {
+		uint index = network.calculateBestIndex(item.input);
+		if (item.correctOutput[index] == 1.0) good++;
+	}
+	std::cout << "Good: " << good << ", bad: " << testSet.size() - good
+			  << ", correct: " << (double) good / testSet.size() * 100 << "%\n";
 }

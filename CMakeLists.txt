@@ -21,3 +21,4 @@ add_subdirectory(src)
 link_libraries(Game)
 
 add_executable(${PROJECT_NAME} main.cpp)
+add_executable(trainStuff src/Scenes/IdxTestImgRecognition/trainerMain.cpp)

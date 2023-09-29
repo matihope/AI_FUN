@@ -116,21 +116,47 @@ idx::Image TestImageTransitions::shiftUp(idx::Image image, int backgroundColor) 
 idx::Image TestImageTransitions::randomShift(idx::Image image, int backgroundColor, int drawColor) {
 	auto bounds = getBounds(image, backgroundColor);
 
+	image = addRotationAndScale(image, backgroundColor, drawColor);
 
 	int timesH = mk::Random::getInt(-bounds.left, (int) image.pixels.size() - 1 - bounds.left - bounds.width);
 	int timesV = mk::Random::getInt(-bounds.top, (int) image.pixels[0].size() - 1 - bounds.top - bounds.height);
-	image      = addNoise(image, backgroundColor, drawColor, 5);
+	image      = shiftHorizontal(shiftVertical(image, backgroundColor, timesV), backgroundColor, timesH);
+	image      = addNoise(image, backgroundColor, drawColor, 4);
 
-	return shiftHorizontal(shiftVertical(image, backgroundColor, timesV), backgroundColor, timesH);
+	return image;
 }
 
 idx::Image TestImageTransitions::addNoise(idx::Image image, int backgroundColor, int drawColor, int percentChance) {
 	for (auto &pixel : image.pixels) {
 		for (byte &b : pixel) {
-			double value = std::exp(128 / mk::Random::getInt(backgroundColor, drawColor));
-			value        = value * value;
-			if (mk::Random::getInt(1, 100) <= percentChance) b = 255 * (byte) value;
+			int value = mk::Random::getInt(backgroundColor, mk::Random::getInt(0, 128));
+			if (mk::Random::getInt(1, 100) <= percentChance) b += (byte) value;
 		}
 	}
 	return image;
+}
+
+idx::Image TestImageTransitions::addRotationAndScale(idx::Image image, int backgroundColor, int drawColor) {
+	idx::Image image2   = image;
+	float      rotation = mk::Random::getReal(-M_PIf / 6, M_PIf / 6);
+	float      scale    = mk::Random::getReal(0.6f, 1.4f);
+
+	int center = (image.pixels.size() - 1) / 2;
+
+
+	for (int y = 0; y < image.pixels.size(); y++) {
+		for (int x = 0; x < image.pixels[y].size(); x++) {
+			auto sourcePosFloat = mk::Math::rotateVector(mk::Math::Vector2f(x - center, y - center), rotation);
+			sourcePosFloat *= scale;
+			sourcePosFloat += center;
+
+			auto [source_x, source_y] = sourcePosFloat.type<int>();
+			if (0 <= source_x && source_x < image.pixels.size() && 0 <= source_y && source_y < image.pixels.size())
+				image2.pixels[y][x] = image.pixels[source_y][source_x];
+			else
+				image2.pixels[y][x] = backgroundColor;
+		}
+	}
+
+	return image2;
 }
