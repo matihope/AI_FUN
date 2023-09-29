@@ -28,7 +28,7 @@ DrawBoard::DrawBoard(uint boardSizePixels): boardSize(boardSizePixels) {
 	resetBoard->setPosition(212.5, 425.f + 5);
 	resetBoard->setAlignment(mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::TOP);
 
-	network = std::make_unique<ai::NeuralNetwork>(ai::NeuralNetworkManager::loadNeuralNetwork("digitsAugmented.json"));
+	network = std::make_unique<ai::NeuralNetwork>(ai::NeuralNetworkManager::loadNeuralNetwork("digitsUltimate.json"));
 }
 
 void DrawBoard::onUpdate(float dt) {
@@ -72,6 +72,7 @@ void DrawBoard::onUpdate(float dt) {
 
 	if (resetBoard->isPressed()) {
 		for (auto &sprite : batch->getSprites()) sprite.setColor(sf::Color::White);
+		boardData.clear();
 		boardData.resize(boardSize * boardSize, 0.0);
 		aiAnswer->setText("Empty board");
 	}

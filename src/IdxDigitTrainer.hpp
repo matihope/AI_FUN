@@ -17,8 +17,10 @@ public:
 
 	static void teachImages(const std::string &modelPath);
 	static void teachImagesAugmented(const std::string &modelPath);
+	static void teachImagesAugmented(ai::NeuralNetwork &network, const std::string &modelPath);
+
 	static void testImages(const std::string &modelPath);
-	static void moreTrainer();
+	static void testImages(const ai::NeuralNetwork &network);
 };
 
 

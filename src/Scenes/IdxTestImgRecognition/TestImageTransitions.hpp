@@ -34,8 +34,9 @@ private:
 	static idx::Image shiftDown(idx::Image image, int backgroundColor);
 
 
-	IdxImageViewer *viewer;
-	idx::Reader     readerOriginal, reader2;
+	IdxImageViewer   *viewer;
+	idx::Reader       readerOriginal, reader2;
+	static idx::Image addRotationAndScale(idx::Image image, int color, int i);
 };
 
 
