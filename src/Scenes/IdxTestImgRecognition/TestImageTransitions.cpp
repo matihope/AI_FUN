@@ -9,23 +9,6 @@
 
 #include <Math/Math.hpp>
 
-TestImageTransitions::TestImageTransitions():
-	readerOriginal("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte"),
-	reader2(readerOriginal) {
-	setScale(mk::Game::get().getViewportSize().x / 28.0, mk::Game::get().getViewportSize().y / 28.0);
-
-	viewer = addChild<IdxImageViewer>(reader2);
-	viewer->setImageIndex(0);
-}
-
-void TestImageTransitions::handleEvent(const sf::Event &event) {
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
-		auto img = readerOriginal.getImages()[0];
-		reader2.setImage(0, randomShift(img, 0, 255));
-		viewer->setImageIndex(0);
-	}
-}
-
 sf::IntRect TestImageTransitions::getBounds(const idx::Image &image, int backgroundColor) {
 	sf::IntRect rect(INT_INFINITY, INT_INFINITY, 0, 0);
 	for (int y = 0; y < image.pixels.size(); y++) {

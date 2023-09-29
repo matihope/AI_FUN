@@ -28,7 +28,8 @@ DrawBoard::DrawBoard(uint boardSizePixels): boardSize(boardSizePixels) {
 	resetBoard->setPosition(212.5, 425.f + 5);
 	resetBoard->setAlignment(mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::TOP);
 
-	network = std::make_unique<ai::NeuralNetwork>(ai::NeuralNetworkManager::loadNeuralNetwork("digitsUltimate.json"));
+	network = std::make_unique<ai::NeuralNetwork>(
+		ai::NeuralNetworkManager::loadNeuralNetwork("models/digits/digitsUltimate.json"));
 }
 
 void DrawBoard::onUpdate(float dt) {

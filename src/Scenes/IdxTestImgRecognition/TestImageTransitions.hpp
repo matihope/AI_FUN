@@ -10,8 +10,6 @@
 
 class TestImageTransitions: public mk::WorldEntity {
 public:
-	TestImageTransitions();
-
 	static idx::Image  randomShift(idx::Image image, int backgroundColor, int drawColor);
 	static sf::IntRect getBounds(const idx::Image &image, int backgroundColor);
 
@@ -20,10 +18,9 @@ public:
 	static idx::Image shiftHorizontal(idx::Image image, int backgroundColor, int times);
 	static idx::Image shiftVertical(idx::Image image, int backgroundColor, int times);
 	static idx::Image addNoise(idx::Image image, int backgroundColor, int drawColor, int percentChance);
+	static idx::Image addRotationAndScale(idx::Image image, int color, int i);
 
 private:
-	void handleEvent(const sf::Event &event) override;
-
 	static idx::Image shiftLeft(idx::Image image, int backgroundColor);
 	static idx::Image shiftLeft(idx::Image image, int backgroundColor, int times);
 	static idx::Image shiftRight(idx::Image image, int backgroundColor, int times);
@@ -32,11 +29,6 @@ private:
 	static idx::Image shiftUp(idx::Image image, int backgroundColor, int times);
 	static idx::Image shiftDown(idx::Image image, int backgroundColor, int times);
 	static idx::Image shiftDown(idx::Image image, int backgroundColor);
-
-
-	IdxImageViewer   *viewer;
-	idx::Reader       readerOriginal, reader2;
-	static idx::Image addRotationAndScale(idx::Image image, int color, int i);
 };
 
 
