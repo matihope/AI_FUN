@@ -5,6 +5,7 @@
 #include "NeuralNetwork.hpp"
 
 #include <Random/Random.hpp>
+#include <utility>
 
 ai::NeuralNetwork::NeuralNetwork(std::vector<uint>                   newLayerSizes,
                                  std::unique_ptr<ActivatingFunction> activatingFunction):
@@ -20,10 +21,14 @@ ai::NeuralNetworkCalculationState ai::NeuralNetwork::getCalculations(const std::
 	state.activations.push_back(inputs);
 	state.weightedInputs.emplace_back();
 
-	for (uint layerId = 1; layerId < layers.size(); layerId++) {
+	for (uint layerId = 1; layerId < layers.size() - 1; layerId++) {
 		state.weightedInputs.push_back(layers[layerId].calculate(state.activations.back()));
 		state.activations.push_back(activatingFunction->calculate(state.weightedInputs.back()));
 	}
+
+	// for the last layer
+	state.weightedInputs.push_back(layers[layers.size() - 1].calculate(state.activations.back()));
+	state.activations.push_back(lastLayerActivatingFunction->calculate(state.weightedInputs.back()));
 
 	return state;
 }
@@ -53,16 +58,16 @@ ai::ActivatingFunction *ai::NeuralNetwork::getActivatingFunction() const { retur
 
 const std::vector<uint> &ai::NeuralNetwork::getLayerSizes() const { return layerSizes; }
 
-Layer &ai::NeuralNetwork::getLayer(uint index) { return layers[index]; }
+ai::Layer &ai::NeuralNetwork::getLayer(uint index) { return layers[index]; }
 
 void ai::NeuralNetwork::randomizeWeightsAndBiases(uint64_t seed) {
 	mk::Random::initSeed(seed);
 	for (auto &layer : layers) layer.randomizeWeightsAndBiases();
 }
 
-std::vector<Layer> &ai::NeuralNetwork::getLayers() { return layers; }
+std::vector<ai::Layer> &ai::NeuralNetwork::getLayers() { return layers; }
 
-const std::vector<Layer> &ai::NeuralNetwork::getLayers() const { return layers; }
+const std::vector<ai::Layer> &ai::NeuralNetwork::getLayers() const { return layers; }
 
 std::vector<double> ai::NeuralNetwork::calculate(const std::vector<double> &inputs) const {
 	return getCalculations(inputs).activations.back();
@@ -79,4 +84,15 @@ uint ai::NeuralNetwork::calculateBestIndex(const std::vector<double> &inputs) co
 		}
 	}
 	return maxIndex;
+}
+
+ai::ActivatingFunction *ai::NeuralNetwork::getLastLayerActivatingFunction() const {
+	if (lastLayerActivatingFunction != nullptr) return lastLayerActivatingFunction.get();
+	return getActivatingFunction();
+}
+
+ai::NeuralNetwork::NeuralNetwork(std::vector<uint> layerSizes, std::unique_ptr<ActivatingFunction> activatingFunction,
+                                 std::unique_ptr<ActivatingFunction> customLastLayerActivatingFunction):
+	ai::NeuralNetwork(std::move(layerSizes), std::move(activatingFunction)) {
+	lastLayerActivatingFunction = std::move(customLastLayerActivatingFunction);
 }

@@ -28,3 +28,30 @@ double ai::ReLU::derivative(double input) const {
 	if (input < 0) return 0;
 	return 1;
 }
+
+double ai::SoftMax::calculate(double input) const {
+	// division happens in other function
+	return std::exp(input);
+}
+
+std::vector<double> ai::SoftMax::calculate(const std::vector<double> &inputs) const {
+	double denominator = 0.0;
+	for (auto input : inputs) denominator += std::exp(input);
+
+	std::vector<double> outputs;
+	for (auto input : inputs) outputs.push_back(calculate(input) / denominator);
+	return outputs;
+}
+
+//(ei/(ei + ej + ek))'' = ei * ((ei + ej + ek) - ei) / (ei + ej + ek)^2
+//	= (ei / (ei + ej + ek)) * ()
+
+double ai::SoftMax::derivative(double input) const { return input * (1.0 - input); }
+
+std::vector<double> ai::SoftMax::derivative(const std::vector<double> &inputs) const {
+	auto calculations = calculate(inputs);
+	
+	std::vector<double> outputs;
+	for (auto input : calculations) outputs.push_back(derivative(input));
+	return outputs;
+}

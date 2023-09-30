@@ -18,6 +18,8 @@ namespace ai {
 	class NeuralNetwork {
 	public:
 		NeuralNetwork(std::vector<uint> layerSizes, std::unique_ptr<ActivatingFunction> activatingFunction);
+		NeuralNetwork(std::vector<uint> layerSizes, std::unique_ptr<ActivatingFunction> activatingFunction,
+		              std::unique_ptr<ActivatingFunction> customLastLayerActivatingFunction);
 
 		[[nodiscard]] NeuralNetworkCalculationState getCalculations(const std::vector<double> &inputs) const;
 		[[nodiscard]] std::vector<double>           calculate(const std::vector<double> &inputs) const;
@@ -34,12 +36,13 @@ namespace ai {
 		void                 setBias(uint layerIndex, uint nodeIndex, double value);
 
 		[[nodiscard]] ActivatingFunction *getActivatingFunction() const;
+		[[nodiscard]] ActivatingFunction *getLastLayerActivatingFunction() const;
 
 		void randomizeWeightsAndBiases(uint64_t seed);
 
 	private:
 		std::vector<uint>                   layerSizes;
-		std::unique_ptr<ActivatingFunction> activatingFunction;
+		std::unique_ptr<ActivatingFunction> activatingFunction, lastLayerActivatingFunction;
 		std::vector<Layer>                  layers;
 	};
 }  // namespace ai

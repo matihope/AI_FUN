@@ -23,13 +23,19 @@ DrawBoard::DrawBoard(uint boardSizePixels): boardSize(boardSizePixels) {
 	aiAnswer->setPosition(800.f - (800.f - 400.f - 25.f) / 2.f, 212.5f);
 	aiAnswer->setText("Draw a digit");
 
+	aiOther = addChild<mk::GUI::Label>(mk::Game::get().getFont());
+	aiOther->setAlignment(mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::TOP);
+	auto aiAnswerBounds = aiAnswer->getBounds();
+	aiOther->setPosition(800.f - (800.f - 400.f - 25.f) / 2.f, aiAnswerBounds.top + aiAnswerBounds.height + 15);
+	aiOther->setColor(sf::Color(120, 120, 120));
+
 	resetBoard = addChild<mk::GUI::Button>(mk::Game::get().getFont(), "Reset board");
 	resetBoard->setMinSpaceBetween({ 15, 15 });
 	resetBoard->setPosition(212.5, 425.f + 5);
 	resetBoard->setAlignment(mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::TOP);
 
 	network = std::make_unique<ai::NeuralNetwork>(
-		ai::NeuralNetworkManager::loadNeuralNetwork("models/digits/digitsUltimate.json"));
+		ai::NeuralNetworkManager::loadNeuralNetwork("models/digits/digitsUltimateSoftMax.json"));
 }
 
 void DrawBoard::onUpdate(float dt) {
@@ -63,7 +69,19 @@ void DrawBoard::onUpdate(float dt) {
 			lastMousePos       = intPos;
 			hasDrawnLastUpdate = true;
 
-			aiAnswer->setText("AI guess: " + std::to_string(network->calculateBestIndex(boardData)));
+			auto outs = network->calculate(boardData);
+
+			std::vector<std::pair<double, uint>> sorted;
+			for (uint i = 0; i < outs.size(); i++) sorted.emplace_back(outs[i], i);
+			std::sort(sorted.begin(), sorted.end(), [&](const auto a, const auto b) { return a.first > b.first; });
+
+			aiAnswer->setText("AI guess: " + std::to_string(sorted.front().second));
+
+			std::string other;
+			for (auto &vert : sorted)
+				other += std::to_string(vert.second) + ": " + std::to_string(vert.first * 100) + "%\n";
+			aiOther->setText(other);
+
 		} else {
 			hasDrawnLastUpdate = false;
 		}
@@ -76,6 +94,7 @@ void DrawBoard::onUpdate(float dt) {
 		boardData.clear();
 		boardData.resize(boardSize * boardSize, 0.0);
 		aiAnswer->setText("Empty board");
+		aiOther->setText("");
 	}
 }
 

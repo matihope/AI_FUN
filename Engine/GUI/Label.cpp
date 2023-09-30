@@ -24,14 +24,17 @@ namespace mk::GUI {
 	}
 
 	void Label::setAlignment(HAlignment newHAlignment, VAlignment newVAlignment) {
-		m_halignment            = newHAlignment;
-		m_valignment            = newVAlignment;
-		int          textWidth  = (int) m_text.getGlobalBounds().width;
-		int          textHeight = (int) m_text.getGlobalBounds().height;
+		m_halignment   = newHAlignment;
+		m_valignment   = newVAlignment;
+		int textWidth  = (int) m_text.getGlobalBounds().width;
+		int textHeight = (int) m_text.getGlobalBounds().height;
+
+		int newlines = (int) std::ranges::count(m_string, '\n');
+		//		textHeight *= newlines + 1;
+
 		sf::Vector2f newPos(-m_text.getLocalBounds().left, -m_text.getLocalBounds().top);
 		switch (m_halignment) {
 		case HAlignment::LEFT:
-			// nothing to do
 			break;
 		case HAlignment::MIDDLE:
 			newPos.x -= (float) textWidth / 2;
@@ -42,7 +45,7 @@ namespace mk::GUI {
 		}
 		switch (m_valignment) {
 		case VAlignment::TOP:
-			// nothing to do
+			//			newPos.y += (float) textHeight;
 			break;
 		case VAlignment::CENTER:
 			newPos.y -= (float) textHeight / 2;
@@ -74,7 +77,12 @@ namespace mk::GUI {
 
 	void Label::setColor(const sf::Color newColor) { m_text.setFillColor(newColor); }
 
-	sf::FloatRect Label::getBounds() const { return m_text.getGlobalBounds(); }
+	sf::FloatRect Label::getBounds() const {
+		auto bounds = m_text.getGlobalBounds();
+		bounds.left += getPosition().x;
+		bounds.top += getPosition().y;
+		return bounds;
+	}
 
 	const std::string &Label::getText() const { return m_string; }
 

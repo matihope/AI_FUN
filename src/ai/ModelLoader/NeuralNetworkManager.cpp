@@ -15,7 +15,9 @@ bool ai::NeuralNetworkManager::saveNeuralNetwork(const ai::NeuralNetwork &networ
 		bridge.data[layerStr]["biases"]  = layers[layerIndex].getBiases();
 		bridge.data[layerStr]["weights"] = layers[layerIndex].getWeights();
 	}
-	bridge.data["activationFunction"] = network.getActivatingFunction()->getName();
+
+	bridge.data["activationFunction"]          = network.getActivatingFunction()->getName();
+	bridge.data["lastLayerActivationFunction"] = network.getLastLayerActivatingFunction()->getName();
 
 	bridge.saveCurrentState();
 
@@ -34,7 +36,18 @@ ai::NeuralNetwork ai::NeuralNetworkManager::loadNeuralNetwork(const std::string 
 			activationFunction = std::make_unique<ai::Sigmoid>();
 	}
 
-	NeuralNetwork network(bridge.data["layerSizes"], std::move(activationFunction));
+	std::unique_ptr<ai::ActivatingFunction> lastLayerActivationFunction = std::make_unique<ai::ReLU>();
+	if (bridge.data.contains("lastLayerActivationFunction")) {
+		if (bridge.data["lastLayerActivationFunction"] == "ReLU")
+			lastLayerActivationFunction = std::make_unique<ai::ReLU>();
+		else if (bridge.data["lastLayerActivationFunction"] == "Sigmoid")
+			lastLayerActivationFunction = std::make_unique<ai::Sigmoid>();
+		else if (bridge.data["lastLayerActivationFunction"] == "SoftMax")
+			lastLayerActivationFunction = std::make_unique<ai::SoftMax>();
+	}
+
+	NeuralNetwork network(bridge.data["layerSizes"], std::move(activationFunction),
+	                      std::move(lastLayerActivationFunction));
 
 	for (uint layerIndex = 1; layerIndex < network.getLayers().size(); layerIndex++) {
 		auto                             layerStr = std::to_string(layerIndex);

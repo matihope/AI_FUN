@@ -19,5 +19,5 @@ namespace mk {
 		auto &me     = Random::get();
 		me.generator = std::default_random_engine(me.randomDevice());
 	}
-	
+
 }  // namespace mk

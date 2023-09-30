@@ -4,6 +4,7 @@
 
 #include "NeuralNetworkCoach.hpp"
 
+#include "../../idx/Reader.hpp"
 #include "LayerGradient.hpp"
 
 #include <algorithm>
@@ -36,27 +37,24 @@ namespace ai {
 
 		for (auto &thr : threads) thr.join();
 
+		//		for (const auto &item : trainingSet) updateGradients(item);
+
 
 		// Apply them on the neural network
+		//		std::vector<ai::Layer> layers = neuralNetwork.getLayers();
+		//		double initial = cost(trainingSet);
 		applyGradients(gradients, learnRate / (double) trainingSet.size());
-	}
+		//		std::cerr << "Change: " << cost(trainingSet) - initial << '\n';
 
-	double ai::NeuralNetworkCoach::cost(const ai::TrainingItem &item) const {
-		auto   calculationState = neuralNetwork.getCalculations(item.input);
-		double sum              = 0;
+		//		testImages(neuralNetwork);
 
-		for (uint i = 0; i < calculationState.activations.size(); i++)
-			sum += costFunction->calculate(calculationState.activations.back()[i], item.correctOutput[i]);
-
-		return sum;
-	}
-
-	double ai::NeuralNetworkCoach::cost(const ai::TrainingSet &set) const {
-		double totalCost = 0;
-
-		for (const auto &item : set) totalCost += cost(item);
-
-		return totalCost / (double) set.size();
+		//		for (int layerId = 1; layerId < layers.size(); layerId++) {
+		//			auto &layer = neuralNetwork.getLayers()[layerId];
+		//			for (int nodeId = 0; nodeId < layer.getNodeCount(); ++nodeId)
+		//				std::cout << layerId << "," << nodeId
+		//						  << ", diff in bias: " << layers[layerId].getBias(nodeId) - layer.getBias(nodeId) <<
+		//'\n';
+		//		}
 	}
 
 	void ai::NeuralNetworkCoach::updateGradients(const TrainingItem &item) {
@@ -76,9 +74,9 @@ namespace ai {
 
 	void ai::NeuralNetworkCoach::updateGradient(const std::vector<double> &nodeValues, LayerGradient &gradient,
 	                                            std::vector<double> &activations) {
-		for (uint node = 0; node < gradient.getLayer().getNodesCount(); node++) {
+		for (uint node = 0; node < gradient.getLayer().getNodeCount(); node++) {
 			mut[gradient.getLayer().getId()][node].lock();
-			for (uint inputNode = 0; inputNode < gradient.getLayer().getInputNodesCount(); inputNode++)
+			for (uint inputNode = 0; inputNode < gradient.getLayer().getInputNodeCount(); inputNode++)
 				gradient.weightGradient[node][inputNode] += nodeValues[node] * activations[inputNode];
 			gradient.biasGradient[node] += nodeValues[node];
 			mut[gradient.getLayer().getId()][node].unlock();
@@ -92,19 +90,30 @@ namespace ai {
 	std::vector<double>
 		ai::NeuralNetworkCoach::calculateOutputLayerNodeValues(ai::NeuralNetworkCalculationState &outputs,
 	                                                           const ai::TrainingItem            &item) {
+		auto activatingFunction = neuralNetwork.getLastLayerActivatingFunction();
+
 		std::vector<double> nodeValues;
-		for (int i = 0; i < neuralNetwork.getLayerSizes().back(); i++) {
-			auto costDerivative = costFunction->derivative(outputs.activations.back()[i], item.correctOutput[i]);
-			auto activationDerivative
-				= neuralNetwork.getActivatingFunction()->derivative(outputs.weightedInputs.back()[i]);
-			nodeValues.push_back(costDerivative * activationDerivative);
+
+
+		if (activatingFunction->getName() == "SoftMax" && costFunction->getName() == "CrossEntropy") {
+			for (int i = 0; i < neuralNetwork.getLayerSizes().back(); i++)
+				nodeValues.push_back(outputs.activations.back()[i] - item.correctOutput[i]);
+			return nodeValues;
 		}
+
+		auto activatingFunctionDerivatives = activatingFunction->derivative(outputs.weightedInputs.back());
+		auto costFunctionDerivatives       = costFunction->derivative(outputs.activations.back(), item.correctOutput);
+
+		for (int i = 0; i < neuralNetwork.getLayerSizes().back(); i++)
+			nodeValues.push_back(activatingFunctionDerivatives[i] * costFunctionDerivatives[i]);
 		return nodeValues;
 	}
 
 	std::vector<double> ai::NeuralNetworkCoach::calculateHiddenLayerNodeValues(
 		uint layerIndex, ai::NeuralNetworkCalculationState &outputs, std::vector<double> &nodeValues) const {
 		std::vector<double> newNodeValues;
+
+		auto derivatives = neuralNetwork.getActivatingFunction()->derivative(outputs.weightedInputs[layerIndex]);
 
 		for (uint nodeIndex = 0; nodeIndex < neuralNetwork.getLayerSizes()[layerIndex]; nodeIndex++) {
 			double newNodeValue = 0.0;
@@ -113,12 +122,28 @@ namespace ai {
 				auto weight = neuralNetwork.getWeight(layerIndex + 1, nodeIndexInPrevLayer, nodeIndex);
 				newNodeValue += weight * nodeValues[nodeIndexInPrevLayer];
 			}
-			newNodeValue
-				*= neuralNetwork.getActivatingFunction()->derivative(outputs.weightedInputs[layerIndex][nodeIndex]);
-			newNodeValues.push_back(newNodeValue);
+			newNodeValues.push_back(newNodeValue * derivatives[nodeIndex]);
 		}
 
 		return newNodeValues;
+	}
+
+	double ai::NeuralNetworkCoach::cost(const ai::TrainingItem &item) const {
+		auto   calculationState = neuralNetwork.getCalculations(item.input);
+		double sum              = 0;
+
+		for (uint i = 0; i < calculationState.activations.size(); i++)
+			sum += costFunction->calculate(calculationState.activations.back()[i], item.correctOutput[i]);
+
+		return sum;
+	}
+
+	double ai::NeuralNetworkCoach::cost(const ai::TrainingSet &set) const {
+		double totalCost = 0;
+
+		for (const auto &item : set) totalCost += cost(item);
+
+		return totalCost / (double) set.size();
 	}
 
 	double NeuralNetworkCoach::train(TrainingSet trainingSet, double trainingFactor, uint batchSize, uint epochs,

@@ -28,6 +28,7 @@ private:
 	mk::SpriteBatch *batch;
 	uint             boardSize;
 	mk::GUI::Label  *aiAnswer;
+	mk::GUI::Label  *aiOther;
 	mk::GUI::Button *resetBoard;
 
 	std::vector<double> boardData;

@@ -11,29 +11,43 @@
 namespace ai {
 	class ActivatingFunction {
 	public:
-		virtual ~ActivatingFunction()                                   = default;
-		[[nodiscard]] virtual double      calculate(double input) const = 0;
-		[[nodiscard]] std::vector<double> calculate(const std::vector<double> &inputs) const;
-		[[nodiscard]] virtual double      derivative(double input) const = 0;
-		[[nodiscard]] std::vector<double> derivative(const std::vector<double> &inputs) const;
+		virtual ~ActivatingFunction() = default;
+		[[nodiscard]] virtual std::vector<double> calculate(const std::vector<double> &inputs) const;
+		[[nodiscard]] virtual std::vector<double> derivative(const std::vector<double> &inputs) const;
 
 		[[nodiscard]] virtual const std::string getName() const = 0;
+
+	private:
+		[[nodiscard]] virtual double calculate(double input) const  = 0;
+		[[nodiscard]] virtual double derivative(double input) const = 0;
 	};
 
 	class Sigmoid: public ActivatingFunction {
-	public:
 		[[nodiscard]] double calculate(double input) const override;
 		[[nodiscard]] double derivative(double input) const override;
 
+	public:
 		[[nodiscard]] const std::string getName() const override { return "Sigmoid"; }
 	};
 
 	class ReLU: public ActivatingFunction {
-	public:
 		[[nodiscard]] double calculate(double input) const override;
 		[[nodiscard]] double derivative(double input) const override;
 
+	public:
 		[[nodiscard]] const std::string getName() const override { return "ReLU"; }
+	};
+
+	class SoftMax: public ActivatingFunction {
+	public:
+		[[nodiscard]] std::vector<double> calculate(const std::vector<double> &inputs) const override;
+		[[nodiscard]] std::vector<double> derivative(const std::vector<double> &inputs) const override;
+
+		[[nodiscard]] const std::string getName() const override { return "SoftMax"; }
+
+	private:
+		[[nodiscard]] double calculate(double input) const override;
+		[[nodiscard]] double derivative(double input) const override;
 	};
 }  // namespace ai
 

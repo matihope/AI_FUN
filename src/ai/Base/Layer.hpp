@@ -8,42 +8,34 @@
 #include <cassert>
 #include <vector>
 
-#define ASSERT_WITH_MSG(cond, msg)  \
-	do {                            \
-		if (!(cond)) {              \
-			std::ostringstream str; \
-			str << msg;             \
-			std::cerr << str.str(); \
-			std::abort();           \
-		}                           \
-	} while (0)
-
 typedef unsigned int uint;
 
-class Layer {
-public:
-	Layer(uint nodes, uint inputs, uint id);
-	[[nodiscard]] std::vector<double>                     calculate(const std::vector<double> &inputs) const;
-	[[nodiscard]] double                                  getWeight(uint node, uint inputNode) const;
-	void                                                  setWeight(uint node, uint inputNode, double newValue);
-	[[nodiscard]] double                                  getBias(uint node) const;
-	void                                                  setBias(uint node, double newValue);
-	[[nodiscard]] const std::vector<std::vector<double>> &getWeights() const;
-	[[nodiscard]] const std::vector<double>              &getBiases() const;
+namespace ai {
+	class Layer {
+	public:
+		Layer(uint nodes, uint inputs, uint id);
+		[[nodiscard]] std::vector<double>                     calculate(const std::vector<double> &inputs) const;
+		[[nodiscard]] double                                  getWeight(uint node, uint inputNode) const;
+		void                                                  setWeight(uint node, uint inputNode, double newValue);
+		[[nodiscard]] double                                  getBias(uint node) const;
+		void                                                  setBias(uint node, double newValue);
+		[[nodiscard]] const std::vector<std::vector<double>> &getWeights() const;
+		[[nodiscard]] const std::vector<double>              &getBiases() const;
 
-	void randomizeWeightsAndBiases();
+		void randomizeWeightsAndBiases();
 
-	[[nodiscard]] uint getInputNodesCount() const;
-	[[nodiscard]] uint getNodesCount() const;
+		[[nodiscard]] uint getInputNodeCount() const;
+		[[nodiscard]] uint getNodeCount() const;
 
-	[[nodiscard]] uint getId() const;
+		[[nodiscard]] uint getId() const;
 
-private:
-	uint id;
+	private:
+		uint id;
 
-	uint                             nodes, inputs;
-	std::vector<std::vector<double>> weights;
-	std::vector<double>              biases;
-};
+		uint                             nodes, inputs;
+		std::vector<std::vector<double>> weights;
+		std::vector<double>              biases;
+	};
+}  // namespace ai
 
 #endif  // AI_FUN_SRC_AI_BASE_LAYER_HPP_
