@@ -34,6 +34,9 @@ namespace ai {
 		//		double y = correct;
 		//		if (x == 0 || x == 1) return 0;
 		//		return (-x + y) / (x * (x - 1));
-		Softmax(input) * (1 - Softmax(input)) *
+		// Softmax(input) * (1 - Softmax(input)) *
+
+
+		return 1;
 	}
 }  // namespace ai

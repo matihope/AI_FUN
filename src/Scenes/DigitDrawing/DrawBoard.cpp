@@ -99,7 +99,3 @@ void DrawBoard::onUpdate(float dt) {
 }
 
 const std::vector<double> &DrawBoard::getBoardAsData() const { return boardData; }
-
-void DrawBoard::handleEvent(const sf::Event &event) {
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) mk::Game::get().popScene();
-}

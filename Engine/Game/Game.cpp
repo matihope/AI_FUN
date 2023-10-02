@@ -42,12 +42,13 @@ namespace mk {
 			sf::VideoMode(m_game_settings.data["window"]["width"], m_game_settings.data["window"]["height"]),
 			std::string(m_game_settings.data["window"]["title"]), sf::Style::Default);
 		m_window.setVerticalSyncEnabled(m_game_settings.data["window"]["vsync"]);
-		setViewportSize({ m_game_settings.data["viewport"]["width"], m_game_settings.data["viewport"]["height"] });
+		setViewportSize(
+			sf::Vector2u(m_game_settings.data["viewport"]["width"], m_game_settings.data["viewport"]["height"]));
 
 		setPrintFPS(m_game_settings.data["debug"]["printFPS"]);
 		m_physics_update_call_freq = 1.f / int(m_game_settings.data["engine"]["physicsUpdateCallFreq"]);
 		if (!m_font.loadFromFile(m_game_settings.data["engine"]["fontPath"]))
-			std::cout << "Failed to load font" << std::endl;
+			std::cout << "Failed to load the font" << '\n';
 		Debug::setDebugCollisionDraw(m_game_settings.data["debug"]["drawCollisionShapes"]);
 
 		m_fps_label.setFont(getFont());
@@ -141,7 +142,8 @@ namespace mk {
 			case sf::Event::KeyPressed:
 				switch (event.key.code) {
 				case sf::Keyboard::Tilde:
-					stop();
+					popScene();
+					if (m_scenes_stack.empty()) stop();
 					break;
 				default:
 					// skip any other case
@@ -206,4 +208,6 @@ namespace mk {
 		updateViewportSize();
 		m_fps_label.setPosition(newSize.x - 1, 1);
 	}
+
+	void Game::setViewportSize(sf::Vector2u newSize) { setViewportSize(sf::Vector2f(newSize.x, newSize.y)); }
 }  // namespace mk

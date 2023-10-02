@@ -6,6 +6,7 @@
 
 #include "Game/Game.hpp"
 #include "Scenes/DigitDrawing/DrawBoard.hpp"
+#include "Scenes/FlappyBird/FlappyLevel.hpp"
 #include "Scenes/IdxTestImgRecognition/ImageClassifierScene.hpp"
 #include "Scenes/IdxTestImgRecognition/TestImageTransitions.hpp"
 
@@ -25,24 +26,16 @@ MainMenu::MainMenu() {
 	draw->setMinSize({ 333, -1 });
 	draw->setMinSpaceBetween({ minBuffer, minBuffer });
 	draw->setPosition(400, recognize->getBounds().top + recognize->getBounds().height + minBuffer * 2);
+
+	playFlappy = addChild<mk::GUI::Button>(font, "Play Flappy Bird");
+	playFlappy->setAlignment(mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::TOP);
+	playFlappy->setMinSize({ 333, -1 });
+	playFlappy->setMinSpaceBetween({ minBuffer, minBuffer });
+	playFlappy->setPosition(400, draw->getBounds().top + draw->getBounds().height + minBuffer * 2);
 }
 
 void MainMenu::onUpdate(float dt) {
 	if (recognize->isPressed()) mk::Game::get().addScene(std::make_unique<ImageClassifierScene>());
 	if (draw->isPressed()) mk::Game::get().addScene(std::make_unique<DrawBoard>());
-}
-
-void MainMenu::handleEvent(const sf::Event &event) {
-	switch (event.type) {
-	case sf::Event::KeyPressed:
-		switch (event.key.code) {
-		case sf::Keyboard::Escape:
-			mk::Game::get().stop();
-		default:
-			break;
-		}
-		break;
-	default:
-		break;
-	}
+	if (playFlappy->isPressed()) mk::Game::get().addScene(std::make_unique<FlappyLevel>());
 }

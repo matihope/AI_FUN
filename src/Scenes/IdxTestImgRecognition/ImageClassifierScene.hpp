@@ -20,7 +20,6 @@ public:
 
 private:
 	void onPhysicsUpdate(float dt) override;
-	void handleEvent(const sf::Event &event) override;
 
 	std::unique_ptr<ai::NeuralNetwork> network;
 

@@ -96,7 +96,7 @@ namespace mk::Math {
 
 		template<class X>
 		X as() const {
-			return { x, y };
+			return X(x, y);
 		}
 
 		friend std::ostream &operator<<(std::ostream &stream, const Vector2<T> &vector) {

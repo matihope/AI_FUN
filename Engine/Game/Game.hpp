@@ -59,6 +59,7 @@ namespace mk {
 		sf::Vector2u      getWindowSize();
 		sf::Vector2u      getViewportSize();
 		void              setViewportSize(sf::Vector2f newSize);
+		void              setViewportSize(sf::Vector2u newSize);
 		sf::RenderWindow &getRenderWindow();
 		bool              isWindowActive() const;
 		void              addScene(std::unique_ptr<WorldEntity> newScene);

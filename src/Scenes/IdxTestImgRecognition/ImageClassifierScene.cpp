@@ -106,7 +106,3 @@ void ImageClassifierScene::onPhysicsUpdate(float dt) {
 void ImageClassifierScene::nextImage() { testImage(++currImg); }
 
 void ImageClassifierScene::prevImage() { testImage(--currImg); }
-
-void ImageClassifierScene::handleEvent(const sf::Event &event) {
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) mk::Game::get().popScene();
-}

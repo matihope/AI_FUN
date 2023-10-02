@@ -14,9 +14,8 @@ public:
 
 private:
 	void onUpdate(float dt) override;
-	void handleEvent(const sf::Event &event) override;
 
-	mk::GUI::Button *recognize, *draw;
+	mk::GUI::Button *recognize, *draw, *playFlappy;
 };
 
 

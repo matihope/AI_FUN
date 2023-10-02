@@ -20,7 +20,6 @@ public:
 
 private:
 	void onUpdate(float dt) override;
-	void handleEvent(const sf::Event &event) override;
 
 	mk::Math::Vector2i lastMousePos{ -1, -1 };
 	bool               hasDrawnLastUpdate{};
