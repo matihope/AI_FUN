@@ -2,7 +2,7 @@
 // Created by mateusz on 9/16/23.
 //
 
-#include "Vector2f.hpp"
+#include "Vector2.hpp"
 
 namespace mk::Math {
 	Vector2f normalizeVector(const Vector2f vector) {

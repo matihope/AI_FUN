@@ -19,8 +19,8 @@ set(ENGINE_SOURCES
         Nodes/RayShape.hpp
         WorldEntity/BoxyWorldEntity.cpp
         WorldEntity/BoxyWorldEntity.hpp
-        Math/Vector2f.cpp
-        Math/Vector2f.hpp
+        Math/Vector2.cpp
+        Math/Vector2.hpp
         Math/Geometry.cpp
         Math/Geometry.hpp
         Math/Base.cpp
@@ -29,6 +29,8 @@ set(ENGINE_SOURCES
         Math/Matrix.hpp
         Random/Random.cpp
         Random/Random.hpp
+        Utils/Utils.hpp
+        Utils/Rect.hpp
 )
 
 add_library(Engine ${ENGINE_SOURCES})

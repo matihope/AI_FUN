@@ -2,8 +2,8 @@
 // Created by mateusz on 9/16/23.
 //
 
-#ifndef AI_FUN_ENGINE_MATH_VECTOR2F_HPP_
-#define AI_FUN_ENGINE_MATH_VECTOR2F_HPP_
+#ifndef AI_FUN_ENGINE_MATH_VECTOR2_HPP_
+#define AI_FUN_ENGINE_MATH_VECTOR2_HPP_
 
 #include <cmath>
 #include <ostream>
@@ -112,4 +112,4 @@ namespace mk::Math {
 	Vector2f normalizeVector(Vector2f vector);
 	Vector2f rotateVector(Vector2f vector, float angleRads);
 }  // namespace mk::Math
-#endif  // AI_FUN_ENGINE_MATH_VECTOR2F_HPP_
+#endif  // AI_FUN_ENGINE_MATH_VECTOR2_HPP_

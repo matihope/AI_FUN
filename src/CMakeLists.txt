@@ -25,7 +25,9 @@ add_library(Game
         Scenes/FlappyBird/FlappyKeyboardController.cpp
         Scenes/FlappyBird/FlappyKeyboardController.hpp
         Scenes/FlappyBird/FlappyRenderer.cpp
-        Scenes/FlappyBird/FlappyRenderer.hpp)
+        Scenes/FlappyBird/FlappyRenderer.hpp
+        Scenes/FlappyBird/FlappyBars.cpp
+        Scenes/FlappyBird/FlappyBars.hpp)
 
 
 target_link_libraries(Game PRIVATE AI)

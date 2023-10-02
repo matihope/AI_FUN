@@ -5,7 +5,7 @@
 #include "Geometry.hpp"
 
 #include "Base.hpp"
-#include "Vector2f.hpp"
+#include "Vector2.hpp"
 
 #include <vector>
 

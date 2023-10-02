@@ -14,6 +14,8 @@ public:
 	FlappyLevel();
 	~FlappyLevel();
 
+	void onPhysicsUpdate(float dt) override;
+
 private:
 	sf::Vector2u initialViewportSize;
 

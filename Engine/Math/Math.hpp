@@ -3,4 +3,4 @@
 #include "Base.hpp"
 #include "Geometry.hpp"
 #include "Matrix.hpp"
-#include "Vector2f.hpp"
+#include "Vector2.hpp"

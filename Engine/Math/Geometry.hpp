@@ -5,7 +5,7 @@
 #ifndef AI_FUN_ENGINE_MATH_GEOMETRY_HPP_
 #define AI_FUN_ENGINE_MATH_GEOMETRY_HPP_
 
-#include "Vector2f.hpp"
+#include "Vector2.hpp"
 
 #include <vector>
 
