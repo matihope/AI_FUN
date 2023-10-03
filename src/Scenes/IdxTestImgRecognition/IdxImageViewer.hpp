@@ -14,7 +14,8 @@
 class IdxImageViewer: public mk::WorldEntity {
 public:
 	explicit IdxImageViewer(idx::Reader &data);
-	void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
+	void onDraw(sf::RenderTarget &target, sf::RenderStates states)
+		const override;
 	void setImageIndex(uint newImageId);
 
 private:

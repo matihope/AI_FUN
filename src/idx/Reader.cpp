@@ -13,8 +13,8 @@
 
 namespace idx {
 	idx::Reader::Reader(std::string imagesPath, std::string labelsPath):
-		imagesPath(std::move(imagesPath)),
-		labelsPath(std::move(labelsPath)) {
+		  imagesPath(std::move(imagesPath)),
+		  labelsPath(std::move(labelsPath)) {
 		readData();
 	}
 
@@ -25,7 +25,8 @@ namespace idx {
 		auto labels     = readLabelsData();
 
 		images.clear();
-		for (int i = 0; i < imagesData.size(); i++) images.emplace_back(labels[i], imagesData[i]);
+		for (int i = 0; i < imagesData.size(); i++)
+			images.emplace_back(labels[i], imagesData[i]);
 	}
 
 	std::vector<std::vector<std::vector<byte>>> Reader::readImageData() {
@@ -43,7 +44,8 @@ namespace idx {
 			std::vector<std::vector<byte>> image;
 			for (uint rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
 				std::vector<byte> row;
-				for (uint colIndex = 0; colIndex < numberOfCols; colIndex++) row.push_back(bytes[dataIndex++]);
+				for (uint colIndex = 0; colIndex < numberOfCols; colIndex++)
+					row.push_back(bytes[dataIndex++]);
 				image.push_back(std::move(row));
 			}
 			newImages.push_back(std::move(image));
@@ -103,7 +105,11 @@ namespace idx {
 		auto length = file.tellg();
 		file.seekg(0, std::ios::beg);
 
-		bytes.insert(bytes.begin(), std::istream_iterator<byte>(file), std::istream_iterator<byte>());
+		bytes.insert(
+			bytes.begin(),
+			std::istream_iterator<byte>(file),
+			std::istream_iterator<byte>()
+		);
 
 		file.close();
 
@@ -127,5 +133,7 @@ namespace idx {
 		return result;
 	}
 
-	void Reader::setImage(uint index, const Image &image) { images[index] = image; }
+	void Reader::setImage(uint index, const Image &image) {
+		images[index] = image;
+	}
 }  // namespace idx

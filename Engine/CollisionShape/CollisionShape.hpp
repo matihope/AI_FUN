@@ -13,8 +13,9 @@ namespace mk {
 		~CircleCollision() override = default;
 		void  setRadius(float radius);
 		float getRadius() const;
-		void  draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-		bool  contains(const sf::Vector2f &point) const override;
+		void  draw(sf::RenderTarget &target, sf::RenderStates states)
+			const override;
+		bool contains(const sf::Vector2f &point) const override;
 	};
 
 	class RectCollision: public CollisionComponent {
@@ -28,7 +29,8 @@ namespace mk {
 		~RectCollision() override = default;
 		void                setSize(float width, float height);
 		const sf::Vector2f &getSize() const;
-		void                draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-		bool                contains(const sf::Vector2f &point) const override;
+		void draw(sf::RenderTarget &target, sf::RenderStates states)
+			const override;
+		bool contains(const sf::Vector2f &point) const override;
 	};
 }  // namespace mk

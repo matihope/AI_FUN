@@ -6,11 +6,16 @@
 
 namespace mk {
 
-	SpriteBatch::SpriteBatch(): WorldEntity() { m_vertex_array.setPrimitiveType(sf::Quads); }
+	SpriteBatch::SpriteBatch(): WorldEntity() {
+		m_vertex_array.setPrimitiveType(sf::Quads);
+	}
 
-	SpriteBatch::SpriteBatch(const sf::Texture *texture): SpriteBatch() { setTexture(texture); }
+	SpriteBatch::SpriteBatch(const sf::Texture *texture): SpriteBatch() {
+		setTexture(texture);
+	}
 
-	SpriteBatch::SpriteBatch(std::size_t size, const sf::Texture *texture): SpriteBatch() {
+	SpriteBatch::SpriteBatch(std::size_t size, const sf::Texture *texture):
+		  SpriteBatch() {
 		setTexture(texture);
 		setSize(size);
 	}
@@ -23,15 +28,20 @@ namespace mk {
 		generateQuickSprites();
 	}
 
-	QuickSprite SpriteBatch::getSprite(unsigned int id) { return QuickSprite(&m_vertex_array[id * 4]); }
+	QuickSprite SpriteBatch::getSprite(unsigned int id) {
+		return QuickSprite(&m_vertex_array[id * 4]);
+	}
 
-	void SpriteBatch::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
+	void SpriteBatch::onDraw(sf::RenderTarget &target, sf::RenderStates states)
+		const {
 		states.transform *= getTransform();
 		if (m_texture != nullptr) states.texture = m_texture;
 		target.draw(m_vertex_array, states);
 	}
 
-	void SpriteBatch::setTexture(const sf::Texture *newTexture) { m_texture = newTexture; }
+	void SpriteBatch::setTexture(const sf::Texture *newTexture) {
+		m_texture = newTexture;
+	}
 
 	const sf::Texture *SpriteBatch::getTexture() { return m_texture; }
 
@@ -40,7 +50,9 @@ namespace mk {
 		for (int x = 0; x < grid_size.x; x++) {
 			for (int y = 0; y < grid_size.y; y++) {
 				QuickSprite sprite = getSprite(y * grid_size.x + x);
-				sprite.setPosition(sf::Vector2f(tile_size.x * x, tile_size.y * y));
+				sprite.setPosition(
+					sf::Vector2f(tile_size.x * x, tile_size.y * y)
+				);
 				sprite.setSize(tile_size);
 			}
 		}
@@ -50,7 +62,8 @@ namespace mk {
 
 	void SpriteBatch::generateQuickSprites() {
 		m_sprites.clear();
-		for (int spriteId = 0; spriteId < getSize(); spriteId++) m_sprites.push_back(getSprite(spriteId));
+		for (int spriteId = 0; spriteId < getSize(); spriteId++)
+			m_sprites.push_back(getSprite(spriteId));
 	}
 
 	std::vector<QuickSprite> &SpriteBatch::getSprites() { return m_sprites; }

@@ -6,9 +6,11 @@
 
 #include "FlappyGame.hpp"
 
-FlappyPlayer::FlappyPlayer(FlappyController *controller, mk::Math::Vector2u playerSize):
-	controller(controller),
-	playerSize(playerSize) {}
+FlappyPlayer::FlappyPlayer(
+	FlappyController *controller, mk::Math::Vector2u playerSize
+):
+	  controller(controller),
+	  playerSize(playerSize) {}
 
 void FlappyPlayer::gameUpdate(float dt, FlappyGame &game) {
 	if (m_isDead) return;
@@ -32,3 +34,5 @@ mk::Math::Vector2u FlappyPlayer::getPlayerSize() const { return playerSize; }
 float FlappyPlayer::getVelocity() const { return velocity; }
 
 bool FlappyPlayer::isDead() const { return m_isDead; }
+
+void FlappyPlayer::die() { m_isDead = true; }

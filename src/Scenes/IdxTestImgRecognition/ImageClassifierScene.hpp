@@ -28,7 +28,8 @@ private:
 	mk::GUI::Label  *realLabel, *aiLabel, *idLabel;
 	int              currImg;
 	bool             pressed{};
-	mk::GUI::Button *prevImageBtn, *nextImageBtn, *randomImageBtn, *wrongImageBtn;
+	mk::GUI::Button *prevImageBtn, *nextImageBtn, *randomImageBtn,
+		*wrongImageBtn;
 
 	void nextImage();
 	void prevImage();

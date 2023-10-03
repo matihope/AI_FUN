@@ -10,15 +10,19 @@
 FlappyLevel::FlappyLevel() {
 	initialViewportSize = mk::Game::get().getViewportSize();
 
-	mk::Math::Vector2u viewportSize(160, 120);
+	mk::Math::Vector2u viewportSize(240, 180);
 	mk::Game::get().setViewportSize(viewportSize.as<sf::Vector2u>());
 
-	game = std::make_unique<FlappyGame>(std::make_unique<FlappyKeyboardController>(), viewportSize, 20);
+	game = std::make_unique<FlappyGame>(
+		std::make_unique<FlappyKeyboardController>(), viewportSize, 20
+	);
 
 	renderer = addChild<FlappyRenderer>(game.get(), viewportSize.type<float>());
 }
 
-FlappyLevel::~FlappyLevel() { mk::Game::get().setViewportSize(initialViewportSize); }
+FlappyLevel::~FlappyLevel() {
+	mk::Game::get().setViewportSize(initialViewportSize);
+}
 
 void FlappyLevel::onPhysicsUpdate(float dt) {
 	game->gameUpdate(dt);

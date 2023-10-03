@@ -11,7 +11,8 @@ namespace mk {
 	public:
 		RayShape() = default;
 		RayShape(sf::Color color, float width, float length, float wingLength);
-		void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
+		void onDraw(sf::RenderTarget &target, sf::RenderStates states)
+			const override;
 		void setSize(float width, float length, float wingLength);
 		void setColor(sf::Color color);
 		void pointAt(sf::Vector2f arrowHead);

@@ -20,7 +20,8 @@ namespace mk {
 
 	void WorldEntity::cleanEntities() {
 		for (auto &layer : m_entity_pool) {
-			for (auto it = layer.second.begin(); it != layer.second.end(); it++) {
+			for (auto it = layer.second.begin(); it != layer.second.end();
+			     it++) {
 				WorldEntity *entity = it->get();
 				if (entity->isDying()) it = layer.second.erase(it);
 			}
@@ -33,21 +34,27 @@ namespace mk {
 			for (auto &entity : layer.second) entity->physicsUpdate(dt);
 	}
 
-	void WorldEntity::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+	void WorldEntity::draw(sf::RenderTarget &target, sf::RenderStates states)
+		const {
 		if (not m_show) return;
 		renderOnto(target, states);
 	}
 
-	void WorldEntity::renderOnto(sf::RenderTarget &target, sf::RenderStates states) const {
+	void WorldEntity::renderOnto(
+		sf::RenderTarget &target, sf::RenderStates states
+	) const {
 		sf::RenderStates copied_states(states);
 		copied_states.transform *= getTransform();
 		onDraw(target, states);
 
 		for (const auto &layer : m_entity_pool)
-			for (auto &entity : layer.second) target.draw(*entity, copied_states);
+			for (auto &entity : layer.second)
+				target.draw(*entity, copied_states);
 	}
 
-	void WorldEntity::addChild(std::unique_ptr<WorldEntity> child, unsigned int drawOrder) {
+	void WorldEntity::addChild(
+		std::unique_ptr<WorldEntity> child, unsigned int drawOrder
+	) {
 		child->addParent(this);
 		child->ready();
 		m_entity_pool[drawOrder].push_back(std::move(child));

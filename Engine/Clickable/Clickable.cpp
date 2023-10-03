@@ -26,7 +26,9 @@ namespace mk {
 				if (m_is_pressable) {
 					m_is_held = true;
 					onHold();
-					if (not m_was_held_prev and m_click_mode == ClickMode::PressOnClick) makePress();
+					if (not m_was_held_prev
+					    and m_click_mode == ClickMode::PressOnClick)
+						makePress();
 				}
 			} else {
 				m_is_pressable = true;
@@ -44,9 +46,14 @@ namespace mk {
 		m_was_held_prev = m_is_held;
 	}
 
-	void Clickable::setClickCollisionShape(CollisionComponent *collision_shape) { m_collision_shape = collision_shape; }
+	void Clickable::setClickCollisionShape(CollisionComponent *collision_shape
+	) {
+		m_collision_shape = collision_shape;
+	}
 
-	void Clickable::setClickMode(Clickable::ClickMode new_mode) { m_click_mode = new_mode; }
+	void Clickable::setClickMode(Clickable::ClickMode new_mode) {
+		m_click_mode = new_mode;
+	}
 
 	bool Clickable::isPressed() const { return m_is_pressed; }
 

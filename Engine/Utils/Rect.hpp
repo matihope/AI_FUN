@@ -12,12 +12,25 @@ namespace mk {
 	public:
 		T left, top, width, height;
 
-		[[nodiscard]] Math::Vector2<T> getPosition() const { return { left, top }; }
+		[[nodiscard]] Math::Vector2<T> getPosition() const {
+			return { left, top };
+		}
 
-		[[nodiscard]] Math::Vector2<T> getSize() const { return { width, height }; }
+		[[nodiscard]] Math::Vector2<T> getSize() const {
+			return { width, height };
+		}
+
+		template<class X>
+		bool overlaps(const Rect<X> &otherRect) {
+			if (left + width < otherRect.left) return false;
+			if (otherRect.left + otherRect.width < left) return false;
+			if (top + height < otherRect.top) return false;
+			if (otherRect.top + otherRect.height < top) return false;
+			return true;
+		}
 	};
 
-	typedef Rect<int>          RectI;
-	typedef Rect<float>        RectF;
-	typedef Rect<unsigned int> RectU;
+	using RectI = Rect<int>;
+	using RectF = Rect<float>;
+	using RectU = Rect<unsigned int>;
 }  // namespace mk

@@ -63,13 +63,13 @@ namespace mk {
 		sf::RenderWindow &getRenderWindow();
 		bool              isWindowActive() const;
 		void              addScene(std::unique_ptr<WorldEntity> newScene);
-		void              replaceTopScene(std::unique_ptr<WorldEntity> newScene);
-		void              popScene();
-		sf::Vector2f      getMousePos();
-		sf::Font         *getFont();
-		const sf::View   *getView();
-		void              setCameraCenterAt(const sf::Vector2f &pos);
-		void              setCursor(sf::Cursor::Type type);
+		void            replaceTopScene(std::unique_ptr<WorldEntity> newScene);
+		void            popScene();
+		sf::Vector2f    getMousePos();
+		sf::Font       *getFont();
+		const sf::View *getView();
+		void            setCameraCenterAt(const sf::Vector2f &pos);
+		void            setCursor(sf::Cursor::Type type);
 	};
 
 }  // namespace mk

@@ -8,4 +8,6 @@
 
 #include <SFML/Graphics.hpp>
 
-bool FlappyKeyboardController::shouldJump(FlappyGame &game) { return sf::Keyboard::isKeyPressed(sf::Keyboard::Space); }
+bool FlappyKeyboardController::shouldJump(FlappyGame &game) {
+	return sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+}

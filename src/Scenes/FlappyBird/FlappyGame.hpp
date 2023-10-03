@@ -15,8 +15,11 @@
 
 class FlappyGame {
 public:
-	explicit FlappyGame(std::unique_ptr<FlappyController> controller, mk::Math::Vector2u gameSize,
-	                    float playerPositionX);
+	explicit FlappyGame(
+		std::unique_ptr<FlappyController> controller,
+		mk::Math::Vector2u                gameSize,
+		float                             playerPositionX
+	);
 
 	void gameUpdate(float dt);
 
@@ -27,7 +30,13 @@ public:
 
 	[[nodiscard]] const std::list<FlappyBars> &getBars() const;
 
+	[[nodiscard]] float getBarMoveSpeed() const;
+
+	[[nodiscard]] mk::RectF getPlayerRect() const;
+
 private:
+	const float BAR_MOVE_SPEED = 25;
+
 	FlappyPlayer                      player;
 	float                             playerPositionX;
 	std::unique_ptr<FlappyController> controller;

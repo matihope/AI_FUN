@@ -35,7 +35,7 @@ namespace idx {
 		std::vector<std::string>                    readLabelsData();
 
 		static std::vector<byte> readBytes(const std::string &filePath);
-		static uint              readInt(const std::vector<byte> &bytes, uint start);
+		static uint readInt(const std::vector<byte> &bytes, uint start);
 	};
 }  // namespace idx
 

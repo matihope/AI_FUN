@@ -6,8 +6,8 @@ Standard: 'c++20'
 
 
 # Alignments
-AlignArrayOfStructures: Left
-AlignAfterOpenBracket: Align
+AlignArrayOfStructures: None
+AlignAfterOpenBracket: BlockIndent
 AlignConsecutiveAssignments:
   Enabled: true
   AcrossEmptyLines: false
@@ -78,8 +78,8 @@ SeparateDefinitionBlocks: Always
 
 
 # Braces
-BinPackArguments: true
-BinPackParameters: true
+BinPackArguments: false
+BinPackParameters: false
 BraceWrapping:
   AfterCaseLabel: false
   AfterClass: false
@@ -142,7 +142,7 @@ SpacesInSquareBrackets: false
 
 
 # Characters
-ColumnLimit: 120
+ColumnLimit: 80
 FixNamespaceComments: true
 InsertNewlineAtEOF: true
 IntegerLiteralSeparator:
@@ -161,7 +161,7 @@ ShortNamespaceLines: 4
 IndentWidth: 4
 TabWidth: 4
 UseTab: AlignWithSpaces
-ConstructorInitializerIndentWidth: 4
+ConstructorInitializerIndentWidth: 6
 ContinuationIndentWidth: 4
 AccessModifierOffset: -4
 IndentAccessModifiers: false

@@ -12,8 +12,10 @@ namespace ai {
 	class ActivatingFunction {
 	public:
 		virtual ~ActivatingFunction() = default;
-		[[nodiscard]] virtual std::vector<double> calculate(const std::vector<double> &inputs) const;
-		[[nodiscard]] virtual std::vector<double> derivative(const std::vector<double> &inputs) const;
+		[[nodiscard]] virtual std::vector<double>
+			calculate(const std::vector<double> &inputs) const;
+		[[nodiscard]] virtual std::vector<double>
+			derivative(const std::vector<double> &inputs) const;
 
 		[[nodiscard]] virtual const std::string getName() const = 0;
 
@@ -27,7 +29,9 @@ namespace ai {
 		[[nodiscard]] double derivative(double input) const override;
 
 	public:
-		[[nodiscard]] const std::string getName() const override { return "Sigmoid"; }
+		[[nodiscard]] const std::string getName() const override {
+			return "Sigmoid";
+		}
 	};
 
 	class ReLU: public ActivatingFunction {
@@ -35,15 +39,21 @@ namespace ai {
 		[[nodiscard]] double derivative(double input) const override;
 
 	public:
-		[[nodiscard]] const std::string getName() const override { return "ReLU"; }
+		[[nodiscard]] const std::string getName() const override {
+			return "ReLU";
+		}
 	};
 
 	class SoftMax: public ActivatingFunction {
 	public:
-		[[nodiscard]] std::vector<double> calculate(const std::vector<double> &inputs) const override;
-		[[nodiscard]] std::vector<double> derivative(const std::vector<double> &inputs) const override;
+		[[nodiscard]] std::vector<double>
+			calculate(const std::vector<double> &inputs) const override;
+		[[nodiscard]] std::vector<double>
+			derivative(const std::vector<double> &inputs) const override;
 
-		[[nodiscard]] const std::string getName() const override { return "SoftMax"; }
+		[[nodiscard]] const std::string getName() const override {
+			return "SoftMax";
+		}
 
 	private:
 		[[nodiscard]] double calculate(double input) const override;

@@ -29,6 +29,7 @@ namespace mk {
 
 		bool shouldDraw() const;
 		void setDraw(bool draw);
-		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+		void draw(sf::RenderTarget &target, sf::RenderStates states)
+			const override;
 	};
 }  // namespace mk

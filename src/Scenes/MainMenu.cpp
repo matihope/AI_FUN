@@ -16,7 +16,9 @@ MainMenu::MainMenu() {
 	float minBuffer = 5;
 
 	recognize = addChild<mk::GUI::Button>(font, "View test images");
-	recognize->setAlignment(mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::CENTER);
+	recognize->setAlignment(
+		mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::CENTER
+	);
 	recognize->setMinSize({ 333, -1 });
 	recognize->setMinSpaceBetween({ minBuffer, minBuffer });
 	recognize->setPosition(400, 400);
@@ -25,17 +27,28 @@ MainMenu::MainMenu() {
 	draw->setAlignment(mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::TOP);
 	draw->setMinSize({ 333, -1 });
 	draw->setMinSpaceBetween({ minBuffer, minBuffer });
-	draw->setPosition(400, recognize->getBounds().top + recognize->getBounds().height + minBuffer * 2);
+	draw->setPosition(
+		400,
+		recognize->getBounds().top + recognize->getBounds().height
+			+ minBuffer * 2
+	);
 
 	playFlappy = addChild<mk::GUI::Button>(font, "Play Flappy Bird");
-	playFlappy->setAlignment(mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::TOP);
+	playFlappy->setAlignment(
+		mk::GUI::HAlignment::MIDDLE, mk::GUI::VAlignment::TOP
+	);
 	playFlappy->setMinSize({ 333, -1 });
 	playFlappy->setMinSpaceBetween({ minBuffer, minBuffer });
-	playFlappy->setPosition(400, draw->getBounds().top + draw->getBounds().height + minBuffer * 2);
+	playFlappy->setPosition(
+		400, draw->getBounds().top + draw->getBounds().height + minBuffer * 2
+	);
 }
 
 void MainMenu::onUpdate(float dt) {
-	if (recognize->isPressed()) mk::Game::get().addScene(std::make_unique<ImageClassifierScene>());
-	if (draw->isPressed()) mk::Game::get().addScene(std::make_unique<DrawBoard>());
-	if (playFlappy->isPressed()) mk::Game::get().addScene(std::make_unique<FlappyLevel>());
+	if (recognize->isPressed())
+		mk::Game::get().addScene(std::make_unique<ImageClassifierScene>());
+	if (draw->isPressed())
+		mk::Game::get().addScene(std::make_unique<DrawBoard>());
+	if (playFlappy->isPressed())
+		mk::Game::get().addScene(std::make_unique<FlappyLevel>());
 }

@@ -16,7 +16,8 @@ public:
 	FlappyRenderer(FlappyGame *game, mk::Math::Vector2f gameSize);
 
 	void gameUpdate(float dt);
-	void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
+	void onDraw(sf::RenderTarget &target, sf::RenderStates states)
+		const override;
 
 private:
 	FlappyGame *game;
@@ -28,10 +29,13 @@ private:
 
 	mk::Math::Vector2f gameSize;
 
-	sf::Sprite         background1, background2;
+	sf::Sprite background1, background2;
+	sf::Sprite floor1, floor2;
+
 	const sf::Texture *playerTexture;
 	const sf::Texture *backgroundTexture;
 	const sf::Texture *barTexture;
+	const sf::Texture *floorTexture;
 };
 
 

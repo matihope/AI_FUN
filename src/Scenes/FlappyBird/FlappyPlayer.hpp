@@ -20,12 +20,13 @@ public:
 	[[nodiscard]] mk::Math::Vector2u getPlayerSize() const;
 	[[nodiscard]] float              getVelocity() const;
 	[[nodiscard]] bool               isDead() const;
+	void                             die();
 
 private:
 	const float MAX_VELOCITY      = 3;
 	const float GRAVITY           = 0.08;
 	const float JUMP_VELOCITY     = -1.5;
-	const float DIE_BOTTOM_HEIGHT = 100;
+	const float DIE_BOTTOM_HEIGHT = 160;
 
 	bool               m_isDead = false;
 	float              position{};

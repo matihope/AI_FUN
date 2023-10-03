@@ -15,7 +15,9 @@ namespace mk::GUI {
 		setText(text);
 	}
 
-	void Button::setAlignment(HAlignment newHAlignment, VAlignment newVAlignment) {
+	void Button::setAlignment(
+		HAlignment newHAlignment, VAlignment newVAlignment
+	) {
 		m_valignment = newVAlignment;
 		m_halignment = newHAlignment;
 		updateDefaultCollisionShape();
@@ -40,7 +42,8 @@ namespace mk::GUI {
 		updateDefaultCollisionShape();
 	}
 
-	void Button::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
+	void Button::onDraw(sf::RenderTarget &target, sf::RenderStates states)
+		const {
 		states.transform *= getTransform();
 		target.draw(m_background, states);
 		target.draw(m_label, states);
@@ -73,7 +76,9 @@ namespace mk::GUI {
 
 		sf::FloatRect bounds = getBounds();
 
-		m_collision_shape = std::make_unique<RectCollision>(this, bounds.width, bounds.height);
+		m_collision_shape = std::make_unique<RectCollision>(
+			this, bounds.width, bounds.height
+		);
 		setClickCollisionShape(m_collision_shape.get());
 
 		m_background.setSize({ bounds.width, bounds.height });
@@ -149,13 +154,17 @@ namespace mk::GUI {
 		return bounds;
 	}
 
-	void Button::setBackgroundColors(sf::Color normal, sf::Color hover, sf::Color highlight) {
+	void Button::setBackgroundColors(
+		sf::Color normal, sf::Color hover, sf::Color highlight
+	) {
 		m_background_color_normal    = normal;
 		m_background_color_hover     = hover;
 		m_background_color_highlight = highlight;
 	}
 
-	void Button::setBackgroundColors(sf::Color colors) { setBackgroundColors(colors, colors, colors); }
+	void Button::setBackgroundColors(sf::Color colors) {
+		setBackgroundColors(colors, colors, colors);
+	}
 
 	void Button::setMinSpaceBetween(Math::Vector2f space) {
 		minSpaceBetween = space;

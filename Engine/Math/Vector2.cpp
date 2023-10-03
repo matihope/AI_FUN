@@ -12,7 +12,9 @@ namespace mk::Math {
 	}
 
 	Vector2f rotateVector(Vector2f vector, float angleRads) {
-		return Vector2f(std::cos(angleRads) * vector.x - std::sin(angleRads) * vector.y,
-		                std::sin(angleRads) * vector.x + std::cos(angleRads) * vector.y);
+		return Vector2f(
+			std::cos(angleRads) * vector.x - std::sin(angleRads) * vector.y,
+			std::sin(angleRads) * vector.x + std::cos(angleRads) * vector.y
+		);
 	}
 }  // namespace mk::Math

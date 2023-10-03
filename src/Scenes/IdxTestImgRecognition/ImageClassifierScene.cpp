@@ -15,7 +15,9 @@
 #include <cstdlib>
 
 ImageClassifierScene::ImageClassifierScene():
-	reader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte") {
+	  reader(
+		  "resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte"
+	  ) {
 	mk::Random::initRandom();
 
 	viewer = addChild<IdxImageViewer>(reader);
@@ -38,7 +40,9 @@ ImageClassifierScene::ImageClassifierScene():
 
 	aiLabel = addChild<Label>(font);
 	aiLabel->setAlignment(HAlignment::RIGHT, VAlignment::TOP);
-	aiLabel->setPosition(viewPosX + viewSize - buffer, viewPosY + viewSize + buffer);
+	aiLabel->setPosition(
+		viewPosX + viewSize - buffer, viewPosY + viewSize + buffer
+	);
 	aiLabel->setTextSize(48);
 
 	idLabel = addChild<Label>(font);
@@ -47,7 +51,10 @@ ImageClassifierScene::ImageClassifierScene():
 	idLabel->setTextSize(32);
 
 	network = std::make_unique<ai::NeuralNetwork>(
-		ai::NeuralNetworkManager::loadNeuralNetwork("models/digits/digitsUltimate.json"));
+		ai::NeuralNetworkManager::loadNeuralNetwork(
+			"models/digits/digitsUltimate.json"
+		)
+	);
 	testImage(0);
 
 	prevImageBtn = addChild<Button>(font, "Previous image");
@@ -65,13 +72,17 @@ ImageClassifierScene::ImageClassifierScene():
 	randomImageBtn = addChild<Button>(font, "Random image");
 	randomImageBtn->setMinSize({ 400 - 2 * buffer, -1 });
 	randomImageBtn->setMinSpaceBetween({ buffer, buffer });
-	randomImageBtn->setPosition(800 - buffer, 800 - nextImageBtn->getBounds().height - 3 * buffer);
+	randomImageBtn->setPosition(
+		800 - buffer, 800 - nextImageBtn->getBounds().height - 3 * buffer
+	);
 	randomImageBtn->setAlignment(HAlignment::RIGHT, VAlignment::BOTTOM);
 
 	wrongImageBtn = addChild<Button>(font, "Next wrong image");
 	wrongImageBtn->setMinSize({ 400 - 2 * buffer, -1 });
 	wrongImageBtn->setMinSpaceBetween({ buffer, buffer });
-	wrongImageBtn->setPosition(buffer, 800 - prevImageBtn->getBounds().height - 3 * buffer);
+	wrongImageBtn->setPosition(
+		buffer, 800 - prevImageBtn->getBounds().height - 3 * buffer
+	);
 	wrongImageBtn->setAlignment(HAlignment::LEFT, VAlignment::BOTTOM);
 }
 
@@ -82,11 +93,14 @@ void ImageClassifierScene::testImage(uint imageId) {
 	auto lbl = reader.getImages()[imageId].label;
 	realLabel->setText("Real: " + lbl);
 
-	auto item  = IdxDigitTrainer::createItemFromIdxImage(reader.getImages()[imageId]);
+	auto item
+		= IdxDigitTrainer::createItemFromIdxImage(reader.getImages()[imageId]);
 	auto index = network->calculateBestIndex(item.input);
 
 	aiLabel->setText("Ai: " + std::to_string(index));
-	aiLabel->setColor((index == (lbl[0] - '0')) ? sf::Color::Green : sf::Color::Red);
+	aiLabel->setColor(
+		(index == (lbl[0] - '0')) ? sf::Color::Green : sf::Color::Red
+	);
 	idLabel->setText("Image: " + std::to_string(imageId));
 }
 
@@ -94,12 +108,14 @@ void ImageClassifierScene::onPhysicsUpdate(float dt) {
 	if (prevImageBtn->isPressed()) prevImage();
 	if (nextImageBtn->isPressed()) nextImage();
 	if (randomImageBtn->isPressed()) {
-		uint newIndex = mk::Random::getInt<uint>(0, reader.getImages().size() - 1);
+		uint newIndex
+			= mk::Random::getInt<uint>(0, reader.getImages().size() - 1);
 		testImage(newIndex);
 	}
 	if (wrongImageBtn->isPressed()) {
 		nextImage();
-		while (aiLabel->getText().back() == realLabel->getText().back()) nextImage();
+		while (aiLabel->getText().back() == realLabel->getText().back())
+			nextImage();
 	}
 }
 

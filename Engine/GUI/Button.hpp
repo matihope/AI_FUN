@@ -53,13 +53,16 @@ namespace mk::GUI {
 		void setTextSize(unsigned int newSize);
 
 		void update(float dt) override;
-		void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
+		void onDraw(sf::RenderTarget &target, sf::RenderStates states)
+			const override;
 
 		void          updateDefaultCollisionShape();
 		void          setCollisionShape(std::unique_ptr<RectCollision> shape);
 		sf::FloatRect getBounds() const;
 
-		void setBackgroundColors(sf::Color normal, sf::Color hover, sf::Color highlight);
+		void setBackgroundColors(
+			sf::Color normal, sf::Color hover, sf::Color highlight
+		);
 		void setBackgroundColors(sf::Color colors);
 
 		void setMinSpaceBetween(Math::Vector2f space);

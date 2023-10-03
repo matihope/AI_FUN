@@ -14,7 +14,9 @@ namespace ai {
 	public:
 		NeuralNetworkManager() = default;
 
-		static bool          saveNeuralNetwork(const ai::NeuralNetwork &network, const std::string &filePath);
+		static bool saveNeuralNetwork(
+			const ai::NeuralNetwork &network, const std::string &filePath
+		);
 		static NeuralNetwork loadNeuralNetwork(const std::string &filePath);
 	};
 }  // namespace ai

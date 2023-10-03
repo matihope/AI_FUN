@@ -23,7 +23,9 @@ namespace mk {
 		void                       setTexPosition(sf::Vector2f position);
 		[[nodiscard]] sf::Vector2f getTexPosition() const;
 
-		void                    setColor(sf::Color vert0, sf::Color vert1, sf::Color vert2, sf::Color vert3);
+		void setColor(
+			sf::Color vert0, sf::Color vert1, sf::Color vert2, sf::Color vert3
+		);
 		void                    setColor(sf::Color color);
 		[[nodiscard]] sf::Color getColor(unsigned int vertexId);
 

@@ -9,7 +9,8 @@
 
 #include <iostream>
 
-ai::TrainingItem IdxDigitTrainer::createItemFromIdxImage(const idx::Image &image) {
+ai::TrainingItem IdxDigitTrainer::createItemFromIdxImage(const idx::Image &image
+) {
 	std::vector<double> inputs;
 	std::vector<double> outputs(10, 0);
 	for (const auto &imgRow : image.pixels)
@@ -18,7 +19,9 @@ ai::TrainingItem IdxDigitTrainer::createItemFromIdxImage(const idx::Image &image
 	return { inputs, outputs };
 }
 
-ai::TrainingSet IdxDigitTrainer::createSetFromReader(const idx::Reader &reader, uint maxSize) {
+ai::TrainingSet IdxDigitTrainer::createSetFromReader(
+	const idx::Reader &reader, uint maxSize
+) {
 	ai::TrainingSet set;
 	for (const auto &img : reader.getImages()) {
 		set.push_back(createItemFromIdxImage(img));
@@ -31,10 +34,14 @@ void IdxDigitTrainer::teachImages(const std::string &modelPath) {
 	ai::NeuralNetwork network({ 784, 100, 10 }, std::make_unique<ai::ReLU>());
 	network.randomizeWeightsAndBiases(0);
 
-	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::DifferenceSquaredCostFunction>());
+	ai::NeuralNetworkCoach coach(
+		network, std::make_unique<ai::DifferenceSquaredCostFunction>()
+	);
 
-	idx::Reader reader("resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte");
-	auto        set = createSetFromReader(reader, 60'000);
+	idx::Reader reader(
+		"resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte"
+	);
+	auto set = createSetFromReader(reader, 60'000);
 	std::cerr << "Begin training: \n";
 	coach.train(set, 0.09, 128, 25);
 
@@ -48,16 +55,24 @@ void IdxDigitTrainer::testImages(const std::string &modelPath) {
 }
 
 void IdxDigitTrainer::teachImagesAugmented(const std::string &modelPath) {
-	ai::NeuralNetwork network({ 784, 200, 10 }, std::make_unique<ai::ReLU>(), std::make_unique<ai::SoftMax>());
+	ai::NeuralNetwork network(
+		{ 784, 200, 10 },
+		std::make_unique<ai::ReLU>(),
+		std::make_unique<ai::SoftMax>()
+	);
 	teachImagesAugmented(network, modelPath);
 }
 
-void IdxDigitTrainer::teachImagesAugmented(ai::NeuralNetwork &network, const std::string &modelPath) {
+void IdxDigitTrainer::teachImagesAugmented(
+	ai::NeuralNetwork &network, const std::string &modelPath
+) {
 	network.randomizeWeightsAndBiases(0);
 
 	ai::NeuralNetworkCoach coach(network, std::make_unique<ai::CrossEntropy>());
 
-	idx::Reader originalReader("resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte");
+	idx::Reader originalReader(
+		"resources/train-images.idx3-ubyte", "resources/train-labels.idx1-ubyte"
+	);
 	idx::Reader reader2 = originalReader;
 
 	std::cerr << "Begin training: \n";
@@ -66,14 +81,21 @@ void IdxDigitTrainer::teachImagesAugmented(ai::NeuralNetwork &network, const std
 	uint images = reader2.getImages().size();
 	for (int i = 0; i < 30; i++) {
 		for (uint imageIndex = 0; imageIndex < images; imageIndex++)
-			reader2.setImage(imageIndex,
-			                 TestImageTransitions::randomShift(originalReader.getImages()[imageIndex], 0, 255));
+			reader2.setImage(
+				imageIndex,
+				TestImageTransitions::randomShift(
+					originalReader.getImages()[imageIndex], 0, 255
+				)
+			);
 		std::cerr << "Round: " << i << ":\n";
 		coach.train(createSetFromReader(reader2, images), 0.1, 128, 3);
 	}
 
 	auto stop = std::chrono::high_resolution_clock::now();
-	std::cout << "Training time: " << std::chrono::duration_cast<std::chrono::seconds>(stop - start).count() << "s\n";
+	std::cout << "Training time: "
+			  << std::chrono::duration_cast<std::chrono::seconds>(stop - start)
+					 .count()
+			  << "s\n";
 
 
 	ai::NeuralNetworkManager::saveNeuralNetwork(network, modelPath);
@@ -82,9 +104,11 @@ void IdxDigitTrainer::teachImagesAugmented(ai::NeuralNetwork &network, const std
 
 void IdxDigitTrainer::testImages(const ai::NeuralNetwork &network) {
 	std::cerr << "Begin testing: \n";
-	idx::Reader testReader("resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte");
-	auto        testSet = createSetFromReader(testReader);
-	uint        good    = 0;
+	idx::Reader testReader(
+		"resources/t10k-images.idx3-ubyte", "resources/t10k-labels.idx1-ubyte"
+	);
+	auto testSet = createSetFromReader(testReader);
+	uint good    = 0;
 	for (const auto &item : testSet) {
 		uint index = network.calculateBestIndex(item.input);
 		if (item.correctOutput[index] == 1.0) good++;

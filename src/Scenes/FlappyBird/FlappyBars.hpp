@@ -7,17 +7,25 @@
 
 #include "Utils/Rect.hpp"
 
+#include <list>
+#include <vector>
+
 class FlappyBars {
 public:
-	FlappyBars(float top, float bottom, float width, float height, float positionX);
+	FlappyBars(float top, float bottom, float positionX);
 
 	void move(float deltaX);
 
-	[[nodiscard]] const mk::RectF &getTop() const;
-	[[nodiscard]] const mk::RectF &getBottom() const;
+	[[nodiscard]] mk::Math::Vector2f getBottomTopLeft() const;
+	[[nodiscard]] mk::Math::Vector2f getTopTopLeft() const;
+
+	[[nodiscard]] const std::vector<mk::RectF> &getRects() const;
 
 private:
-	mk::RectF topBar, bottomBar;
+	const mk::Math::Vector2f PIPE_END_SIZE  = { 32.f, 9.f };
+	const mk::Math::Vector2f PIPE_BODY_SIZE = { 26.f, 128.f };
+
+	std::vector<mk::RectF> rects;
 };
 
 

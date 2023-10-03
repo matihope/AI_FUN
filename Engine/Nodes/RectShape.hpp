@@ -12,7 +12,8 @@ namespace mk {
 	public:
 		RectShape() = default;
 		RectShape(sf::Color myColor, sf::Vector2f size);
-		void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
+		void onDraw(sf::RenderTarget &target, sf::RenderStates states)
+			const override;
 
 	private:
 		sf::RectangleShape rect;

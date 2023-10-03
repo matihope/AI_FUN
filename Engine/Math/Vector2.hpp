@@ -15,7 +15,9 @@ namespace mk::Math {
 	public:
 		T x = 0, y = 0;
 
-		bool operator==(const Vector2<T> &rhs) const { return x == rhs.x && y == rhs.y; }
+		bool operator==(const Vector2<T> &rhs) const {
+			return x == rhs.x && y == rhs.y;
+		}
 
 		Vector2<T> &operator+=(const Vector2<T> &rhs) {
 			x += rhs.x;
@@ -69,13 +71,21 @@ namespace mk::Math {
 			return *this;
 		}
 
-		Vector2<T> operator+(const Vector2<T> &rhs) const { return { x + rhs.x, y + rhs.y }; }
+		Vector2<T> operator+(const Vector2<T> &rhs) const {
+			return { x + rhs.x, y + rhs.y };
+		}
 
-		Vector2<T> operator-(const Vector2<T> &rhs) const { return { x - rhs.x, y - rhs.y }; }
+		Vector2<T> operator-(const Vector2<T> &rhs) const {
+			return { x - rhs.x, y - rhs.y };
+		}
 
-		Vector2<T> operator*(const Vector2<T> &rhs) const { return { x * rhs.x, y * rhs.y }; }
+		Vector2<T> operator*(const Vector2<T> &rhs) const {
+			return { x * rhs.x, y * rhs.y };
+		}
 
-		Vector2<T> operator/(const Vector2<T> &rhs) const { return { x / rhs.x, y / rhs.y }; }
+		Vector2<T> operator/(const Vector2<T> &rhs) const {
+			return { x / rhs.x, y / rhs.y };
+		}
 
 		template<class X>
 		Vector2<T> operator*(const X &rhs) const {
@@ -99,15 +109,16 @@ namespace mk::Math {
 			return X(x, y);
 		}
 
-		friend std::ostream &operator<<(std::ostream &stream, const Vector2<T> &vector) {
+		friend std::ostream &
+			operator<<(std::ostream &stream, const Vector2<T> &vector) {
 			stream << vector.x << ", " << vector.y;
 			return stream;
 		}
 	};
 
-	typedef Vector2<float>        Vector2f;
-	typedef Vector2<int>          Vector2i;
-	typedef Vector2<unsigned int> Vector2u;
+	using Vector2f = Vector2<float>;
+	using Vector2i = Vector2<int>;
+	using Vector2u = Vector2<unsigned int>;
 
 	Vector2f normalizeVector(Vector2f vector);
 	Vector2f rotateVector(Vector2f vector, float angleRads);
