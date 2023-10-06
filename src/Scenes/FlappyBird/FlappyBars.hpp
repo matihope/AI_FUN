@@ -12,6 +12,9 @@
 
 class FlappyBars {
 public:
+	static constexpr mk::Math::Vector2f PIPE_END_SIZE  = { 32.f, 9.f };
+	static constexpr mk::Math::Vector2f PIPE_BODY_SIZE = { 26.f, 128.f };
+
 	FlappyBars(float top, float bottom, float positionX);
 
 	void move(float deltaX);
@@ -22,9 +25,6 @@ public:
 	[[nodiscard]] const std::vector<mk::RectF> &getRects() const;
 
 private:
-	const mk::Math::Vector2f PIPE_END_SIZE  = { 32.f, 9.f };
-	const mk::Math::Vector2f PIPE_BODY_SIZE = { 26.f, 128.f };
-
 	std::vector<mk::RectF> rects;
 };
 

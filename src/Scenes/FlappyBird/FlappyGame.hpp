@@ -30,18 +30,21 @@ public:
 
 	[[nodiscard]] const std::list<FlappyBars> &getBars() const;
 
-	[[nodiscard]] float getBarMoveSpeed() const;
+	static float getBarMoveSpeed();
 
 	[[nodiscard]] mk::RectF getPlayerRect() const;
 
 private:
-	const float BAR_MOVE_SPEED = 25;
+	constexpr static float BAR_MOVE_SPEED = 30;
 
+	mk::Math::Vector2u                gameSize;
 	FlappyPlayer                      player;
 	float                             playerPositionX;
 	std::unique_ptr<FlappyController> controller;
 
 	std::list<FlappyBars> bars;
+
+	void generateBar();
 };
 
 

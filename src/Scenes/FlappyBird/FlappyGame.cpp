@@ -4,15 +4,18 @@
 
 #include "FlappyGame.hpp"
 
+#include "Random/Random.hpp"
+
 FlappyGame::FlappyGame(
 	std::unique_ptr<FlappyController> controller,
 	mk::Math::Vector2u                gameSize,
 	float                             playerPositionX
 ):
+	  gameSize(gameSize),
 	  controller(std::move(controller)),
-	  player(controller.get(), { 16, 16 }),           // 16x16 - playerSize
+	  player(controller.get(), { 12, 16 }),  // 16x16 - playerSize
 	  playerPositionX(playerPositionX) {
-	bars.emplace_back(30.f, 70.f, gameSize.x / 2.f);  // 64x128 - barSize
+	for (int i = 0; i < 5; i++) generateBar();
 }
 
 mk::Math::Vector2f FlappyGame::getPlayerPosition() const {
@@ -28,7 +31,21 @@ void FlappyGame::gameUpdate(float dt) {
 			if (playerRect.overlaps(rect)) player.die();
 	}
 
-	if (!player.isDead()) bars.front().move(-BAR_MOVE_SPEED * dt);
+	if (!player.isDead()) {
+		auto barIt = bars.begin();
+		while (barIt != bars.end()) {
+			barIt->move(-BAR_MOVE_SPEED * dt);
+			float positionX
+				= barIt->getTopTopLeft().x + FlappyBars::PIPE_END_SIZE.x;
+
+			if (positionX < 0) {
+				barIt = bars.erase(barIt);
+				generateBar();
+			} else {
+				barIt++;
+			}
+		}
+	}
 }
 
 float FlappyGame::getPlayerVelocity() const { return player.getVelocity(); }
@@ -37,11 +54,32 @@ bool FlappyGame::isPlayerDead() const { return player.isDead(); }
 
 const std::list<FlappyBars> &FlappyGame::getBars() const { return bars; }
 
-float FlappyGame::getBarMoveSpeed() const { return BAR_MOVE_SPEED; }
+float FlappyGame::getBarMoveSpeed() { return BAR_MOVE_SPEED; }
 
 mk::RectF FlappyGame::getPlayerRect() const {
 	return { playerPositionX,
 		     player.getPosition(),
 		     (float) player.getPlayerSize().x,
 		     (float) player.getPlayerSize().y };
+}
+
+void FlappyGame::generateBar() {
+	float minPosX = gameSize.x;
+	if (!bars.empty()) {
+		float lastPos = bars.back().getTopTopLeft().x;
+
+		minPosX
+			= std::max(minPosX, lastPos + 2.7f * FlappyBars::PIPE_END_SIZE.x);
+	}
+	float barDiff = 40.f;
+	float height  = mk::Random::getReal(30.f, 125.f);
+	bars.emplace_back(
+		height - barDiff / 2,
+		height + barDiff / 2,
+		minPosX
+			+ mk::Random::getReal(
+				-FlappyBars::PIPE_END_SIZE.x / 4,
+				FlappyBars::PIPE_END_SIZE.x / 4
+			)
+	);  // 64x128 - barSize
 }
