@@ -1,4 +1,4 @@
-# ai FUN!
+# AI fun!
 ---
 As you can see ;D
 
